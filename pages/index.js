@@ -1,65 +1,48 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import Template from "./Template";
+import Topic from "./../components/Topic";
+import { useSelector } from "react-redux";
+const Home = () => {
+  const topics = useSelector((state) => state.categories.topics);
 
-export default function Home() {
+  const renderTopics = (topics) => {
+    if (topics.length === 0) {
+      return <div>konu bulunamadı.</div>;
+    }
+
+    return topics.map((topic) => {
+      return (
+        <Topic
+          key={topic.id}
+          title={topic.title}
+          author={topic.user.username}
+          counter={0}
+          category={topic.category.title}
+          createdAt={topic.createdAt}
+        />
+      );
+    });
+  };
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <Template>
+      <div className="bg-gray-200 flex w-full h-full">
+        <div className="container mx-auto">
+          <div className="bg-gray-100 shadow border rounded border-gray-300 p-4 mt-2">
+            <div className="grid grid-cols-12 py-3">
+              <div className="col-span-3 flex flex-col">
+                <div className="">
+                  <input type="search" className="bg-gray-300 border-none py-2 px-4" placeholder="Arama Yapın" />
+                  <div>Kategoriler - Tarih</div>
+                </div>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+                {topics.length > 0 && renderTopics(topics)}
+              </div>
+              <div className="col-span-6">post</div>
+            </div>
+          </div>
         </div>
-      </main>
+      </div>
+    </Template>
+  );
+};
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
-  )
-}
+export default Home;

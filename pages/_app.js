@@ -1,7 +1,12 @@
-import '../styles/globals.css'
+import "../styles/globals.css";
+import makeStore from "./../store/store";
+import withRedux from "next-redux-wrapper";
+import App from "next/app";
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
-}
+let Page = ({ Component, pageProps }) => <Component {...pageProps} />;
 
-export default MyApp
+Page.getInitialProps = async (appContext) => ({ ...(await App.getInitialProps(appContext)) });
+
+Page = withRedux(makeStore)(Page);
+
+export default Page;
