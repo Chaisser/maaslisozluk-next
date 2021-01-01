@@ -1,18 +1,16 @@
-import moment from "moment";
-
-const Topic = ({ category, createdAt, title, counter, author }) => {
+import Link from "next/link";
+const Topic = ({ category, createdAt, title, counter, author, slug }) => {
   return (
-    <div className="flex flex-col my-4">
-      <div className="flex justify-between text-sm">
-        <div>{category}</div>
-        <div>{moment(createdAt).format("DD.MM.YYYY")}</div>
-      </div>
-      <div className="flex justify-between">
-        <div className="text-lg">{title}</div>
-        <div>{counter}</div>
-      </div>
-      <div className="text-xs text-gray-600">{author}</div>
-    </div>
+    <Link href={`/konu/${slug}`}>
+      <a className="flex flex-col py-2 border-b px-1">
+        <div className="flex justify-between items-baseline">
+          <div className="text-sm mr-2">{title}</div>
+          <span className="justify-center items-center">
+            <span className="bg-gray-100 text-xs p-1">{counter}</span>
+          </span>
+        </div>
+      </a>
+    </Link>
   );
 };
 

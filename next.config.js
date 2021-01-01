@@ -1,5 +1,5 @@
 module.exports = {
   env: {
-    API_URL: "http://localhost:4000",
+    API_URL: "http://943f79b2ca0c.ngrok.io",
   },
 };

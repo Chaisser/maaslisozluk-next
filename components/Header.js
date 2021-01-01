@@ -8,6 +8,7 @@ const Header = () => {
   const categories = useSelector((state) => state.categories.categories);
   const token = useSelector((state) => state.user.token);
   const user = useSelector((state) => state.user.user);
+
   if (categories.length === 0) {
     return <div>yükleniyor</div>;
   }
@@ -43,8 +44,16 @@ const Header = () => {
           <div className="col-span-3 flex justify-end items-center">
             {token ? (
               <div>
-                <Link href="/login">
-                  <a className="bg-brand-300">{user.username}</a>
+                <Link href="/yeni">
+                  <a>
+                    <span className="ml-4">yeni başlık</span>
+                  </a>
+                </Link>
+
+                <Link href={`/yazar/${user.username}`}>
+                  <a>
+                    <span className="ml-4">{user.username}</span>
+                  </a>
                 </Link>
 
                 <button

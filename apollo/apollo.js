@@ -1,20 +1,23 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 
 const getClient = (token) => {
+  let headers = undefined;
+  if (token) {
+    headers = {
+      authorization: `Bearer ${token}`,
+    };
+  }
   const cache = new InMemoryCache();
   const link = createHttpLink({
     uri: process.env.API_URL,
-    headers: {
-      deneme: `Bearer ${token}`,
-    },
+    headers,
   });
 
   const client = new ApolloClient({
-    // Provide required constructor fields
     cache: cache,
     link: link,
-    name: "react-web-doruk",
-    version: "1.3",
+    name: "interaktif-is",
+    version: "0.1",
     queryDeduplication: false,
     defaultOptions: {
       watchQuery: {

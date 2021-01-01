@@ -1,12 +1,5 @@
 import "../styles/globals.css";
-import makeStore from "./../store/store";
-import withRedux from "next-redux-wrapper";
-import App from "next/app";
+import { wrapper } from "../store/store";
 
-let Page = ({ Component, pageProps }) => <Component {...pageProps} />;
-
-Page.getInitialProps = async (appContext) => ({ ...(await App.getInitialProps(appContext)) });
-
-Page = withRedux(makeStore)(Page);
-
-export default Page;
+const MyApp = ({ Component, pageProps }) => <Component {...pageProps} />;
+export default wrapper.withRedux(MyApp);

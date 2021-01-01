@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import getClient from "./../../apollo/apollo";
 import { CHECKTOKEN, CREATEUSER, LOGINUSER } from "./../../gql/user/query";
 export const LOGIN_USER = "LOGIN_USER";
@@ -19,7 +18,10 @@ export const createUser = (username, email, city, password) => {
         },
       })
       .then((res) => {
-        dispatch({ type: LOGIN_USER, result: res.data.createUser });
+        if (res.data) {
+          return dispatch({ type: LOGIN_USER, result: res.data.createUser });
+        }
+        return dispatch({ type: LOGIN_ERROR, result: res.errors[0].message });
       });
   };
 };
