@@ -13,6 +13,7 @@
     "autoprefixer": "^10.1.0",
     "bbcode-parser": "^1.0.10",
     "bbcode-to-react": "^0.2.9",
+    "express": "^4.17.1",
     "graphql": "^15.4.0",
     "html-react-parser": "^1.0.0",
     "js-bbcode-parser": "^3.0.4",
