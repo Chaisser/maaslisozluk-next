@@ -28,4 +28,12 @@ const CREATEPOST = gql`
   }
 `;
 
-export { CREATETOPIC, CREATEPOST };
+const UPDATEPOST = gql`
+  mutation UpdatePost($description: String!, $id: ID!) {
+    updatePost(data: { description: $description }, id: $id) {
+      id
+    }
+  }
+`;
+
+export { CREATETOPIC, CREATEPOST, UPDATEPOST };

@@ -1,16 +1,9 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
 const PrivateRoute = (props) => {
-  const token = useSelector((state) => state.user.token);
+  // const token = useSelector((state) => state.user.token);
+  const token = props.token;
   const router = useRouter();
-
-  useEffect(() => {
-    if (!token) {
-      router.push("/");
-    }
-  }, []);
 
   return <div>{props.children}</div>;
 };

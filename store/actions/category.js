@@ -8,6 +8,7 @@ export const GET_TOPIC = "GET_TOPIC";
 export const CREATE_TOPIC = "CREATE_TOPIC";
 export const CREATE_POST = "CREATE_POST";
 export const SET_CATEGORY_REFRESH = "SET_CATEGORY_REFRESH";
+export const SET_CATEGORY = "SET_CATEGORY";
 
 export const getCategories = (first) => {
   return async (dispatch, getState) => {
@@ -44,6 +45,11 @@ export const getTopics = (category, limit, skip, refetch) => {
     getClient(getState().user.token)
       .query({
         query: GETTOPICS,
+        variables: {
+          category,
+          limit,
+          skip,
+        },
       })
       .then((res) => {
         dispatch({ type: GET_TOPICS, topics: res.data.topics });
@@ -52,7 +58,7 @@ export const getTopics = (category, limit, skip, refetch) => {
 };
 
 export const getTopic = (slug, limit, skip, refetch) => {
-  console.log(slug, "SLUG GELDİ");
+  console.log(getState().user.token);
   return async (dispatch, getState) => {
     getClient(getState().user.token)
       .query({

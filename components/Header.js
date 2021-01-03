@@ -39,7 +39,7 @@ const Header = () => {
               </Link>
             </div>
 
-            {renderCategories(categories)}
+            {renderCategories(categories.slice(0, 7))}
           </div>
           <div className="col-span-3 flex justify-end items-center">
             {token ? (

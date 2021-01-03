@@ -1,38 +1,18 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import Template from "./../Template";
-import Post from "./../../components/Post";
 import NewEntry from "./../../components/NewEntry";
 import Title from "./../../ui/Title";
 import Alert from "./../../ui/Alert";
 import Button from "./../../ui/Button";
-
+import { renderPosts, getTokenFromCookie } from "./../../utils/functions";
 import getClient from "./../../apollo/apollo";
 import { GETTOPIC } from "../../gql/topic/query";
 import { CREATEPOST } from "../../gql/topic/mutation";
-
 const Konu = ({ topic }) => {
   const [description, setDescription] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const user = useSelector((state) => state.user.token);
-  const renderPosts = (posts) => {
-    if (posts.length === 0) {
-      return <div className="mb-4">konu hakkında yazılan bir yazı yok.</div>;
-    }
-
-    return posts.map((post) => {
-      return (
-        <Post
-          key={post.id}
-          favorites={post.favorites}
-          likes={post.likes}
-          isLoggedIn={user}
-          description={post.description}
-          author={post.user.username}
-        />
-      );
-    });
-  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -68,10 +48,10 @@ const Konu = ({ topic }) => {
   }
   return (
     <Template>
-      <div className="col-span-9">
+      <div className="col-span-7">
         <div className="mt-4">
           <Title title={topic.title} count={topic.postsCount} />
-          <div id="posts">{renderPosts(topic.posts)}</div>
+          <div id="posts">{renderPosts(topic.posts, user)}</div>
           {user ? (
             <div>
               <Title title="eklemek istedikleriniz" />
@@ -92,16 +72,23 @@ const Konu = ({ topic }) => {
               </form>
             </div>
           ) : (
-            <div>cevap yazmak için üye olun</div>
+            <div></div>
           )}
         </div>
+      </div>
+
+      <div className="col-span-2">
+        price <br />
+        toplam kazançç
       </div>
     </Template>
   );
 };
 
 export async function getServerSideProps(context) {
-  const result = await getClient().query({
+  const token = getTokenFromCookie(context);
+
+  const result = await getClient(token).query({
     query: GETTOPIC,
     variables: {
       slug: context.params.slug,

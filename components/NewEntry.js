@@ -1,4 +1,9 @@
+import { useEffect } from "react";
+
 const NewEntry = ({ description, setDescription }) => {
+  useEffect(() => {
+    return () => setDescription("");
+  }, []);
   return (
     <div className="mb-4">
       <div className="flex justify-start mb-4 items-center">

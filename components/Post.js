@@ -1,77 +1,47 @@
 import { useState } from "react";
 import Link from "next/link";
-import reactStringReplace from "react-string-replace";
-
-import parse from "html-react-parser";
+import UseAnimations from "react-useanimations";
+import facebook from "react-useanimations/lib/facebook";
+import twitter from "react-useanimations/lib/twitter";
+import arrowUp from "react-useanimations/lib/arrowUpCircle";
+import arrowDown from "react-useanimations/lib/arrowDownCircle";
+import bookmark from "react-useanimations/lib/bookmark";
 import moment from "moment";
-
-import { BsBookmark } from "react-icons/bs";
-import { FaChevronDown, FaChevronUp, FaFacebookF, FaTwitter } from "react-icons/fa";
+import Title from "./../ui/Title";
 import { GrApps } from "react-icons/gr";
 import { BiBitcoin } from "react-icons/bi";
+import { FiEdit } from "react-icons/fi";
+import parser from "./../utils/bbParser";
 
-import Spoiler from "./../components/Spoiler";
-import PostLink from "./../components/PostLink";
-import PostRefer from "./../components/PostRefer";
-import PostSecret from "./../components/PostSecret";
-
-const Post = ({ description, author, createdAt, updatedAt, isLoggedIn, likes, favorites }) => {
+const Post = ({
+  id,
+  description,
+  author,
+  topic,
+  createdAt,
+  updatedAt,
+  isLoggedIn,
+  likes,
+  favorites,
+  isEditable = false,
+}) => {
   const [readMore, setReadMore] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState(false);
 
   let wordCount = description.split(" ").length;
-  const spoilerRegex = /\[spoiler\](.|\n)[^(\[]*\[\/spoiler\]/gm;
-  const spoilerExec = spoilerRegex.exec(description);
-
-  const linkRegex = /\[link\](.|\n)[^(\[]*\[\/link\]/gm;
-  const linkExec = linkRegex.exec(description);
-
-  const referRegex = /\[bkz\](.|\n)[^(\[]*\[\/bkz\]/gm;
-  const referExec = referRegex.exec(description);
-
-  const secretRegex = /\[gizli\](.|\n)[^(\[]*\[\/gizli\]/gm;
-  const secretExec = secretRegex.exec(description);
-
-  let z = description;
-
-  if (spoilerExec && spoilerExec.length > 0) {
-    z = reactStringReplace(z, spoilerExec[0], (match, i) => (
-      <Spoiler key={i + Math.random()} text={spoilerExec[0].replace("[spoiler] \n", "").replace("\n [/spoiler]", "")} />
-    ));
-  }
-
-  if (linkExec && linkExec.length > 0) {
-    z = reactStringReplace(z, linkExec[0], (match, i) => (
-      <PostLink key={i + Math.random()} text={linkExec[0].replace("[link] \n", "").replace("\n [/link]", "")} />
-    ));
-  }
-
-  if (referExec && referExec.length > 0) {
-    z = reactStringReplace(z, referExec[0], (match, i) => (
-      <PostRefer key={i + Math.random()} text={referExec[0].replace("[bkz] \n", "").replace("\n [/bkz]", "")} />
-    ));
-  }
-
-  if (secretExec && secretExec.length > 0) {
-    z = reactStringReplace(z, secretExec[0], (match, i) => (
-      <PostSecret key={i + Math.random()} text={secretExec[0].replace("[gizli] \n", "").replace("\n [/gizli]", "")} />
-    ));
-  }
 
   return (
     <div className="flex w-full">
       <div className=" text-gray-900 my-4 flex-grow border-b border-gray-300 pb-4 whitespace-pre-line text-base	">
+        {topic && <Title title={topic} />}
         {description && wordCount < 150 ? (
-          <div>{z}</div>
+          <div>
+            <div>{parser.toReact(description)}</div>
+          </div>
         ) : (
           <div>
-            {parse(
-              z
-                .split(" ")
-                .slice(0, !readMore ? 50 : wordCount)
-                .join(" ")
-            )}
-            <br />
-            <div className="cursor-pointer mt-4 underline" onClick={() => setReadMore(!readMore)}>
+            <div className={` ${!readMore && "h-36 overflow-hidden"}`}>{parser.toReact(description)}</div>
+            <div className="cursor-pointer mt-2 underline" onClick={() => setReadMore(!readMore)}>
               {!readMore ? "devamını oku" : "kısalt"}
             </div>
           </div>
@@ -81,25 +51,31 @@ const Post = ({ description, author, createdAt, updatedAt, isLoggedIn, likes, fa
           <div className="flex items-center">
             <div className="share flex mr-6">
               <span className="mr-2">
-                <FaFacebookF className="text-brand-400 hover:text-brand-300 cursor-pointer" />
+                <UseAnimations size={25} strokeColor="#1877f2" animation={facebook} />
               </span>
               <span>
-                <FaTwitter className="text-brand-400 hover:text-brand-300 cursor-pointer" />
+                <UseAnimations size={25} strokeColor="#1DA1F2" animation={twitter} />
               </span>
             </div>
 
             <div className="like flex mr-6">
               <span className="mr-2">
-                <FaChevronUp className="text-brand-400 hover:text-brand-300 cursor-pointer" />
+                <UseAnimations size={25} strokeColor="#56584A" animation={arrowUp} />
               </span>
               <span>
-                <FaChevronDown className="text-brand-400 hover:text-brand-300 cursor-pointer" />
+                <UseAnimations autoPlay={false} loop={false} size={25} strokeColor="#56584A" animation={arrowDown} />
               </span>
             </div>
             {isLoggedIn && (
               <div className="like flex mr-6 items-center">
-                <span className="mr-2">
-                  <BsBookmark className="text-brand-400 hover:text-brand-300 cursor-pointer" />
+                <span className="mr-2 text-3xl cursor-pointer">
+                  <UseAnimations
+                    reverse={isBookmarked}
+                    size={25}
+                    strokeColor={isBookmarked ? "red" : `#56584A`}
+                    animation={bookmark}
+                    onClick={() => setIsBookmarked(!isBookmarked)}
+                  />
                 </span>
               </div>
             )}
@@ -119,13 +95,20 @@ const Post = ({ description, author, createdAt, updatedAt, isLoggedIn, likes, fa
             <span className="mr-4">
               {createdAt === updatedAt
                 ? moment(createdAt).format("DD.MM.YYYY HH:mm")
-                : `${moment(createdAt).format("DD.MM.YYYY HH:mm")} (düzenlendi)`}
+                : `${moment(updatedAt).format("DD.MM.YYYY HH:mm")}*`}
             </span>
             <span className="mr-4">
               <Link href={`/yazar/${author}`}>
                 <a className="hover:text-brand-300 hover:underline">{author}</a>
-              </Link>{" "}
+              </Link>
             </span>
+            {isEditable && isLoggedIn && (
+              <Link href={`/duzenle/${id}`}>
+                <a className="mr-4 text-brand-500 hover:text-brand-400 cursor-pointer">
+                  <FiEdit />
+                </a>
+              </Link>
+            )}
             <span>
               <GrApps />
             </span>

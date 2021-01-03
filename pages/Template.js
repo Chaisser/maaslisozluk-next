@@ -4,7 +4,7 @@ import { getCategories, getTopics } from "./../store/actions/category";
 import { checkToken } from "./../store/actions/user";
 import Header from "./../components/Header";
 import Topic from "./../components/Topic";
-
+import Cookies from "js-cookie";
 const Template = ({ children, sidebarVisible = true }) => {
   const dispatch = useDispatch();
 
@@ -15,12 +15,15 @@ const Template = ({ children, sidebarVisible = true }) => {
     if (!token) {
       if (localStorage.getItem("token")) {
         dispatch(checkToken(localStorage.getItem("token")));
+        Cookies.set("token", localStorage.getItem("token"));
+      } else {
+        Cookies.remove("token");
       }
     }
   }, [token]);
 
   useEffect(() => {
-    dispatch(getCategories(7));
+    dispatch(getCategories());
     dispatch(getTopics());
   }, []);
 
@@ -38,7 +41,7 @@ const Template = ({ children, sidebarVisible = true }) => {
     <Fragment>
       <Header />
       <div className="container mx-auto mt-4">
-        <div className={sidebarVisible && "grid grid-cols-12 gap-12"}>
+        <div className={sidebarVisible ? "grid grid-cols-12 gap-12" : "block"}>
           {sidebarVisible && (
             <div className="col-span-3">
               {topics.length > 0 && renderTopics(topics)}

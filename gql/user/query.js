@@ -1,5 +1,34 @@
 import { gql } from "@apollo/client";
 
+const GETAUTHOR = gql`
+  query Author($username: String!) {
+    author(username: $username) {
+      id
+      username
+      postsCount
+      topicsCount
+      posts {
+        id
+        description
+        user {
+          id
+          username
+        }
+        topic {
+          id
+          title
+        }
+        likes {
+          id
+        }
+        favorites {
+          id
+        }
+      }
+    }
+  }
+`;
+
 const CHECKTOKEN = gql`
   query CheckToken($token: String!) {
     checkToken(token: $token) {
@@ -33,4 +62,4 @@ const LOGINUSER = gql`
   }
 `;
 
-export { CHECKTOKEN, CREATEUSER, LOGINUSER };
+export { CHECKTOKEN, CREATEUSER, LOGINUSER, GETAUTHOR };
