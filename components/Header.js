@@ -1,5 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "./../store/actions/user";
+import { getTopics } from "./../store/actions/category";
+
 import Link from "next/link";
 
 const Header = () => {
@@ -20,7 +22,7 @@ const Header = () => {
     return categories.map((category) => {
       return (
         <div key={category.id}>
-          <button>{category.title}</button>
+          <button onClick={() => dispatch(getTopics(category.slug, "", "", true))}>{category.title}</button>
         </div>
       );
     });
@@ -34,9 +36,7 @@ const Header = () => {
           </div>
           <div className="col-span-6 items-center flex justify-between">
             <div>
-              <Link href="/">
-                <a className="hover:text-gray-500">anasayfa</a>
-              </Link>
+              <button onClick={() => dispatch(getTopics(null, "", "", true))}>en yeniler</button>
             </div>
 
             {renderCategories(categories.slice(0, 7))}

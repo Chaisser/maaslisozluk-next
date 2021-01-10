@@ -1,17 +1,19 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import Link from "next/link";
 import UseAnimations from "react-useanimations";
 import facebook from "react-useanimations/lib/facebook";
 import twitter from "react-useanimations/lib/twitter";
-import arrowUp from "react-useanimations/lib/arrowUpCircle";
-import arrowDown from "react-useanimations/lib/arrowDownCircle";
-import bookmark from "react-useanimations/lib/bookmark";
+
 import moment from "moment";
 import Title from "./../ui/Title";
 import { GrApps } from "react-icons/gr";
 import { BiBitcoin } from "react-icons/bi";
 import { FiEdit } from "react-icons/fi";
 import parser from "./../utils/bbParser";
+
+import Favorite from "./post/Favorite";
+import Like from "./post/Like";
 
 const Post = ({
   id,
@@ -21,18 +23,22 @@ const Post = ({
   createdAt,
   updatedAt,
   isLoggedIn,
-  likes,
+  likesCount,
   favorites,
   isEditable = false,
 }) => {
   const [readMore, setReadMore] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [favLength, setFavLength] = useState(favorites.length);
+  const [likesLength, setLikesLength] = useState(likesCount);
+
+  const token = useSelector((state) => state.user.token);
 
   let wordCount = description.split(" ").length;
 
   return (
     <div className="flex w-full">
-      <div className=" text-gray-900 my-4 flex-grow border-b border-gray-300 pb-4 whitespace-pre-line text-base	">
+      <div className=" text-gray-900 my-4 flex-grow border-b border-gray-300 pb-4 whitespace-pre-line text-base	break-all">
         {topic && <Title title={topic} />}
         {description && wordCount < 150 ? (
           <div>
@@ -58,40 +64,22 @@ const Post = ({
               </span>
             </div>
 
-            <div className="like flex mr-6">
-              <span className="mr-2">
-                <UseAnimations size={25} strokeColor="#56584A" animation={arrowUp} />
-              </span>
-              <span>
-                <UseAnimations autoPlay={false} loop={false} size={25} strokeColor="#56584A" animation={arrowDown} />
-              </span>
-            </div>
-            {isLoggedIn && (
-              <div className="like flex mr-6 items-center">
-                <span className="mr-2 text-3xl cursor-pointer">
-                  <UseAnimations
-                    reverse={isBookmarked}
-                    size={25}
-                    strokeColor={isBookmarked ? "red" : `#56584A`}
-                    animation={bookmark}
-                    onClick={() => setIsBookmarked(!isBookmarked)}
-                  />
-                </span>
-              </div>
-            )}
+            {token && <Like id={id} token={token} setLikesLength={setLikesLength} />}
+            {token && <Favorite id={id} token={token} setFavLength={setFavLength} favLength={favLength} />}
           </div>
           <div className="text-sm flex justify-end items-center">
             <span className="mr-4 flex items-center">
-              <span className="text-brand-400">{likes.length} beğeni </span>
+              <span className="text-brand-400">{likesLength} beğeni </span>
             </span>
+
             <span className="mr-4 flex items-center">
-              <span className="text-brand-400">{favorites.length} fav </span>
+              <span className="text-brand-400">{favLength} favori </span>
             </span>
 
             <span className="mr-4 flex items-center">
               <span className="text-brand-400">0.00000012</span> <BiBitcoin />
             </span>
-            <span className="mr-4">{wordCount} kelime</span>
+
             <span className="mr-4">
               {createdAt === updatedAt
                 ? moment(createdAt).format("DD.MM.YYYY HH:mm")

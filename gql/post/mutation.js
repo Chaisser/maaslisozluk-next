@@ -36,4 +36,21 @@ const UPDATEPOST = gql`
   }
 `;
 
-export { CREATETOPIC, CREATEPOST, UPDATEPOST };
+const LIKEPOST = gql`
+  mutation LikePost($id: ID!, $likeType: LikeType) {
+    likePost(id: $id, likeType: $likeType) {
+      id
+      likesCount
+    }
+  }
+`;
+
+const FAVORITEPOST = gql`
+  mutation FavoritePost($id: ID!) {
+    favoritePost(id: $id) {
+      result
+    }
+  }
+`;
+
+export { CREATETOPIC, CREATEPOST, UPDATEPOST, FAVORITEPOST, LIKEPOST };

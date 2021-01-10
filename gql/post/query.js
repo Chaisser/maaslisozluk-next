@@ -14,4 +14,12 @@ const GETPOST = gql`
   }
 `;
 
-export { GETPOST };
+const CHECKFAVORITE = gql`
+  query Post($id: ID!) {
+    checkFavorite(id: $id) {
+      result
+    }
+  }
+`;
+
+export { GETPOST, CHECKFAVORITE };

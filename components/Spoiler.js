@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 const Spoiler = ({ text }) => {
-  console.log(text, "aaa burada spoiler");
   const [showSpoiler, setShowSpoiler] = useState(false);
   return (
     <div className="outline-none">

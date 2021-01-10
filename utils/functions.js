@@ -6,13 +6,13 @@ export const renderPosts = (posts, user) => {
   }
 
   return posts.map((post) => {
-    console.log(post);
+    console.log(post, "POST");
     return (
       <Post
         id={post.id}
         key={post.id}
         favorites={post.favorites}
-        likes={post.likes}
+        likesCount={post.likesCount}
         isLoggedIn={user}
         description={post.description}
         author={post.user ? post.user.username : null}
@@ -26,6 +26,7 @@ export const renderPosts = (posts, user) => {
 };
 
 export const getTokenFromCookie = (context) => {
+  console.log(context.req, "CONTEXT FOR COOKIE DEBUG");
   const getCookies = context.req ? { cookie: context.req.headers.cookie } : undefined;
   const cookies = getCookies.cookie;
   let token = null;

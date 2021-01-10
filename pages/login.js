@@ -35,10 +35,6 @@ const Login = () => {
       return setErrorMessage("lütfen geçerli bir e-posta adresi girin");
     }
 
-    if (password.length > 12) {
-      return setErrorMessage("şifreniz 12 haneden büyük olamaz");
-    }
-
     if (password.length < 6) {
       return setErrorMessage("şifreniz 8 haneden büyük olmalıdır");
     }

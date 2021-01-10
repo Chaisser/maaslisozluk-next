@@ -16,8 +16,8 @@ const GETAUTHORTOPICS = gql`
 `;
 
 const GETTOPICS = gql`
-  query {
-    topics {
+  query Topics($category: String) {
+    topics(category: $category) {
       id
       title
       slug
@@ -45,12 +45,10 @@ const GETTOPIC = gql`
         isEditable
         createdAt
         updatedAt
+        likesCount
         user {
           id
           username
-        }
-        likes {
-          id
         }
         favorites {
           id
