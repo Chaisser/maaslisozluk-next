@@ -1,9 +1,24 @@
 import getClient from "./../../apollo/apollo";
-import { CHECKTOKEN, CREATEUSER, LOGINUSER } from "./../../gql/user/query";
+import { CHECKTOKEN, CREATEUSER, LOGINUSER, GETUSERBUDGET } from "./../../gql/user/query";
 export const LOGIN_USER = "LOGIN_USER";
 export const LOGIN_ERROR = "LOGIN_ERROR";
 export const LOGOUT = "LOGOUT";
 export const LOGINCHECK = "LOGINCHECK";
+export const GETBUDGET = "GETBUDGET";
+
+export const getBudget = () => {
+  return async (dispatch, getState) => {
+    getClient(getState().user.token)
+      .query({
+        query: GETUSERBUDGET,
+      })
+      .then((res) => {
+        const result = res.data.getBudget.result;
+        return dispatch({ type: GETBUDGET, result });
+      })
+      .catch((err) => console.log(err));
+  };
+};
 
 export const createUser = (username, email, city, password) => {
   return async (dispatch, getState) => {
@@ -69,6 +84,5 @@ export const checkToken = (token) => {
 };
 
 export const logoutUser = () => {
-  console.log("buna?");
   return { type: LOGOUT };
 };

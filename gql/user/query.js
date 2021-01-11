@@ -1,5 +1,13 @@
 import { gql } from "@apollo/client";
 
+const GETUSERBUDGET = gql`
+  query {
+    getBudget {
+      result
+    }
+  }
+`;
+
 const GETAUTHOR = gql`
   query Author($username: String!) {
     author(username: $username) {
@@ -7,6 +15,7 @@ const GETAUTHOR = gql`
       username
       postsCount
       topicsCount
+      budget
       posts {
         id
         description
@@ -34,6 +43,7 @@ const CHECKTOKEN = gql`
     checkToken(token: $token) {
       id
       username
+      budget
     }
   }
 `;
@@ -56,10 +66,11 @@ const LOGINUSER = gql`
       user {
         id
         username
+        budget
       }
       token
     }
   }
 `;
 
-export { CHECKTOKEN, CREATEUSER, LOGINUSER, GETAUTHOR };
+export { CHECKTOKEN, CREATEUSER, LOGINUSER, GETAUTHOR, GETUSERBUDGET };

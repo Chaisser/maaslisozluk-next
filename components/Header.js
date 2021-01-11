@@ -1,7 +1,8 @@
 import { useSelector, useDispatch } from "react-redux";
-import { logoutUser } from "./../store/actions/user";
+import { logoutUser, getBudget } from "./../store/actions/user";
 import { getTopics } from "./../store/actions/category";
-
+import { IoIosLogOut } from "react-icons/io";
+import { IoPersonSharp, IoAddSharp, IoRefreshSharp } from "react-icons/io5";
 import Link from "next/link";
 
 const Header = () => {
@@ -10,7 +11,7 @@ const Header = () => {
   const categories = useSelector((state) => state.categories.categories);
   const token = useSelector((state) => state.user.token);
   const user = useSelector((state) => state.user.user);
-
+  const budget = useSelector((state) => state.user.budget);
   if (categories.length === 0) {
     return <div>yükleniyor</div>;
   }
@@ -43,27 +44,40 @@ const Header = () => {
           </div>
           <div className="col-span-3 flex justify-end items-center">
             {token ? (
-              <div>
-                <Link href="/yeni">
-                  <a>
-                    <span className="ml-4">yeni başlık</span>
-                  </a>
-                </Link>
+              <div className="flex items-center">
+                <div className="flex items-center mx-2 outline-none">
+                  <button onClick={() => dispatch(getBudget())} className="focus:outline-none">
+                    <span className="flex items-center outline-none">
+                      <IoRefreshSharp className="mr-1" /> {(budget / 100000000).toFixed(8)}
+                    </span>
+                  </button>
+                </div>
 
-                <Link href={`/yazar/${user.username}`}>
-                  <a>
-                    <span className="ml-4">{user.username}</span>
-                  </a>
-                </Link>
+                <div className="flex items-center mx-2">
+                  <Link href="/yeni">
+                    <a>
+                      <IoAddSharp className="text-xl" />
+                    </a>
+                  </Link>
+                </div>
+                <div className="flex items-center mx-2">
+                  <Link href={`/yazar/${user.username}`}>
+                    <a title={user.username}>
+                      <IoPersonSharp className="text-xl" />
+                    </a>
+                  </Link>
+                </div>
 
-                <button
-                  onClick={() => {
-                    localStorage.removeItem("token");
-                    dispatch(logoutUser());
-                  }}
-                >
-                  <span className="ml-4">çıkış yap</span>
-                </button>
+                <div className="flex items-center mx-2">
+                  <button
+                    onClick={() => {
+                      localStorage.removeItem("token");
+                      dispatch(logoutUser());
+                    }}
+                  >
+                    <IoIosLogOut className="text-xl" />
+                  </button>
+                </div>
               </div>
             ) : (
               <div>
