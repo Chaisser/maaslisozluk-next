@@ -46,6 +46,7 @@ const GETTOPIC = gql`
         createdAt
         updatedAt
         likesCount
+        totalEarnings
         user {
           id
           username

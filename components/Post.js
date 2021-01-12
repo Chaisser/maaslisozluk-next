@@ -24,6 +24,7 @@ const Post = ({
   updatedAt,
   isLoggedIn,
   likesCount,
+  totalEarnings,
   favorites,
   isEditable = false,
 }) => {
@@ -77,7 +78,7 @@ const Post = ({
             </span>
 
             <span className="mr-4 flex items-center">
-              <span className="text-brand-400">0.00000012</span> <BiBitcoin />
+              <span className="text-brand-400">{(totalEarnings / 100000000).toFixed(8)}</span> <BiBitcoin />
             </span>
 
             <span className="mr-4">

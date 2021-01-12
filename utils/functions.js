@@ -11,6 +11,7 @@ export const renderPosts = (posts, user) => {
       <Post
         id={post.id}
         key={post.id}
+        totalEarnings={post.totalEarnings}
         favorites={post.favorites}
         likesCount={post.likesCount}
         isLoggedIn={user}
