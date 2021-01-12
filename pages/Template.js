@@ -54,7 +54,6 @@ const Template = ({ children, sidebarVisible = true }) => {
               </div>
             </div>
           )}
-
           {children}
         </div>
       </div>

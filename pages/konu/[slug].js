@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Head from "next/head";
 import { useSelector } from "react-redux";
 import Template from "./../Template";
 import NewEntry from "./../../components/NewEntry";
@@ -48,10 +49,18 @@ const Konu = ({ topic }) => {
   }
   return (
     <Template>
+      <Head>
+        <title>{topic.title} | Maaşlı Sözlük</title>
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content="@maaslisozluk" />
+        <meta property="og:url" content="https://maaslisozluk.com/" />
+        <meta property="og:title" content={`Maaşlı Sözlük`} />
+        <meta property="og:description" content={`${topic.title} konusunda yazılanlar `} />
+      </Head>
       <div className="col-span-7">
         <div className="mt-4">
           <Title title={topic.title} count={topic.postsCount} />
-          <div id="posts">{renderPosts(topic.posts, user)}</div>
+          <div id="posts">{renderPosts(topic.posts, user, topic.title, false)}</div>
           {user ? (
             <div>
               <Title title="eklemek istedikleriniz" />

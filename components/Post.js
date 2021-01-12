@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
+
 import { useSelector } from "react-redux";
 import Link from "next/link";
 import UseAnimations from "react-useanimations";
 import facebook from "react-useanimations/lib/facebook";
 import twitter from "react-useanimations/lib/twitter";
-
 import moment from "moment";
 import Title from "./../ui/Title";
 import { GrApps } from "react-icons/gr";
@@ -23,6 +23,7 @@ const Post = ({
   createdAt,
   updatedAt,
   isLoggedIn,
+  showTopic,
   likesCount,
   totalEarnings,
   favorites,
@@ -36,75 +37,82 @@ const Post = ({
   const token = useSelector((state) => state.user.token);
 
   let wordCount = description.split(" ").length;
-
+  const twitterShareLink = encodeURI(
+    `https://twitter.com/intent/tweet?text=${topic} https://test.maaslisozluk.com/bitcoin&related=maaslisozluk,interaktifis`
+  );
   return (
-    <div className="flex w-full">
-      <div className=" text-gray-900 my-4 flex-grow border-b border-gray-300 pb-4 whitespace-pre-line text-base	break-all">
-        {topic && <Title title={topic} />}
-        {description && wordCount < 150 ? (
-          <div>
-            <div>{parser.toReact(description)}</div>
-          </div>
-        ) : (
-          <div>
-            <div className={` ${!readMore && "h-36 overflow-hidden"}`}>{parser.toReact(description)}</div>
-            <div className="cursor-pointer mt-2 underline" onClick={() => setReadMore(!readMore)}>
-              {!readMore ? "devamını oku" : "kısalt"}
+    <Fragment>
+      <div className="flex w-full">
+        <div className=" text-gray-900 my-4 flex-grow border-b border-gray-300 pb-4 whitespace-pre-line text-base	break-all">
+          {showTopic && <Title title={topic} />}
+          {description && wordCount < 150 ? (
+            <div>
+              <div>{parser.toReact(description)}</div>
             </div>
-          </div>
-        )}
+          ) : (
+            <div>
+              <div className={` ${!readMore && "h-36 overflow-hidden"}`}>{parser.toReact(description)}</div>
+              <div className="cursor-pointer mt-2 underline" onClick={() => setReadMore(!readMore)}>
+                {!readMore ? "devamını oku" : "kısalt"}
+              </div>
+            </div>
+          )}
 
-        <div className="meta flex justify-between mt-4">
-          <div className="flex items-center">
-            <div className="share flex mr-6">
-              <span className="mr-2">
-                <UseAnimations size={25} strokeColor="#1877f2" animation={facebook} />
+          <div className="meta flex justify-between mt-4">
+            <div className="flex items-center">
+              <div className="share flex mr-6">
+                <span className="mr-2">
+                  <UseAnimations size={25} strokeColor="#1877f2" animation={facebook} />
+                </span>
+                <span>
+                  <a target="_blank" rel="nofollow" href={twitterShareLink}>
+                    Deneme
+                  </a>
+                  <UseAnimations size={25} strokeColor="#1DA1F2" animation={twitter} />
+                </span>
+              </div>
+
+              {token && <Like id={id} token={token} setLikesLength={setLikesLength} />}
+              {token && <Favorite id={id} token={token} setFavLength={setFavLength} favLength={favLength} />}
+            </div>
+            <div className="text-sm flex justify-end items-center">
+              <span className="mr-4 flex items-center">
+                <span className="text-brand-400">{likesLength} beğeni </span>
               </span>
+
+              <span className="mr-4 flex items-center">
+                <span className="text-brand-400">{favLength} favori </span>
+              </span>
+
+              <span className="mr-4 flex items-center">
+                <span className="text-brand-400">{(totalEarnings / 100000000).toFixed(8)}</span> <BiBitcoin />
+              </span>
+
+              <span className="mr-4">
+                {createdAt === updatedAt
+                  ? moment(createdAt).format("DD.MM.YYYY HH:mm")
+                  : `${moment(updatedAt).format("DD.MM.YYYY HH:mm")}*`}
+              </span>
+              <span className="mr-4">
+                <Link href={`/yazar/${author}`}>
+                  <a className="hover:text-brand-300 hover:underline">{author}</a>
+                </Link>
+              </span>
+              {isEditable && isLoggedIn && (
+                <Link href={`/duzenle/${id}`}>
+                  <a className="mr-4 text-brand-500 hover:text-brand-400 cursor-pointer">
+                    <FiEdit />
+                  </a>
+                </Link>
+              )}
               <span>
-                <UseAnimations size={25} strokeColor="#1DA1F2" animation={twitter} />
+                <GrApps />
               </span>
             </div>
-
-            {token && <Like id={id} token={token} setLikesLength={setLikesLength} />}
-            {token && <Favorite id={id} token={token} setFavLength={setFavLength} favLength={favLength} />}
-          </div>
-          <div className="text-sm flex justify-end items-center">
-            <span className="mr-4 flex items-center">
-              <span className="text-brand-400">{likesLength} beğeni </span>
-            </span>
-
-            <span className="mr-4 flex items-center">
-              <span className="text-brand-400">{favLength} favori </span>
-            </span>
-
-            <span className="mr-4 flex items-center">
-              <span className="text-brand-400">{(totalEarnings / 100000000).toFixed(8)}</span> <BiBitcoin />
-            </span>
-
-            <span className="mr-4">
-              {createdAt === updatedAt
-                ? moment(createdAt).format("DD.MM.YYYY HH:mm")
-                : `${moment(updatedAt).format("DD.MM.YYYY HH:mm")}*`}
-            </span>
-            <span className="mr-4">
-              <Link href={`/yazar/${author}`}>
-                <a className="hover:text-brand-300 hover:underline">{author}</a>
-              </Link>
-            </span>
-            {isEditable && isLoggedIn && (
-              <Link href={`/duzenle/${id}`}>
-                <a className="mr-4 text-brand-500 hover:text-brand-400 cursor-pointer">
-                  <FiEdit />
-                </a>
-              </Link>
-            )}
-            <span>
-              <GrApps />
-            </span>
           </div>
         </div>
       </div>
-    </div>
+    </Fragment>
   );
 };
 export default Post;

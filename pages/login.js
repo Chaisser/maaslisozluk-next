@@ -36,7 +36,7 @@ const Login = () => {
     }
 
     if (password.length < 6) {
-      return setErrorMessage("şifreniz 8 haneden büyük olmalıdır");
+      return setErrorMessage("şifreniz 6 haneden büyük olmalıdır");
     }
     setButtonDisabled(true);
     dispatch(loginUser(email, password));

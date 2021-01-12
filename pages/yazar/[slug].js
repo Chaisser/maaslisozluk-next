@@ -1,9 +1,11 @@
 import getClient from "./../../apollo/apollo";
 import Template from "./../Template";
+import { useSelector } from "react-redux";
 import Title from "./../../ui/Title";
 import { renderPosts } from "./../../utils/functions";
 import { GETAUTHOR } from "./../../gql/user/query";
 const Author = (props) => {
+  const user = useSelector((state) => state.user.token);
   if (props.authorError) {
     return (
       <Template>
@@ -20,7 +22,7 @@ const Author = (props) => {
         <div className="text-brand-400 text-sm">
           {props.author.topicsCount} konu <span className="text-brand-300">|</span> yazı {props.author.postsCount} yazı
         </div>
-        {renderPosts(props.author.posts)}
+        {renderPosts(props.author.posts, user, null, true)}
       </div>
     </Template>
   );

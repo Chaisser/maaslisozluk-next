@@ -1,12 +1,11 @@
 import Post from "./../components/Post";
 
-export const renderPosts = (posts, user) => {
+export const renderPosts = (posts, user, topic, showTopic) => {
   if (posts.length === 0) {
     return <div className="mb-4">konu hakkında yazılan bir yazı yok.</div>;
   }
 
   return posts.map((post) => {
-    console.log(post, "POST");
     return (
       <Post
         id={post.id}
@@ -17,7 +16,8 @@ export const renderPosts = (posts, user) => {
         isLoggedIn={user}
         description={post.description}
         author={post.user ? post.user.username : null}
-        topic={post.topic ? post.topic.title : null}
+        topic={topic ? topic : post.topic ? post.topic.title : null}
+        showTopic={showTopic}
         isEditable={post.isEditable}
         createdAt={post.createdAt}
         updatedAt={post.updatedAt}
