@@ -12,12 +12,14 @@ const Register = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [username, setUsername] = useState("");
   const [city, setCity] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
     setErrorMessage("");
 
     if (username.length < 4) {
@@ -36,15 +38,11 @@ const Register = () => {
       return setErrorMessage("lütfen geçerli bir e-posta adresi girin");
     }
 
-    if (password.length > 12) {
-      return setErrorMessage("şifreniz 12 haneden büyük olamaz");
-    }
-
-    if (password.length < 8) {
+    if (password.length < 6) {
       return setErrorMessage("şifreniz 8 haneden büyük olmalıdır");
     }
 
-    dispatch(createUser(username, email, city, password));
+    dispatch(createUser(username, email, city, phoneNumber, password));
   };
   return (
     <Template sidebarVisible={false}>
@@ -71,6 +69,15 @@ const Register = () => {
               placeholder="e-posta*"
               onChange={(e) => setEmail(e.target.value.toLowerCase().trim())}
               value={email}
+            />
+          </div>
+          <div className="mb-4">
+            <input
+              className="bg-gray-200 text-gray-800 py-2 px-3 rounded-md w-full md:w-1/4 outline-none text-center"
+              type="text"
+              placeholder="telefon"
+              onChange={(e) => setPhoneNumber(e.target.value.toLowerCase().trim())}
+              value={city}
             />
           </div>
           <div className="mb-4">

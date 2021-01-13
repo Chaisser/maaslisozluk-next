@@ -38,12 +38,16 @@ const Post = ({
 
   let wordCount = description.split(" ").length;
   const twitterShareLink = encodeURI(
-    `https://twitter.com/intent/tweet?text=${topic} https://test.maaslisozluk.com/bitcoin&related=maaslisozluk,interaktifis`
+    `https://twitter.com/intent/tweet?text=${topic}+https://test.maaslisozluk.com/konu/${topic}&related=maaslisozluk,interaktifis`
   );
+  const facebookShareLink = encodeURI(`https://facebook.com/sharer.php?u=https://test.maaslisozluk.com/konu/${topic}`);
   return (
     <Fragment>
       <div className="flex w-full">
-        <div className=" text-gray-900 my-4 flex-grow border-b border-gray-300 pb-4 whitespace-pre-line text-base	break-all">
+        <div
+          className=" text-gray-900 my-4 flex-grow border-b border-gray-300 pb-4 whitespace-pre-line text-base"
+          style={{ wordBreak: "break-word" }}
+        >
           {showTopic && <Title title={topic} />}
           {description && wordCount < 150 ? (
             <div>
@@ -62,13 +66,14 @@ const Post = ({
             <div className="flex items-center">
               <div className="share flex mr-6">
                 <span className="mr-2">
-                  <UseAnimations size={25} strokeColor="#1877f2" animation={facebook} />
+                  <a target="_blank" rel="noreferrer" href={facebookShareLink}>
+                    <UseAnimations size={25} strokeColor="#1877f2" animation={facebook} />
+                  </a>
                 </span>
                 <span>
-                  <a target="_blank" rel="nofollow" href={twitterShareLink}>
-                    Deneme
+                  <a target="_blank" rel="noreferrer" href={twitterShareLink}>
+                    <UseAnimations size={25} strokeColor="#1DA1F2" animation={twitter} />
                   </a>
-                  <UseAnimations size={25} strokeColor="#1DA1F2" animation={twitter} />
                 </span>
               </div>
 

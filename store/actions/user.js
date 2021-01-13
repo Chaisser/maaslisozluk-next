@@ -20,7 +20,7 @@ export const getBudget = () => {
   };
 };
 
-export const createUser = (username, email, city, password) => {
+export const createUser = (username, email, city, phoneNumber, password) => {
   return async (dispatch, getState) => {
     getClient()
       .mutate({
@@ -28,6 +28,7 @@ export const createUser = (username, email, city, password) => {
         variables: {
           username,
           email,
+          phoneNumber,
           city,
           password,
         },

@@ -46,11 +46,12 @@ const Header = () => {
             {token ? (
               <div className="flex items-center">
                 <div className="flex items-center mx-2 outline-none">
-                  <button onClick={() => dispatch(getBudget())} className="focus:outline-none">
-                    <span className="flex items-center outline-none">
-                      <IoRefreshSharp className="mr-1" /> {(budget / 100000000).toFixed(8)}
-                    </span>
-                  </button>
+                  <span className="flex items-center outline-none">
+                    <button onClick={() => dispatch(getBudget())} className="focus:outline-none">
+                      <IoRefreshSharp className="mr-1" />
+                    </button>
+                    <Link href={"/bakiye"}>{(budget / 100000000).toFixed(8)}</Link>
+                  </span>
                 </div>
 
                 <div className="flex items-center mx-2">

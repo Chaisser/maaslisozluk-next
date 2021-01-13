@@ -8,6 +8,20 @@ const GETUSERBUDGET = gql`
   }
 `;
 
+const GETUSERTRANSACTIONS = gql`
+  query {
+    getTransactions {
+      id
+      amount
+      budgetType
+      createdAt
+      topic {
+        id
+        title
+      }
+    }
+  }
+`;
 const GETAUTHOR = gql`
   query Author($username: String!) {
     author(username: $username) {
@@ -49,8 +63,10 @@ const CHECKTOKEN = gql`
 `;
 
 const CREATEUSER = gql`
-  mutation CreateUser($username: String!, $email: String!, $city: String, $password: String!) {
-    createUser(data: { username: $username, email: $email, city: $city, password: $password }) {
+  mutation CreateUser($username: String!, $email: String!, $city: String, $phoneNumber: String, $password: String!) {
+    createUser(
+      data: { username: $username, email: $email, city: $city, phoneNumber: $phoneNumber, password: $password }
+    ) {
       user {
         id
         username
@@ -73,4 +89,4 @@ const LOGINUSER = gql`
   }
 `;
 
-export { CHECKTOKEN, CREATEUSER, LOGINUSER, GETAUTHOR, GETUSERBUDGET };
+export { CHECKTOKEN, CREATEUSER, LOGINUSER, GETAUTHOR, GETUSERBUDGET, GETUSERTRANSACTIONS };
