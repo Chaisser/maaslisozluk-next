@@ -8,6 +8,21 @@ const GETUSERBUDGET = gql`
   }
 `;
 
+const GETME = gql`
+  query {
+    me {
+      id
+      username
+      email
+      city
+      phoneNumber
+      phoneNumberActivation
+      emailActivation
+      twoFactorActivation
+    }
+  }
+`;
+
 const GETUSERTRANSACTIONS = gql`
   query {
     getTransactions {
@@ -89,4 +104,4 @@ const LOGINUSER = gql`
   }
 `;
 
-export { CHECKTOKEN, CREATEUSER, LOGINUSER, GETAUTHOR, GETUSERBUDGET, GETUSERTRANSACTIONS };
+export { CHECKTOKEN, CREATEUSER, LOGINUSER, GETAUTHOR, GETUSERBUDGET, GETUSERTRANSACTIONS, GETME };

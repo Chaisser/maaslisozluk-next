@@ -1,6 +1,7 @@
 import { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategories, getTopics } from "./../store/actions/category";
+import { getCurrency } from "./../store/actions/currency";
 import { checkToken } from "./../store/actions/user";
 import Header from "./../components/Header";
 import Topic from "./../components/Topic";
@@ -25,6 +26,7 @@ const Template = ({ children, sidebarVisible = true }) => {
   useEffect(() => {
     dispatch(getCategories());
     dispatch(getTopics());
+    dispatch(getCurrency());
   }, []);
 
   const renderTopics = (topics) => {

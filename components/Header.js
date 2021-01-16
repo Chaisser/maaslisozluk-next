@@ -61,8 +61,9 @@ const Header = () => {
                     </a>
                   </Link>
                 </div>
+
                 <div className="flex items-center mx-2">
-                  <Link href={`/yazar/${user.username}`}>
+                  <Link href={`/profil`}>
                     <a title={user.username}>
                       <IoPersonSharp className="text-xl" />
                     </a>

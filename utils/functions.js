@@ -27,7 +27,7 @@ export const renderPosts = (posts, user, topic, showTopic) => {
 };
 
 export const getTokenFromCookie = (context) => {
-  console.log(context.req, "CONTEXT FOR COOKIE DEBUG");
+  // console.log(context.req, "CONTEXT FOR COOKIE DEBUG");
   const getCookies = context.req ? { cookie: context.req.headers.cookie } : undefined;
   const cookies = getCookies.cookie;
   let token = null;

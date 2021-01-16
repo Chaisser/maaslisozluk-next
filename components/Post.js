@@ -36,6 +36,7 @@ const Post = ({
 
   const token = useSelector((state) => state.user.token);
 
+  //[TO-DO: Harf sayısı kontrolü ve kelime bitişi kontrolü yap!]
   let wordCount = description.split(" ").length;
   const twitterShareLink = encodeURI(
     `https://twitter.com/intent/tweet?text=${topic}+https://test.maaslisozluk.com/konu/${topic}&related=maaslisozluk,interaktifis`

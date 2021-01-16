@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Head from "next/head";
 import { useSelector } from "react-redux";
+import moment from "moment";
 import Template from "./../Template";
 import NewEntry from "./../../components/NewEntry";
 import Title from "./../../ui/Title";
@@ -10,10 +11,13 @@ import { renderPosts, getTokenFromCookie } from "./../../utils/functions";
 import getClient from "./../../apollo/apollo";
 import { GETTOPIC } from "../../gql/topic/query";
 import { CREATEPOST } from "../../gql/topic/mutation";
+import "moment/locale/tr";
+moment.locale("tr");
 const Konu = ({ topic }) => {
   const [description, setDescription] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const user = useSelector((state) => state.user.token);
+  const currency = useSelector((state) => state.currencies.currency);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -89,7 +93,30 @@ const Konu = ({ topic }) => {
       </div>
 
       <div className="col-span-2">
-        price <br />
+        <table className="table-auto">
+          <thead>
+            <tr>
+              <th className="px-2 py-1 text-center bg-gray-300">TRY</th>
+              <th className="px-2 py-1 text-center bg-gray-300">USD</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className="px-2 py-1 text-center border-b border-gray-300">
+                {currency.turkishLira && currency.turkishLira.toFixed(2)}
+              </td>
+
+              <td className="px-2 py-1 text-center border-b border-gray-300">
+                {currency.usDollar && currency.usDollar.toFixed(2)}
+              </td>
+            </tr>
+            <tr>
+              <td colSpan="2" className="px-2 py-1 text-center text-xs border-b border-gray-300 mb-4">
+                Son güncelleme: {currency && moment(currency.createdAt).format("DD MMM YYYYY HH:mm")}
+              </td>
+            </tr>
+          </tbody>
+        </table>
         toplam kazançç
       </div>
     </Template>
