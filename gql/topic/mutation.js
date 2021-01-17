@@ -10,8 +10,8 @@ const CREATETOPIC = gql`
 `;
 
 const CREATEPOST = gql`
-  mutation CreatePost($description: String!, $topic: String!) {
-    createPost(data: { description: $description }, topic: $topic) {
+  mutation CreatePost($description: String!, $topic: String!, $status: PostStatusType) {
+    createPost(data: { description: $description, status: $status }, topic: $topic) {
       id
       description
       user {

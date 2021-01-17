@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import { useSelector } from "react-redux";
 import moment from "moment";
+import { CgChevronDoubleLeft, CgMediaLive, CgChevronDoubleRight, CgChevronLeft, CgChevronRight } from "react-icons/cg";
+import qs from "qs";
+
 import Template from "./../Template";
 import NewEntry from "./../../components/NewEntry";
 import Title from "./../../ui/Title";
@@ -12,15 +15,47 @@ import getClient from "./../../apollo/apollo";
 import { GETTOPIC } from "../../gql/topic/query";
 import { CREATEPOST } from "../../gql/topic/mutation";
 import "moment/locale/tr";
+
 moment.locale("tr");
+
+const recordsPerPage = 10;
+
+const handlePaging = () => {
+  console.log("tıklandı");
+};
 const Konu = ({ topic }) => {
+  const [page, setPage] = useState(1);
   const [description, setDescription] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [posts, setPosts] = useState(topic.posts);
   const user = useSelector((state) => state.user.token);
   const currency = useSelector((state) => state.currencies.currency);
+  const totalPosts = topic.postsCount;
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
+  const skip = (page - 1) * recordsPerPage;
+  const totalPages = Math.ceil(totalPosts / recordsPerPage);
+
+  useEffect(() => {
+    setPage(1);
+    setPosts(() => [...topic.posts]);
+  }, [topic]);
+
+  useEffect(() => {
+    getClient(user)
+      .query({
+        query: GETTOPIC,
+        variables: {
+          slug: topic.slug,
+          first: recordsPerPage,
+          skip,
+        },
+      })
+      .then((res) => {
+        setPosts((oldPosts) => [...res.data.topic.posts]);
+      });
+  }, [page]);
+
+  const onSubmit = async (status) => {
     setErrorMessage("");
     if (!description) {
       return setErrorMessage("yazı yazılması gereklidir.");
@@ -40,11 +75,14 @@ const Konu = ({ topic }) => {
       variables: {
         description,
         topic: topic.slug,
+        status,
       },
     });
+
     if (result.data) {
       topic.posts.push(result.data.createPost);
     }
+
     setDescription("");
   };
 
@@ -65,26 +103,95 @@ const Konu = ({ topic }) => {
       </Head>
       <div className="col-span-7">
         <div className="mt-4">
-          <Title title={topic.title} count={topic.postsCount} />
-          <div id="posts">{renderPosts(topic.posts, user, topic.title, false)}</div>
+          <div className="flex justify-between">
+            <Title title={topic.title} count={topic.postsCount} />
+            <button
+              onClick={() => console.log("canlı başladı")}
+              className="flex justify-end items-center px-4 py-2 border border-gray-300 bg-white text-xs font-medium text-gray-700 hover:bg-gray-50"
+            >
+              <CgMediaLive className="mr-2 text-xl text-red-500" /> canlı takip et
+            </button>
+          </div>
+
+          <div id="posts">{renderPosts(posts, user, topic.title, false)}</div>
+
+          <div className="flex justify-center mt-4">
+            <nav className="relative z-0 inline-flex shadow-sm -space-x-px" aria-label="Pagination">
+              <button
+                disabled={page === 1}
+                onClick={() => {
+                  handlePaging(1);
+                  setPage(1);
+                }}
+                className="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-xs font-medium text-gray-500 hover:bg-gray-50"
+              >
+                <CgChevronDoubleLeft />
+              </button>
+              <button
+                disabled={page === 1}
+                className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-xs font-medium text-gray-700 hover:bg-gray-50"
+                onClick={() => {
+                  handlePaging(page - 1);
+                  setPage(page - 1);
+                }}
+              >
+                <CgChevronLeft />
+              </button>
+              <span className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-xs font-medium text-gray-700">
+                {page} / {totalPages}
+              </span>
+              <button
+                disabled={page === totalPages}
+                onClick={() => {
+                  handlePaging(page + 1);
+                  setPage(page + 1);
+                }}
+                className="hidden md:inline-flex relative items-center px-4 py-2 border border-gray-300 bg-white text-xs font-medium text-gray-700 hover:bg-gray-50"
+              >
+                <CgChevronRight />
+              </button>
+
+              <button
+                disabled={page === totalPages}
+                onClick={() => {
+                  handlePaging(totalPages);
+                  setPage(totalPages);
+                }}
+                className="hidden md:inline-flex relative items-center rounded-r-md px-4 py-2 border border-gray-300 bg-white text-xs font-medium text-gray-700 hover:bg-gray-50"
+              >
+                <CgChevronDoubleRight />
+              </button>
+            </nav>
+          </div>
+
           {user ? (
             <div>
               <Title title="eklemek istedikleriniz" />
               {errorMessage && <Alert title={errorMessage} bg="red" />}
-              <form onSubmit={onSubmit}>
-                <NewEntry description={description} setDescription={setDescription} />
-                <div className="mb-4 flex justify-between">
-                  <div className="flex ">
-                    <div className="mr-2">
-                      <Button title="gönder" type="submit" />
-                    </div>
-                    <div>
-                      <Button title="sakla" type="button" />
-                    </div>
+              <NewEntry description={description} setDescription={setDescription} />
+              <div className="mb-4 flex justify-between">
+                <div className="flex ">
+                  <div className="mr-2">
+                    <button
+                      onClick={() => onSubmit("ACTIVE")}
+                      className="bg-brand-500 text-brand-300 rounded-md px-3 py-2"
+                      type="button"
+                    >
+                      gönder
+                    </button>
                   </div>
-                  <div className="text-gray-500 text-sm">{description.length} karakter</div>
+                  <div>
+                    <button
+                      onClick={() => onSubmit("DRAFT")}
+                      className="bg-brand-500 text-brand-300 rounded-md px-3 py-2"
+                      type="button"
+                    >
+                      sakla
+                    </button>
+                  </div>
                 </div>
-              </form>
+                <div className="text-gray-500 text-sm">{description.length} karakter</div>
+              </div>
             </div>
           ) : (
             <div></div>
@@ -130,6 +237,8 @@ export async function getServerSideProps(context) {
     query: GETTOPIC,
     variables: {
       slug: context.params.slug,
+      first: recordsPerPage,
+      skip: 0,
     },
   });
   if (result.data.topic) {

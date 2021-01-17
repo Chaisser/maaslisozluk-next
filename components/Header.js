@@ -29,7 +29,7 @@ const Header = () => {
     });
   };
   return (
-    <div className=" bg-red-500 sm:bg-blue-500 lg:bg-green-500 hover:bg-brand-500">
+    <div className=" bg-red-500 sm:bg-blue-500 lg:bg-green-500 ">
       <div className="container mx-auto">
         <div className="grid grid-cols-12 py-3">
           <div className="col-span-3 flex flex-col justify-center">

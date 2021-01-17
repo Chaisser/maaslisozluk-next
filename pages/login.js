@@ -52,6 +52,7 @@ const Login = () => {
               <input
                 className="bg-gray-200 text-gray-800 py-2 px-3 rounded-md w-full sm:w-1/2 md:w-2/4 lg:w-1/4 outline-none text-center"
                 type="email"
+                name="email"
                 required
                 placeholder="e-posta"
                 onChange={(e) => setEmail(e.target.value.toLowerCase().trim())}
@@ -63,6 +64,7 @@ const Login = () => {
                 className="bg-gray-200 text-gray-800 py-2 px-3 rounded-md w-full sm:w-1/2 md:w-2/4 lg:w-1/4 outline-none text-center"
                 type="password"
                 required
+                name="password"
                 placeholder="şifre"
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}

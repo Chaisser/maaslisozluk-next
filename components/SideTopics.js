@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTopics } from "./../store/actions/category";
 import { CgChevronDoubleLeft, CgChevronDoubleRight, CgChevronLeft, CgChevronRight } from "react-icons/cg";
+import { BiRefresh } from "react-icons/bi";
 import Topic from "./Topic";
 
 const SideTopics = () => {
@@ -31,6 +32,18 @@ const SideTopics = () => {
 
   return (
     <div>
+      <button
+        onClick={() => {
+          console.log("yenile!");
+        }}
+        className="flex justify-center w-full items-center rounded-md px-4 py-2 border border-gray-300 bg-white text-xs font-medium text-gray-700 hover:bg-gray-50"
+      >
+        <span className="text-lg mr-2">
+          <BiRefresh />
+        </span>
+        yenile
+      </button>
+
       {topics.length > 0 && renderTopics(topics)}
       <div className="flex justify-center mt-4">
         <nav className="relative z-0 inline-flex shadow-sm -space-x-px" aria-label="Pagination">

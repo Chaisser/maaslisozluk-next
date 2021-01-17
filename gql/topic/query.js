@@ -32,7 +32,7 @@ const GETTOPICS = gql`
 `;
 
 const GETTOPIC = gql`
-  query Topic($slug: String!) {
+  query Topic($slug: String!, $first: Int, $skip: Int) {
     topic(slug: $slug) {
       id
       title
@@ -42,7 +42,7 @@ const GETTOPIC = gql`
         id
         title
       }
-      posts {
+      posts(first: $first, skip: $skip) {
         id
         description
         isEditable

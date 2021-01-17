@@ -56,6 +56,7 @@ const Register = () => {
                 className="bg-gray-200 text-gray-800 py-2 px-3 rounded-md w-full md:w-1/4   outline-none text-center"
                 type="text"
                 required
+                name="username"
                 placeholder="kullanıcı adı*"
                 onChange={(e) => setUsername(e.target.value.replace(" ", "").toLowerCase().trim())}
                 value={username}
@@ -66,6 +67,7 @@ const Register = () => {
               className="bg-gray-200 text-gray-800 py-2 px-3 rounded-md w-full md:w-1/4   outline-none text-center"
               type="email"
               required
+              name="email"
               placeholder="e-posta*"
               onChange={(e) => setEmail(e.target.value.toLowerCase().trim())}
               value={email}
@@ -75,15 +77,17 @@ const Register = () => {
             <input
               className="bg-gray-200 text-gray-800 py-2 px-3 rounded-md w-full md:w-1/4 outline-none text-center"
               type="text"
+              name="phoneNumber"
               placeholder="telefon"
               onChange={(e) => setPhoneNumber(e.target.value.toLowerCase().trim())}
-              value={city}
+              value={phoneNumber}
             />
           </div>
           <div className="mb-4">
             <input
               className="bg-gray-200 text-gray-800 py-2 px-3 rounded-md w-full md:w-1/4   outline-none text-center"
               type="text"
+              name="city"
               placeholder="şehir"
               onChange={(e) => setCity(e.target.value.toLowerCase().trim())}
               value={city}
@@ -95,6 +99,7 @@ const Register = () => {
               className="bg-gray-200 text-gray-800 py-2 px-3 rounded-md w-full sm:w-1/2 md:w-1/4 outline-none text-center"
               type="password"
               required
+              name="password"
               placeholder="şifre*"
               onChange={(e) => setPassword(e.target.value)}
               value={password}
