@@ -39,7 +39,7 @@ const Register = () => {
     }
 
     if (password.length < 6) {
-      return setErrorMessage("şifreniz 8 haneden büyük olmalıdır");
+      return setErrorMessage("şifreniz 6 haneden büyük olmalıdır");
     }
 
     dispatch(createUser(username, email, city, phoneNumber, password));

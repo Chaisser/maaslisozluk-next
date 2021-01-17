@@ -37,7 +37,7 @@ export const getCategories = (first) => {
   };
 };
 
-export const getTopics = (category, limit, skip, refetch) => {
+export const getTopics = (category, first, skip, orderBy, refetch) => {
   return async (dispatch, getState) => {
     if (getState().categories.categories.length !== 0 && !refetch) {
       return dispatch({ type: GET_TOPICS, topics: getState().categories.topics });
@@ -47,12 +47,13 @@ export const getTopics = (category, limit, skip, refetch) => {
         query: GETTOPICS,
         variables: {
           category,
-          limit,
+          orderBy,
+          first,
           skip,
         },
       })
       .then((res) => {
-        dispatch({ type: GET_TOPICS, topics: res.data.topics });
+        dispatch({ type: GET_TOPICS, topics: res.data.topics.topics, totalTopic: res.data.topics.totalTopic });
       });
   };
 };

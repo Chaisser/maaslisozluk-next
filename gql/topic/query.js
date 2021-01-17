@@ -16,14 +16,17 @@ const GETAUTHORTOPICS = gql`
 `;
 
 const GETTOPICS = gql`
-  query Topics($category: String) {
-    topics(category: $category) {
-      id
-      title
-      slug
-      postsCount
-      createdAt
-      updatedAt
+  query Topics($category: String, $first: Int, $skip: Int, $orderBy: String) {
+    topics(category: $category, first: $first, skip: $skip, orderBy: $orderBy) {
+      topics {
+        id
+        title
+        slug
+        postsCount
+        createdAt
+        updatedAt
+      }
+      totalTopic
     }
   }
 `;
