@@ -231,8 +231,6 @@ export async function getServerSideProps(context) {
     const result = await getClient(token).query({
       query: GETME,
     });
-
-    console.log(result);
     return {
       props: {
         userInformation: result.data.me,

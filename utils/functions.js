@@ -1,4 +1,5 @@
 import Post from "./../components/Post";
+import cookieParser from "cookie-parser";
 
 export const renderPosts = (posts, user, topic, showTopic) => {
   if (posts.length === 0) {
@@ -27,20 +28,18 @@ export const renderPosts = (posts, user, topic, showTopic) => {
 };
 
 export const getTokenFromCookie = (context) => {
-  // console.log(context.req, "CONTEXT FOR COOKIE DEBUG");
-  const getCookies = context.req ? { cookie: context.req.headers.cookie } : undefined;
+  // console.log(context.req.headers, "CONTEXT FOR COOKIE DEBUG");
+  //console.log(context.req.headers["cookie"], "COOKIE?");
+  const getCookies = context.req ? { cookie: context.req.headers["cookie"] } : undefined;
   const cookies = getCookies.cookie;
   let token = null;
 
   if (cookies) {
-    const parseCookie = cookies.split(";");
-    const findToken = parseCookie.find((p) => {
-      if (p.slice(1, 6) === "token") {
-        return p.replace();
-      }
-    });
-    if (findToken) {
-      token = findToken.replace(" token=", "");
+    const cookieRegex = /(^|(?<=; )) *token=[^;]+;? */gm;
+    const foundCookie = cookies.match(cookieRegex);
+    if (foundCookie.length === 1) {
+      console.log("return çalıştı");
+      return foundCookie[0].replace("token=", "").replace(";", "");
     }
   }
 
