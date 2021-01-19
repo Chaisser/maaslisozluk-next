@@ -3,7 +3,6 @@ import Head from "next/head";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { CgChevronDoubleLeft, CgMediaLive, CgChevronDoubleRight, CgChevronLeft, CgChevronRight } from "react-icons/cg";
-import qs from "qs";
 
 import Template from "./../Template";
 import NewEntry from "./../../components/NewEntry";
@@ -80,7 +79,8 @@ const Konu = ({ topic }) => {
     });
 
     if (result.data) {
-      topic.posts.push(result.data.createPost);
+      setPosts((oldPosts) => [...oldPosts, result.data.createPost]);
+      // topic.posts.push(result.data.createPost);
     }
 
     setDescription("");
@@ -107,7 +107,7 @@ const Konu = ({ topic }) => {
             <Title title={topic.title} count={topic.postsCount} />
             <button
               onClick={() => console.log("canlı başladı")}
-              className="flex justify-end items-center px-4 py-2 border border-gray-300 bg-white text-xs font-medium text-gray-700 hover:bg-gray-50"
+              className="flex items-center justify-end px-4 py-2 text-xs font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50"
             >
               <CgMediaLive className="mr-2 text-xl text-red-500" /> canlı takip et
             </button>
@@ -116,20 +116,20 @@ const Konu = ({ topic }) => {
           <div id="posts">{renderPosts(posts, user, topic.title, false)}</div>
 
           <div className="flex justify-center mt-4">
-            <nav className="relative z-0 inline-flex shadow-sm -space-x-px" aria-label="Pagination">
+            <nav className="relative z-0 inline-flex -space-x-px shadow-sm" aria-label="Pagination">
               <button
                 disabled={page === 1}
                 onClick={() => {
                   handlePaging(1);
                   setPage(1);
                 }}
-                className="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-xs font-medium text-gray-500 hover:bg-gray-50"
+                className="relative inline-flex items-center px-4 py-2 text-xs font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50"
               >
                 <CgChevronDoubleLeft />
               </button>
               <button
                 disabled={page === 1}
-                className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-xs font-medium text-gray-700 hover:bg-gray-50"
+                className="relative inline-flex items-center px-4 py-2 text-xs font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50"
                 onClick={() => {
                   handlePaging(page - 1);
                   setPage(page - 1);
@@ -137,7 +137,7 @@ const Konu = ({ topic }) => {
               >
                 <CgChevronLeft />
               </button>
-              <span className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-xs font-medium text-gray-700">
+              <span className="relative inline-flex items-center px-4 py-2 text-xs font-medium text-gray-700 bg-white border border-gray-300">
                 {page} / {totalPages}
               </span>
               <button
@@ -146,7 +146,7 @@ const Konu = ({ topic }) => {
                   handlePaging(page + 1);
                   setPage(page + 1);
                 }}
-                className="hidden md:inline-flex relative items-center px-4 py-2 border border-gray-300 bg-white text-xs font-medium text-gray-700 hover:bg-gray-50"
+                className="relative items-center hidden px-4 py-2 text-xs font-medium text-gray-700 bg-white border border-gray-300 md:inline-flex hover:bg-gray-50"
               >
                 <CgChevronRight />
               </button>
@@ -157,7 +157,7 @@ const Konu = ({ topic }) => {
                   handlePaging(totalPages);
                   setPage(totalPages);
                 }}
-                className="hidden md:inline-flex relative items-center rounded-r-md px-4 py-2 border border-gray-300 bg-white text-xs font-medium text-gray-700 hover:bg-gray-50"
+                className="relative items-center hidden px-4 py-2 text-xs font-medium text-gray-700 bg-white border border-gray-300 md:inline-flex rounded-r-md hover:bg-gray-50"
               >
                 <CgChevronDoubleRight />
               </button>
@@ -169,12 +169,12 @@ const Konu = ({ topic }) => {
               <Title title="eklemek istedikleriniz" />
               {errorMessage && <Alert title={errorMessage} bg="red" />}
               <NewEntry description={description} setDescription={setDescription} />
-              <div className="mb-4 flex justify-between">
+              <div className="flex justify-between mb-4">
                 <div className="flex ">
                   <div className="mr-2">
                     <button
                       onClick={() => onSubmit("ACTIVE")}
-                      className="bg-brand-500 text-brand-300 rounded-md px-3 py-2"
+                      className="px-3 py-2 rounded-md bg-brand-500 text-brand-300"
                       type="button"
                     >
                       gönder
@@ -183,14 +183,14 @@ const Konu = ({ topic }) => {
                   <div>
                     <button
                       onClick={() => onSubmit("DRAFT")}
-                      className="bg-brand-500 text-brand-300 rounded-md px-3 py-2"
+                      className="px-3 py-2 rounded-md bg-brand-500 text-brand-300"
                       type="button"
                     >
                       sakla
                     </button>
                   </div>
                 </div>
-                <div className="text-gray-500 text-sm">{description.length} karakter</div>
+                <div className="text-sm text-gray-500">{description.length} karakter</div>
               </div>
             </div>
           ) : (
@@ -218,7 +218,7 @@ const Konu = ({ topic }) => {
               </td>
             </tr>
             <tr>
-              <td colSpan="2" className="px-2 py-1 text-center text-xs border-b border-gray-300 mb-4">
+              <td colSpan="2" className="px-2 py-1 mb-4 text-xs text-center border-b border-gray-300">
                 Son güncelleme: {currency && moment(currency.createdAt).format("DD MMM YYYYY HH:mm")}
               </td>
             </tr>

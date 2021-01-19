@@ -4,12 +4,13 @@ import { getTopics } from "./../store/actions/category";
 import { CgChevronDoubleLeft, CgChevronDoubleRight, CgChevronLeft, CgChevronRight } from "react-icons/cg";
 import { BiRefresh } from "react-icons/bi";
 import Topic from "./Topic";
+import settings from "./../utils/settings";
 
 const SideTopics = () => {
   const dispatch = useDispatch();
   const topics = useSelector((state) => state.categories.topics);
   const totalTopic = useSelector((state) => state.categories.totalTopic);
-  const recordsPerPage = 30;
+  const recordsPerPage = settings.topicRecordsPerPage;
   const [first, setFirst] = useState(recordsPerPage);
   const [page, setPage] = useState(1);
   const skip = (page - 1) * recordsPerPage;
@@ -33,9 +34,7 @@ const SideTopics = () => {
   return (
     <div>
       <button
-        onClick={() => {
-          console.log("yenile!");
-        }}
+        onClick={() => dispatch(getTopics(null, recordsPerPage, 0, "", true))}
         className="flex justify-center w-full items-center rounded-md px-4 py-2 border border-gray-300 bg-white text-xs font-medium text-gray-700 hover:bg-gray-50"
       >
         <span className="text-lg mr-2">
