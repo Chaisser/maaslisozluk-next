@@ -1,5 +1,21 @@
 import { gql } from "@apollo/client";
 
+const UPDATEUSER = gql`
+  mutation UpdateUser($email: String, $phoneNumber: String, $city: String) {
+    updateUser(data: { email: $email, phoneNumber: $phoneNumber, city: $city }) {
+      id
+    }
+  }
+`;
+
+const CHANGEPASSWORD = gql`
+  mutation ChangePassword($currentPassword: String!, $password: String!) {
+    changePassword(data: { currentPassword: $currentPassword, password: $password }) {
+      id
+    }
+  }
+`;
+
 const SENDEMAILACTIVATIONCODE = gql`
   mutation SendEmailActivationCode {
     sendEmailActivationCode {
@@ -24,4 +40,19 @@ const CHECKEMAILACTIVATIONCODE = gql`
   }
 `;
 
-export { SENDEMAILACTIVATIONCODE, CHECKEMAILACTIVATIONCODE, SENDPHONENUMBERACTIVATIONCODE };
+const CHECKPHONEACTIVATIONCODE = gql`
+  mutation CheckPhoneActivationCode($phoneActivationCode: String!) {
+    checkPhoneActivationCode(phoneActivationCode: $phoneActivationCode) {
+      result
+    }
+  }
+`;
+
+export {
+  UPDATEUSER,
+  CHANGEPASSWORD,
+  SENDEMAILACTIVATIONCODE,
+  CHECKEMAILACTIVATIONCODE,
+  SENDPHONENUMBERACTIVATIONCODE,
+  CHECKPHONEACTIVATIONCODE,
+};

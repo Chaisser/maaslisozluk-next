@@ -28,8 +28,6 @@ export const renderPosts = (posts, user, topic, showTopic) => {
 };
 
 export const getTokenFromCookie = (context) => {
-  // console.log(context.req.headers, "CONTEXT FOR COOKIE DEBUG");
-  //console.log(context.req.headers["cookie"], "COOKIE?");
   const getCookies = context.req ? { cookie: context.req.headers["cookie"] } : undefined;
   const cookies = getCookies.cookie;
   let token = null;
@@ -38,7 +36,6 @@ export const getTokenFromCookie = (context) => {
     const cookieRegex = /(^|(?<=; )) *token=[^;]+;? */gm;
     const foundCookie = cookies.match(cookieRegex);
     if (foundCookie.length === 1) {
-      console.log("return çalıştı");
       return foundCookie[0].replace("token=", "").replace(";", "");
     }
   }

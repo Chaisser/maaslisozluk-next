@@ -1,32 +1,102 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import getClient from "./../apollo/apollo";
 import Link from "next/link";
 import Template from "./Template";
 import { GETME } from "./../gql/user/query";
-import { SENDEMAILACTIVATIONCODE, SENDPHONENUMBERACTIVATIONCODE } from "./../gql/user/mutation";
+import {
+  SENDEMAILACTIVATIONCODE,
+  SENDPHONENUMBERACTIVATIONCODE,
+  CHECKPHONEACTIVATIONCODE,
+  UPDATEUSER,
+  CHANGEPASSWORD,
+} from "./../gql/user/mutation";
 import Title from "./../ui/Title";
 import Alert from "./../ui/Alert";
 import { getTokenFromCookie } from "./../utils/functions";
+import InputMask from "react-input-mask";
 
 import moment from "moment";
 import "moment/locale/tr";
 moment.locale("tr");
 
 const Profil = ({ userInformation }) => {
-  console.log(userInformation, "USER INFO");
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  const [updateErrorMessage, setUpdateErrorMessage] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
-  const [city, setCity] = useState("");
-  const [email, setEmail] = useState("");
+  const [city, setCity] = useState(userInformation.city);
+  const [email, setEmail] = useState(userInformation.email);
+  const [phoneNumber, setPhoneNumber] = useState(userInformation.phoneNumber);
+  const [phoneNumberActivation, setPhoneNumberActivation] = useState(userInformation.phoneNumberActivation);
   const [emailSent, setEmailSent] = useState(false);
   const [smsSent, setSmsSent] = useState(false);
   const [smsError, setSmsError] = useState("");
+  const [smsCode, setSmsCode] = useState("");
 
   const token = useSelector((state) => state.user.token);
 
+  const handlePhoneActivationCode = async (phoneActivationCode) => {
+    try {
+      const result = await getClient(token).mutate({
+        mutation: CHECKPHONEACTIVATIONCODE,
+        variables: {
+          phoneActivationCode,
+        },
+      });
+      if (result.data.checkPhoneActivationCode.result === "success") {
+        return setSmsSent(true);
+      }
+    } catch (error) {
+      return error.message;
+    }
+  };
+
+  useEffect(() => {
+    const code = smsCode;
+    if (code.length === 6) {
+      setSmsError("");
+
+      handlePhoneActivationCode(code)
+        .then((res) => {
+          console.log(res);
+          if (res === "Hatalı Kod") {
+            setSmsCode("");
+            return setSmsError("hatalı kod");
+          }
+          setPhoneNumberActivation(true);
+          setSmsSent(false);
+        })
+        .catch((err) => {
+          setSmsError(err.message);
+        });
+    }
+  }, [smsCode]);
+
+  const handleUpdateUser = async () => {
+    setUpdateErrorMessage("");
+
+    if (!email) {
+      return setUpdateErrorMessage("e-posta alanı zorunludur");
+    }
+
+    try {
+      const result = await getClient(token).mutate({
+        mutation: UPDATEUSER,
+        variables: {
+          email,
+          phoneNumber,
+          city,
+        },
+      });
+      if (result.data.updateUser.id) {
+        console.log("ok");
+      }
+    } catch (error) {
+      setUpdateErrorMessage(error.message);
+    }
+  };
   const sendPhoneActivationCode = async () => {
     setSmsError("");
     try {
@@ -41,6 +111,7 @@ const Profil = ({ userInformation }) => {
       setSmsError(error.message);
     }
   };
+
   const sendEmailActivationCode = async () => {
     const result = await getClient(token).mutate({
       mutation: SENDEMAILACTIVATIONCODE,
@@ -50,8 +121,9 @@ const Profil = ({ userInformation }) => {
       return setEmailSent(true);
     }
   };
-  const handleChangePassword = (e) => {
+  const handleChangePassword = async (e) => {
     e.preventDefault();
+
     setPasswordErrorMessage("");
 
     if (!currentPassword) {
@@ -68,6 +140,26 @@ const Profil = ({ userInformation }) => {
 
     if (rePassword !== password) {
       return setPasswordErrorMessage("şifreler uyuşmuyor");
+    }
+
+    try {
+      const result = await getClient(token).mutate({
+        mutation: CHANGEPASSWORD,
+        variables: {
+          currentPassword,
+          password,
+        },
+      });
+      console.log(result);
+      if (result.data.changePassword.id) {
+        setPassword("");
+        setRePassword("");
+        setCurrentPassword("");
+        console.log("ok");
+      }
+    } catch (error) {
+      console.log(error);
+      setPasswordErrorMessage(error.message);
     }
 
     //TODO -> Change Password
@@ -90,7 +182,8 @@ const Profil = ({ userInformation }) => {
               type="text"
               className="flex-1 block w-full px-3 py-2 text-gray-800 bg-gray-200 outline-none table-auto "
               placeholder="e-mail"
-              value={userInformation.email}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               disabled={userInformation.emailActivation}
             />
             {userInformation.emailActivation ? (
@@ -118,27 +211,32 @@ const Profil = ({ userInformation }) => {
           <div className="flex w-full mt-1 rounded-md shadow-sm md:w-1/2">
             <span
               className={`inline-flex items-center px-3 py-2 text-sm text-gray-500 border border-r-0 border-gray-300 rounded-l-md  ${
-                userInformation.phoneNumberActivation ? "bg-green-200" : "bg-red-200"
+                phoneNumberActivation ? "bg-green-200" : "bg-red-200"
               }`}
             >
-              {userInformation.phoneNumberActivation ? "onaylı" : "onaysız"}
+              {phoneNumberActivation ? "onaylı" : "onaysız"}
             </span>
-            <input
+            <InputMask
+              mask="0 (999) 999 99 99"
               type="text"
               className="flex-1 block w-full px-3 py-2 text-gray-800 bg-gray-200 outline-none table-auto"
               placeholder="telefon"
-              value={""}
+              value={phoneNumber}
+              disabled={phoneNumberActivation}
+              onChange={(e) => setPhoneNumber(e.target.value)}
             />
-            {userInformation.phoneActivation ? (
+            {phoneNumberActivation ? (
               ""
             ) : smsSent ? (
-              <Link href="/aktivasyon">
-                <a
-                  className={`inline-flex items-center px-3 py-2 text-sm text-gray-500 border border-l-0 border-gray-300 underline rounded-r-md bg-yellow-200`}
-                >
-                  aktifleştir
-                </a>
-              </Link>
+              <InputMask
+                mask="9-9-9-9-9-9"
+                type="text"
+                className={`flex-1 text-right block w-full px-3 py-2 text-gray-800 bg-yellow-200 outline-none table-auto`}
+                value={smsCode}
+                disabled={smsCode.length === 6}
+                placeholder="onay kodu"
+                onChange={(e) => setSmsCode(e.target.value.replace(/_/g, "").replace(/-/g, ""))}
+              />
             ) : (
               <button
                 onClick={sendPhoneActivationCode}
@@ -164,6 +262,11 @@ const Profil = ({ userInformation }) => {
               value={city}
             />
           </div>
+        </div>
+        <div className="mb-4">
+          <button onClick={handleUpdateUser} className="px-3 py-2 rounded-md bg-brand-500 text-brand-300" type="submit">
+            güncelle
+          </button>
         </div>
 
         <div className="mt-12">

@@ -3,7 +3,7 @@ import validator from "validator";
 import Template from "./Template";
 import Alert from "./../ui/Alert";
 import PublicRoute from "./PublicRoute";
-
+import InputMask from "react-input-mask";
 import { useDispatch } from "react-redux";
 import { createUser } from "./../store/actions/user";
 
@@ -48,12 +48,13 @@ const Register = () => {
     <Template sidebarVisible={false}>
       <PublicRoute>
         <form className="w-full text-center" onSubmit={onSubmit}>
-          <div className="text-xl text-brand-500 font-semibold mb-4">kayıt ol</div>
+          <div className="mb-4 text-xl font-semibold text-brand-500">kayıt ol</div>
           {errorMessage && <Alert bg="red" title={errorMessage} />}
           <div className="mb-4">
             <div className="mb-4">
+              <label className="text-sm font-semibold text-gray-700">kullanıcı adı</label>
               <input
-                className="bg-gray-200 text-gray-800 py-2 px-3 rounded-md w-full md:w-1/4   outline-none text-center"
+                className="w-full px-3 py-2 mt-1 text-center text-gray-800 bg-gray-200 rounded-md outline-none md:w-1/4"
                 type="text"
                 required
                 name="username"
@@ -62,20 +63,24 @@ const Register = () => {
                 value={username}
               />
             </div>
-
-            <input
-              className="bg-gray-200 text-gray-800 py-2 px-3 rounded-md w-full md:w-1/4   outline-none text-center"
-              type="email"
-              required
-              name="email"
-              placeholder="e-posta*"
-              onChange={(e) => setEmail(e.target.value.toLowerCase().trim())}
-              value={email}
-            />
+            <div className="mb-4">
+              <label className="text-sm font-semibold text-gray-700">e-posta</label>
+              <input
+                className="w-full px-3 py-2 text-center text-gray-800 bg-gray-200 rounded-md outline-none md:w-1/4"
+                type="email"
+                required
+                name="email"
+                placeholder="e-posta*"
+                onChange={(e) => setEmail(e.target.value.toLowerCase().trim())}
+                value={email}
+              />
+            </div>
           </div>
           <div className="mb-4">
-            <input
-              className="bg-gray-200 text-gray-800 py-2 px-3 rounded-md w-full md:w-1/4 outline-none text-center"
+            <label className="text-sm font-semibold text-gray-700">telefon</label>
+            <InputMask
+              mask="0 (999) 999 99 99"
+              className="w-full px-3 py-2 mt-1 text-center text-gray-800 bg-gray-200 rounded-md outline-none md:w-1/4"
               type="text"
               name="phoneNumber"
               placeholder="telefon"
@@ -85,7 +90,7 @@ const Register = () => {
           </div>
           <div className="mb-4">
             <input
-              className="bg-gray-200 text-gray-800 py-2 px-3 rounded-md w-full md:w-1/4   outline-none text-center"
+              className="w-full px-3 py-2 text-center text-gray-800 bg-gray-200 rounded-md outline-none md:w-1/4"
               type="text"
               name="city"
               placeholder="şehir"
@@ -96,7 +101,7 @@ const Register = () => {
 
           <div className="mb-4">
             <input
-              className="bg-gray-200 text-gray-800 py-2 px-3 rounded-md w-full sm:w-1/2 md:w-1/4 outline-none text-center"
+              className="w-full px-3 py-2 text-center text-gray-800 bg-gray-200 rounded-md outline-none sm:w-1/2 md:w-1/4"
               type="password"
               required
               name="password"
@@ -107,7 +112,7 @@ const Register = () => {
           </div>
 
           <div className="mb-4">
-            <button className="bg-brand-500 text-brand-300 rounded-md px-3 py-2" type="submit">
+            <button className="px-3 py-2 rounded-md bg-brand-500 text-brand-300" type="submit">
               kayıt ol
             </button>
           </div>
