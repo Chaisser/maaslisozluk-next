@@ -30,7 +30,7 @@ const Post = ({
   isEditable = false,
 }) => {
   const [readMore, setReadMore] = useState(false);
-  const [isBookmarked, setIsBookmarked] = useState(false);
+
   const [favLength, setFavLength] = useState(favorites.length);
   const [likesLength, setLikesLength] = useState(likesCount);
 
@@ -39,14 +39,14 @@ const Post = ({
   //[TO-DO: Harf sayısı kontrolü ve kelime bitişi kontrolü yap!]
   let wordCount = description.split(" ").length;
   const twitterShareLink = encodeURI(
-    `https://twitter.com/intent/tweet?text=${topic}+https://test.maaslisozluk.com/konu/${topic}&related=maaslisozluk,interaktifis`
+    `https://twitter.com/intent/tweet?text=${topic}+https://www.maaslisozluk.com/konu/${topic}&related=maaslisozluk,interaktifis`
   );
-  const facebookShareLink = encodeURI(`https://facebook.com/sharer.php?u=https://test.maaslisozluk.com/konu/${topic}`);
+  const facebookShareLink = encodeURI(`https://facebook.com/sharer.php?u=https://www.maaslisozluk.com/konu/${topic}`);
   return (
     <Fragment>
       <div className="flex w-full">
         <div
-          className=" text-gray-900 my-4 flex-grow border-b border-gray-300 pb-4 whitespace-pre-line text-base"
+          className="flex-grow pb-4 my-4 text-base text-gray-900 whitespace-pre-line border-b border-gray-300 "
           style={{ wordBreak: "break-word" }}
         >
           {showTopic && <Title title={topic} />}
@@ -57,15 +57,15 @@ const Post = ({
           ) : (
             <div>
               <div className={` ${!readMore && "h-36 overflow-hidden"}`}>{parser.toReact(description)}</div>
-              <div className="cursor-pointer mt-2 underline" onClick={() => setReadMore(!readMore)}>
+              <div className="mt-2 underline cursor-pointer" onClick={() => setReadMore(!readMore)}>
                 {!readMore ? "devamını oku" : "kısalt"}
               </div>
             </div>
           )}
 
-          <div className="meta flex justify-between mt-4">
+          <div className="flex justify-between mt-4 meta">
             <div className="flex items-center">
-              <div className="share flex mr-6">
+              <div className="flex mr-6 share">
                 <span className="mr-2">
                   <a target="_blank" rel="noreferrer" href={facebookShareLink}>
                     <UseAnimations size={25} strokeColor="#1877f2" animation={facebook} />
@@ -81,16 +81,16 @@ const Post = ({
               {token && <Like id={id} token={token} setLikesLength={setLikesLength} />}
               {token && <Favorite id={id} token={token} setFavLength={setFavLength} favLength={favLength} />}
             </div>
-            <div className="text-sm flex justify-end items-center">
-              <span className="mr-4 flex items-center">
+            <div className="flex items-center justify-end text-sm">
+              <span className="flex items-center mr-4">
                 <span className="text-brand-400">{likesLength} beğeni </span>
               </span>
 
-              <span className="mr-4 flex items-center">
+              <span className="flex items-center mr-4">
                 <span className="text-brand-400">{favLength} favori </span>
               </span>
 
-              <span className="mr-4 flex items-center">
+              <span className="flex items-center mr-4">
                 <span className="text-brand-400">{(totalEarnings / 100000000).toFixed(8)}</span> <BiBitcoin />
               </span>
 
@@ -106,7 +106,7 @@ const Post = ({
               </span>
               {isEditable && isLoggedIn && (
                 <Link href={`/duzenle/${id}`}>
-                  <a className="mr-4 text-brand-500 hover:text-brand-400 cursor-pointer">
+                  <a className="mr-4 cursor-pointer text-brand-500 hover:text-brand-400">
                     <FiEdit />
                   </a>
                 </Link>

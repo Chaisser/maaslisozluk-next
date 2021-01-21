@@ -35,6 +35,9 @@ export const getTokenFromCookie = (context) => {
   if (cookies) {
     const cookieRegex = /(^|(?<=; )) *token=[^;]+;? */gm;
     const foundCookie = cookies.match(cookieRegex);
+    if (!foundCookie) {
+      return null;
+    }
     if (foundCookie.length === 1) {
       return foundCookie[0].replace("token=", "").replace(";", "");
     }

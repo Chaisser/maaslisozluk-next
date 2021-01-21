@@ -28,6 +28,8 @@ const Konu = ({ topic }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [posts, setPosts] = useState(topic.posts);
   const user = useSelector((state) => state.user.token);
+  const adblockStatus = useSelector((state) => state.adblocker.status);
+
   const currency = useSelector((state) => state.currencies.currency);
   const totalPosts = topic.postsCount;
 
@@ -98,7 +100,7 @@ const Konu = ({ topic }) => {
         <meta property="og:url" content="https://maaslisozluk.com/" />
         <meta property="og:title" content={`Maaşlı Sözlük`} />
         <meta property="og:description" content={`${topic.title} konusunda yazılanlar `} />
-        <meta property="og:url" content={`https://test.maaslisozluk.com/konu/${topic.title}`} />
+        <meta property="og:url" content={`https://www.maaslisozluk.com/konu/${topic.title}`} />
         <meta property="og:image" content="https://storage.googleapis.com/cdn.maaslisozluk.com/maasli-sozluk.jpg" />
       </Head>
       <div className="col-span-7">
@@ -200,6 +202,12 @@ const Konu = ({ topic }) => {
       </div>
 
       <div className="col-span-2">
+        {adblockStatus && (
+          <div className="p-4 mb-4 text-center text-white bg-red-800">
+            Kazancımızı reklamlardan elde ediyoruz. Yazarlarımıza destek olmak için reklam engelleyicinizi lütfen
+            kapatın
+          </div>
+        )}
         <table className="table-auto">
           <thead>
             <tr>

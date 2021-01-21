@@ -3,13 +3,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCategories, getTopics } from "./../store/actions/category";
 import { getCurrency } from "./../store/actions/currency";
 import { checkToken } from "./../store/actions/user";
+import { getStatus } from "./../store/actions/adblocker";
 import Header from "./../components/Header";
 import SideTopics from "./../components/SideTopics";
+import { detectAnyAdblocker } from "just-detect-adblock";
 
 import Cookies from "js-cookie";
 const Template = ({ children, sidebarVisible = true }) => {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.user.token);
+
+  useEffect(() => {
+    detectAnyAdblocker().then((detected) => {
+      dispatch(getStatus(!!detected));
+    });
+  }, []);
 
   useEffect(() => {
     if (!token) {

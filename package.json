@@ -19,6 +19,7 @@
     "html-react-parser": "^1.0.0",
     "js-bbcode-parser": "^3.0.4",
     "js-cookie": "^2.2.1",
+    "just-detect-adblock": "^1.1.0",
     "moment": "^2.29.1",
     "next": "10.0.3",
     "next-redux-wrapper": "^6.0.2",
@@ -37,6 +38,7 @@
     "sass": "^1.30.0",
     "speakingurl": "^14.0.1",
     "tailwindcss": "^2.0.2",
+    "time-ago": "^0.2.1",
     "validator": "^13.5.2"
   }
 }

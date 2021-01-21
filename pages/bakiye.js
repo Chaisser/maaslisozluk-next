@@ -62,13 +62,14 @@ export async function getServerSideProps(context) {
   const token = getTokenFromCookie(context);
   if (!token) {
     context.res.statusCode = 302;
-    context.res.setHeader("Location", `/login`);
+    return context.res.setHeader("Location", `/login`);
   }
   try {
     const result = await getClient(token).query({
       query: GETUSERTRANSACTIONS,
     });
 
+    console.log(result, "RESULT FROM bakiye.js");
     return {
       props: {
         transactions: result.data.getTransactions,
