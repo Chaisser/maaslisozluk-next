@@ -33,7 +33,7 @@ const Header = () => {
     });
   };
   return (
-    <div className="bg-red-500  sm:bg-blue-500 lg:bg-green-500">
+    <div className="bg-red-500 dark:bg-brand-500 dark:to-yellow-700 sm:bg-blue-500 lg:bg-green-500">
       <div className="container mx-auto">
         <div className="grid grid-cols-12 py-3">
           <div className="flex flex-col justify-center col-span-3">

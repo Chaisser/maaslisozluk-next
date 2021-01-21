@@ -4,7 +4,6 @@ import { getCategories, getTopics } from "./../store/actions/category";
 import { getCurrency } from "./../store/actions/currency";
 import { checkToken } from "./../store/actions/user";
 import Header from "./../components/Header";
-import Topic from "./../components/Topic";
 import SideTopics from "./../components/SideTopics";
 
 import Cookies from "js-cookie";
