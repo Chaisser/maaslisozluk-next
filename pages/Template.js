@@ -15,6 +15,7 @@ const Template = ({ children, sidebarVisible = true }) => {
 
   useEffect(() => {
     detectAnyAdblocker().then((detected) => {
+      console.log("detected", detected);
       dispatch(getStatus(!!detected));
     });
   }, []);
