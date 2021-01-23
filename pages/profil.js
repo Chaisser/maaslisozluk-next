@@ -60,7 +60,6 @@ const Profil = ({ userInformation }) => {
 
       handlePhoneActivationCode(code)
         .then((res) => {
-          console.log(res);
           if (res === "Hatalı Kod") {
             setSmsCode("");
             return setSmsError("hatalı kod");
@@ -150,7 +149,7 @@ const Profil = ({ userInformation }) => {
           password,
         },
       });
-      console.log(result);
+
       if (result.data.changePassword.id) {
         setPassword("");
         setRePassword("");
@@ -326,7 +325,7 @@ const Profil = ({ userInformation }) => {
 
 export async function getServerSideProps(context) {
   const token = getTokenFromCookie(context);
-  console.log(token, "--------GEELEN TOKEEN");
+
   if (!token) {
     context.res.statusCode = 302;
     return context.res.setHeader("Location", `/login`);

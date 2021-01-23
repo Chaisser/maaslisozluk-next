@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import validator from "validator";
 import Template from "./Template";
 import Alert from "./../ui/Alert";
@@ -46,11 +47,11 @@ const Login = () => {
       <PublicRoute>
         <div className="col-span-12">
           <form className="w-full text-center" onSubmit={onSubmit}>
-            <div className="text-xl text-brand-500 font-semibold mb-4">üye girişi</div>
+            <div className="mb-4 text-xl font-semibold text-brand-500">üye girişi</div>
             {errorMessage && <Alert bg="red" title={errorMessage} />}
             <div className="mb-4">
               <input
-                className="bg-gray-200 text-gray-800 py-2 px-3 rounded-md w-full sm:w-1/2 md:w-2/4 lg:w-1/4 outline-none text-center"
+                className="w-full px-3 py-2 text-center text-gray-800 bg-gray-200 rounded-md outline-none sm:w-1/2 md:w-2/4 lg:w-1/4"
                 type="email"
                 name="email"
                 required
@@ -61,7 +62,7 @@ const Login = () => {
             </div>
             <div className="mb-4">
               <input
-                className="bg-gray-200 text-gray-800 py-2 px-3 rounded-md w-full sm:w-1/2 md:w-2/4 lg:w-1/4 outline-none text-center"
+                className="w-full px-3 py-2 text-center text-gray-800 bg-gray-200 rounded-md outline-none sm:w-1/2 md:w-2/4 lg:w-1/4"
                 type="password"
                 required
                 name="password"
@@ -73,24 +74,30 @@ const Login = () => {
 
             <div className="mb-4">
               <input
-                className="bg-gray-200 text-gray-800 py-2 px-3 rounded-md w-full sm:w-1/2 md:w-2/4 lg:w-1/4 outline-none text-center"
+                className="w-full px-3 py-2 text-center text-gray-800 bg-gray-200 rounded-md outline-none sm:w-1/2 md:w-2/4 lg:w-1/4"
                 type="text"
                 placeholder="2fa kodu"
                 onChange={(e) => setTwoFactorCode(e.target.value)}
                 value={twoFactorCode}
               />
             </div>
+            <div className="w-full mx-auto sm:w-1/2 md:w-2/4 lg:w-1/4">
+              <div className="flex items-center justify-between mb-4">
+                <button
+                  disabled={buttonDisabled}
+                  className="px-3 py-2 rounded-md bg-brand-500 text-brand-300"
+                  type="submit"
+                >
+                  giriş yap
+                </button>
 
-            <div className="mb-4">
-              <button
-                disabled={buttonDisabled}
-                className="bg-brand-500 text-brand-300 rounded-md px-3 py-2"
-                type="submit"
-              >
-                giriş yap
-              </button>
+                <div className="text-center">
+                  <Link href="/sifremi-unuttum">
+                    <a className="hover:text-gray-500">şifremi unuttum!</a>
+                  </Link>
+                </div>
+              </div>
             </div>
-            <div className="text-center">aa</div>
           </form>
         </div>
       </PublicRoute>

@@ -24,6 +24,14 @@ const SENDEMAILACTIVATIONCODE = gql`
   }
 `;
 
+const SENDFORGETPASSWORDCODE = gql`
+  mutation SendForgetPasswordCode($email: String!) {
+    sendForgetPasswordCode(email: $email) {
+      result
+    }
+  }
+`;
+
 const SENDPHONENUMBERACTIVATIONCODE = gql`
   mutation SendPhoneActivationCode {
     sendPhoneActivationCode {
@@ -35,6 +43,22 @@ const SENDPHONENUMBERACTIVATIONCODE = gql`
 const CHECKEMAILACTIVATIONCODE = gql`
   mutation CheckEmailActivationCode($id: ID!, $email: String!, $emailActivationCode: String!) {
     checkEmailActivationCode(id: $id, email: $email, emailActivationCode: $emailActivationCode) {
+      result
+    }
+  }
+`;
+
+const RESETPASSWORD = gql`
+  mutation ResetPassword($id: ID!, $email: String!, $emailActivationCode: String!, $password: String!) {
+    resetPassword(id: $id, email: $email, emailActivationCode: $emailActivationCode, password: $password) {
+      result
+    }
+  }
+`;
+
+const CHECKPASSWORDACTIVATIONCODE = gql`
+  mutation CheckPasswordActivationCode($id: ID!, $email: String!, $emailActivationCode: String!) {
+    checkPasswordActivationCode(id: $id, email: $email, emailActivationCode: $emailActivationCode) {
       result
     }
   }
@@ -55,4 +79,7 @@ export {
   CHECKEMAILACTIVATIONCODE,
   SENDPHONENUMBERACTIVATIONCODE,
   CHECKPHONEACTIVATIONCODE,
+  CHECKPASSWORDACTIVATIONCODE,
+  RESETPASSWORD,
+  SENDFORGETPASSWORDCODE,
 };
