@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
 import getClient from "./../apollo/apollo";
 import Link from "next/link";
 import Template from "./Template";
@@ -21,6 +22,8 @@ import "moment/locale/tr";
 moment.locale("tr");
 
 const Profil = ({ userInformation }) => {
+  const router = useRouter();
+
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
   const [updateErrorMessage, setUpdateErrorMessage] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
@@ -36,6 +39,11 @@ const Profil = ({ userInformation }) => {
   const [smsCode, setSmsCode] = useState("");
 
   const token = useSelector((state) => state.user.token);
+  useEffect(() => {
+    if (!token) {
+      router.push("/");
+    }
+  }, [token]);
 
   const handlePhoneActivationCode = async (phoneActivationCode) => {
     try {

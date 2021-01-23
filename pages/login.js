@@ -10,6 +10,7 @@ import PublicRoute from "./PublicRoute";
 const Login = () => {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.user);
+  const loginError = useSelector((state) => state.user.errorLogin);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [twoFactorCode, setTwoFactorCode] = useState("");
@@ -48,6 +49,7 @@ const Login = () => {
         <div className="col-span-12">
           <form className="w-full text-center" onSubmit={onSubmit}>
             <div className="mb-4 text-xl font-semibold text-brand-500">üye girişi</div>
+            {loginError && <Alert bg="red" title={loginError} />}
             {errorMessage && <Alert bg="red" title={errorMessage} />}
             <div className="mb-4">
               <input
@@ -72,15 +74,6 @@ const Login = () => {
               />
             </div>
 
-            <div className="mb-4">
-              <input
-                className="w-full px-3 py-2 text-center text-gray-800 bg-gray-200 rounded-md outline-none sm:w-1/2 md:w-2/4 lg:w-1/4"
-                type="text"
-                placeholder="2fa kodu"
-                onChange={(e) => setTwoFactorCode(e.target.value)}
-                value={twoFactorCode}
-              />
-            </div>
             <div className="w-full mx-auto sm:w-1/2 md:w-2/4 lg:w-1/4">
               <div className="flex items-center justify-between mb-4">
                 <button

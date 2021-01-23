@@ -37,8 +37,10 @@
     "redux-thunk": "^2.3.0",
     "sass": "^1.30.0",
     "speakingurl": "^14.0.1",
+    "subscriptions-transport-ws": "^0.9.18",
     "tailwindcss": "^2.0.2",
     "time-ago": "^0.2.1",
-    "validator": "^13.5.2"
+    "validator": "^13.5.2",
+    "ws": "^7.4.2"
   }
 }

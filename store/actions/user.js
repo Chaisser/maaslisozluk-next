@@ -2,6 +2,7 @@ import getClient from "./../../apollo/apollo";
 import { CHECKTOKEN, CREATEUSER, LOGINUSER, GETUSERBUDGET } from "./../../gql/user/query";
 export const LOGIN_USER = "LOGIN_USER";
 export const LOGIN_ERROR = "LOGIN_ERROR";
+export const REGISTER_ERROR = "REGISTER_ERROR";
 export const LOGOUT = "LOGOUT";
 export const LOGINCHECK = "LOGINCHECK";
 export const GETBUDGET = "GETBUDGET";
@@ -37,13 +38,18 @@ export const createUser = (username, email, city, phoneNumber, password) => {
         if (res.data) {
           return dispatch({ type: LOGIN_USER, result: res.data.createUser });
         }
-        return dispatch({ type: LOGIN_ERROR, result: res.errors[0].message });
+        return dispatch({ type: REGISTER_ERROR, result: res.errors[0].message });
+      })
+      .catch((err) => {
+        return dispatch({ type: REGISTER_ERROR, result: "kullanıcı adı, e-posta veya telefon numarası kayıtlıdır." });
       });
   };
 };
 
 export const loginUser = (email, password, twoFactorCode) => {
   return async (dispatch, getState) => {
+    dispatch({ type: LOGIN_ERROR, result: "" });
+
     getClient()
       .mutate({
         mutation: LOGINUSER,
@@ -61,7 +67,7 @@ export const loginUser = (email, password, twoFactorCode) => {
         }
       })
       .catch((err) => {
-        dispatch({ type: LOGIN_ERROR, result: "err.message" });
+        dispatch({ type: LOGIN_ERROR, result: "kullanıcı adı veya şifre yanlış" });
       });
   };
 };

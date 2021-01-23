@@ -31,7 +31,7 @@ const Bakiye = (props) => {
       return (
         <tr className={transaction.amount > 0 ? "bg-green-200" : "bg-red-200"} key={transaction.id}>
           <Td>{moment(transaction.createdAt).format("DD MMM YYYY - HH:mm")}</Td>
-          <Td>{transaction.topic.title}</Td>
+          <Td>{transaction.budgetType === "CUSTOM" ? transaction.description : transaction.topic.title}</Td>
           <Td>{transaction.budgetType}</Td>
           <Td>{(transaction.amount / 100000000).toFixed(8)}</Td>
         </tr>

@@ -14,13 +14,14 @@ const CREATEPOST = gql`
     createPost(data: { description: $description, status: $status }, topic: $topic) {
       id
       description
+      totalEarnings
+      isEditable
+      likesCount
       user {
         id
         username
       }
-      likes {
-        id
-      }
+
       favorites {
         id
       }

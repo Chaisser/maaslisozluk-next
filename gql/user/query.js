@@ -28,6 +28,7 @@ const GETUSERTRANSACTIONS = gql`
     getTransactions {
       id
       amount
+      description
       budgetType
       createdAt
       topic {
@@ -48,6 +49,8 @@ const GETAUTHOR = gql`
       posts {
         id
         description
+        likesCount
+        totalEarnings
         user {
           id
           username
@@ -56,9 +59,7 @@ const GETAUTHOR = gql`
           id
           title
         }
-        likes {
-          id
-        }
+
         favorites {
           id
         }

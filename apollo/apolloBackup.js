@@ -14,7 +14,6 @@ const getClient = (token) => {
   });
 
   const client = new ApolloClient({
-    ssrMode: typeof window === "undefined",
     cache: cache,
     link: link,
     name: "interaktif-is",

@@ -4,12 +4,12 @@ import Template from "./Template";
 import Alert from "./../ui/Alert";
 import PublicRoute from "./PublicRoute";
 import InputMask from "react-input-mask";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createUser } from "./../store/actions/user";
 
 const Register = () => {
   const dispatch = useDispatch();
-
+  const registerError = useSelector((state) => state.user.errorRegister);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -49,6 +49,7 @@ const Register = () => {
       <PublicRoute>
         <form className="w-full text-center" onSubmit={onSubmit}>
           <div className="mb-4 text-xl font-semibold text-brand-500">kayıt ol</div>
+          {registerError && <Alert bg="red" title={registerError} />}
           {errorMessage && <Alert bg="red" title={errorMessage} />}
           <div className="mb-4">
             <div className="mb-4">
