@@ -10,7 +10,7 @@ const Aktivasyon = (props) => {
   return (
     <Template>
       <div className="col-span-9">
-        <Title title="Bakiye" />
+        <Title title="e-posta aktivasyon" />
         {props.result}
       </div>
     </Template>
