@@ -3,7 +3,8 @@ import Head from "next/head";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { CgChevronDoubleLeft, CgMediaLive, CgChevronDoubleRight, CgChevronLeft, CgChevronRight } from "react-icons/cg";
-
+import { useSubscription } from "@apollo/react-hooks";
+import { LIVEPOSTSUBSCRIPTION } from "./../../gql/post/subscription";
 import Template from "./../Template";
 import NewEntry from "./../../components/NewEntry";
 import Title from "./../../ui/Title";
@@ -27,6 +28,8 @@ const Konu = ({ topic }) => {
   const [description, setDescription] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [posts, setPosts] = useState(topic.posts);
+  const [livePosts, setLivePosts] = useState([]);
+  const [showLivePosts, setShowLivePosts] = useState(false);
   const user = useSelector((state) => state.user.token);
   const adblockStatus = useSelector((state) => state.adblocker.status);
 
@@ -36,11 +39,32 @@ const Konu = ({ topic }) => {
   const skip = (page - 1) * recordsPerPage;
   const totalPages = Math.ceil(totalPosts / recordsPerPage);
 
+  const { loading, error, data } = useSubscription(LIVEPOSTSUBSCRIPTION, {
+    variables: {
+      slug: topic.slug,
+    },
+    fetchPolicy: "network-only",
+  });
+
+  useEffect(() => {
+    console.log(data, "?");
+    if (data) {
+      const newData = [...livePosts, data.livePostSubscription.node].reverse();
+      setLivePosts((oldPosts) => newData);
+    }
+  }, [data]);
+
   useEffect(() => {
     setPage(1);
     setPosts(() => [...topic.posts]);
   }, [topic]);
 
+  useEffect(() => {
+    console.log("değişti");
+    setDescription("");
+    setShowLivePosts(false);
+    setLivePosts(() => []);
+  }, [topic]);
   useEffect(() => {
     getClient(user)
       .query({
@@ -106,15 +130,21 @@ const Konu = ({ topic }) => {
       <div className="col-span-7">
         <div className="mt-4">
           <div className="flex justify-between">
-            <Title title={topic.title} count={topic.postsCount} />
+            <Title title={topic.title} />
+
             <button
-              onClick={() => console.log("canlı başladı")}
+              onClick={() => setShowLivePosts(!showLivePosts)}
               className="flex items-center justify-end px-4 py-2 text-xs font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50"
             >
-              <CgMediaLive className="mr-2 text-xl text-red-500" /> canlı takip et
+              <CgMediaLive className="mr-2 text-xl text-red-500" /> {showLivePosts ? "takibi kapat" : "canlı takip et"}
             </button>
           </div>
 
+          {showLivePosts && (
+            <div className="w-full p-4 mt-4 mb-12 border border-red-800">
+              {renderPosts(livePosts, user, topic.title, false)}
+            </div>
+          )}
           <div id="posts">{renderPosts(posts, user, topic.title, false)}</div>
 
           <div className="flex justify-center mt-4">

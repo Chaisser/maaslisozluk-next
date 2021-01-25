@@ -3,7 +3,7 @@ const colors = require("tailwindcss/colors");
 module.exports = {
   purge: [],
   presets: [],
-  darkMode: "class", // or 'media' or 'class'
+  darkMode: "media", // or 'media' or 'class'
   theme: {
     screens: {
       sm: "640px",
@@ -15,12 +15,20 @@ module.exports = {
     colors: {
       transparent: "transparent",
       current: "currentColor",
-      brand: {
-        100: "#FDFDFB",
-        200: "#DEEA9E",
-        300: "#ACC649",
-        400: "#56584A",
-        500: "#2D2228",
+      default: {
+        100: "#41A5ED",
+        200: "#0D335D",
+        300: "#F5F5F5",
+        400: "#92B5BA",
+        500: "#FFFFFFF",
+      },
+      dark: {
+        100: "#414141",
+        200: "#E0E0E0",
+        300: "#1F2020",
+        400: "#AFAFAF",
+        500: "#F3F3F3",
+        600: "#18181B",
       },
       black: colors.black,
       white: colors.white,

@@ -1,16 +1,13 @@
 import { useEffect, useState } from "react";
 import { TRANSACTIONSUBSCRIPTION } from "./../gql/transaction/subscription";
+import { useSubscription } from "@apollo/react-hooks";
+
 import Template from "./Template";
 import getClient from "./../apollo/apollo";
 
 const Home = () => {
   const [transactions, setTransactions] = useState([]);
-
-  const data = getClient().subscribe({
-    query: TRANSACTIONSUBSCRIPTION,
-  });
-
-  console.log(data);
+  const { loading, error, data } = useSubscription(TRANSACTIONSUBSCRIPTION);
 
   return (
     <Template>

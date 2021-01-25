@@ -7,7 +7,6 @@ import facebook from "react-useanimations/lib/facebook";
 import twitter from "react-useanimations/lib/twitter";
 import moment from "moment";
 import Title from "./../ui/Title";
-import { GrApps } from "react-icons/gr";
 import { BiBitcoin } from "react-icons/bi";
 import { FiEdit } from "react-icons/fi";
 import parser from "./../utils/bbParser";
@@ -44,15 +43,28 @@ const Post = ({
   const facebookShareLink = encodeURI(`https://facebook.com/sharer.php?u=https://www.maaslisozluk.com/konu/${topic}`);
   return (
     <Fragment>
-      <div className="flex w-full">
+      <div className="p-2 border dark:border-dark-300">
         <div
-          className="flex-grow pb-4 my-4 text-base text-gray-900 whitespace-pre-line border-b border-gray-300 "
+          className="flex-grow pb-4 my-4 text-base text-gray-900 whitespace-pre-line "
           style={{ wordBreak: "break-word" }}
         >
           {showTopic && <Title title={topic} />}
           {description && wordCount < 150 ? (
-            <div>
-              <div>{parser.toReact(description)}</div>
+            <div className="grid grid-cols-12">
+              <div className="col-span-1">
+                <div className="flex items-center mb-2 rounded-r-full dark:bg-dark-300 dark:text-dark-100">
+                  <img src="https://storage.googleapis.com/cdn.maaslisozluk.com/happy.svg" width="50" />
+                  {token && <Like id={id} token={token} setLikesLength={setLikesLength} />}
+                </div>
+                <div className="mb-2">
+                  <img src="https://storage.googleapis.com/cdn.maaslisozluk.com/angry.svg" width="50" />
+                  {token && <Favorite id={id} token={token} setFavLength={setFavLength} favLength={favLength} />}
+                </div>
+                <div className="mb-2">
+                  <img src="https://storage.googleapis.com/cdn.maaslisozluk.com/flag.svg" width="50" />
+                </div>
+              </div>
+              <div className="col-span-11 dark:text-dark-200">{parser.toReact(description)}</div>
             </div>
           ) : (
             <div>
@@ -77,11 +89,8 @@ const Post = ({
                   </a>
                 </span>
               </div>
-
-              {token && <Like id={id} token={token} setLikesLength={setLikesLength} />}
-              {token && <Favorite id={id} token={token} setFavLength={setFavLength} favLength={favLength} />}
             </div>
-            <div className="flex items-center justify-end text-sm">
+            <div className="flex items-center justify-end text-sm dark:text-dark-200">
               <span className="flex items-center mr-4">
                 <span className="text-brand-400">{likesLength} beğeni </span>
               </span>
@@ -111,9 +120,6 @@ const Post = ({
                   </a>
                 </Link>
               )}
-              <span>
-                <GrApps />
-              </span>
             </div>
           </div>
         </div>

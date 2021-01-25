@@ -13,6 +13,7 @@ const initialState = {
   totalTopic: 0,
   topic: {},
   currentCategory: "",
+  currentCategoryTitle: "en yeniler",
   categoryRefresh: false,
 };
 
@@ -21,7 +22,13 @@ const categoryReducer = (state = initialState, action) => {
     case GET_CATEGORIES:
       return { ...state, categories: action.categories };
     case GET_TOPICS:
-      return { ...state, topics: action.topics, totalTopic: action.totalTopic };
+      return {
+        ...state,
+        topics: action.topics,
+        totalTopic: action.totalTopic,
+        currentCategory: action.currentCategory,
+        currentCategoryTitle: action.currentCategoryTitle,
+      };
     case GET_TOPIC:
       return { ...state, topic: action.topic };
     case CREATE_TOPIC:

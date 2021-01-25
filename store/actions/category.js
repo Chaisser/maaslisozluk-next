@@ -37,11 +37,13 @@ export const getCategories = (first) => {
   };
 };
 
-export const getTopics = (category, first, skip, orderBy, refetch) => {
+export const getTopics = (category, first, skip, orderBy, refetch, categoryTitle) => {
+  console.log(categoryTitle, "CATEGORY FROM ACTION");
   return async (dispatch, getState) => {
     if (getState().categories.categories.length !== 0 && !refetch) {
       return dispatch({ type: GET_TOPICS, topics: getState().categories.topics });
     }
+
     getClient(getState().user.token)
       .query({
         query: GETTOPICS,
@@ -53,7 +55,13 @@ export const getTopics = (category, first, skip, orderBy, refetch) => {
         },
       })
       .then((res) => {
-        dispatch({ type: GET_TOPICS, topics: res.data.topics.topics, totalTopic: res.data.topics.totalTopic });
+        dispatch({
+          type: GET_TOPICS,
+          topics: res.data.topics.topics,
+          totalTopic: res.data.topics.totalTopic,
+          currentCategory: category,
+          currentCategoryTitle: categoryTitle ? categoryTitle : "en yeniler",
+        });
       });
   };
 };

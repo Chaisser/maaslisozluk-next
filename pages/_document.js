@@ -10,6 +10,11 @@ class MyDocument extends Document {
     return (
       <Html class="light">
         <Head>
+          <link rel="preconnect" href="https://fonts.gstatic.com" />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap"
+            rel="stylesheet"
+          />
           <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`} />
           <script
             dangerouslySetInnerHTML={{
@@ -25,8 +30,10 @@ class MyDocument extends Document {
           />
         </Head>
         <body>
-          <Main />
-          <NextScript />
+          <div className="min-h-screen dark:bg-dark-600">
+            <Main />
+            <NextScript />
+          </div>
         </body>
       </Html>
     );

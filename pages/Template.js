@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategories, getTopics } from "./../store/actions/category";
 import { getCurrency } from "./../store/actions/currency";
@@ -15,7 +15,6 @@ const Template = ({ children, sidebarVisible = true }) => {
 
   useEffect(() => {
     detectAnyAdblocker().then((detected) => {
-      console.log("detected", detected);
       dispatch(getStatus(!!detected));
     });
   }, []);
@@ -37,7 +36,7 @@ const Template = ({ children, sidebarVisible = true }) => {
   }, []);
 
   return (
-    <Fragment>
+    <div className="bg-white dark:bg-dark-600">
       <Header />
       <div className="container mx-auto mt-4">
         <div className={sidebarVisible ? "grid grid-cols-12 gap-12" : "block"}>
@@ -49,7 +48,7 @@ const Template = ({ children, sidebarVisible = true }) => {
           {children}
         </div>
       </div>
-    </Fragment>
+    </div>
   );
 };
 

@@ -1,15 +1,21 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTopics } from "./../store/actions/category";
-import { CgChevronDoubleLeft, CgChevronDoubleRight, CgChevronLeft, CgChevronRight } from "react-icons/cg";
+import { HiOutlinePlus } from "react-icons/hi";
 import { BiRefresh } from "react-icons/bi";
+import { BsArrowLeft, BsArrowRight, BsArrowsAngleContract } from "react-icons/bs";
+
+import Link from "next/link";
 import Topic from "./Topic";
 import settings from "./../utils/settings";
 
 const SideTopics = () => {
   const dispatch = useDispatch();
   const topics = useSelector((state) => state.categories.topics);
+  const currentCategory = useSelector((state) => state.categories.currentCategory);
   const totalTopic = useSelector((state) => state.categories.totalTopic);
+
+  const currentCategoryTitle = useSelector((state) => state.categories.currentCategoryTitle);
   const recordsPerPage = settings.topicRecordsPerPage;
   const [first, setFirst] = useState(recordsPerPage);
   const [page, setPage] = useState(1);
@@ -33,38 +39,45 @@ const SideTopics = () => {
 
   return (
     <div>
-      <button
-        onClick={() => dispatch(getTopics(null, recordsPerPage, 0, "", true))}
-        className="flex justify-center w-full items-center rounded-md px-4 py-2 border border-gray-300 bg-white text-xs font-medium text-gray-700 hover:bg-gray-50"
-      >
-        <span className="text-lg mr-2">
-          <BiRefresh />
-        </span>
-        yenile
-      </button>
+      <div className="flex items-center justify-between">
+        <div className="my-2 dark:text-dark-200">{currentCategoryTitle}</div>
+        <div className="flex items-center">
+          <button
+            onClick={() => dispatch(getTopics(currentCategory, recordsPerPage, 0, "", true, currentCategoryTitle))}
+            className="dark:text-dark-200"
+          >
+            <BiRefresh className="mr-2 text-xl" />
+          </button>
 
+          <Link href="/yeni">
+            <a className="dark:text-dark-200">
+              <HiOutlinePlus className="mr-2 text-xl" />
+            </a>
+          </Link>
+        </div>
+      </div>
       {topics.length > 0 && renderTopics(topics)}
       <div className="flex justify-center mt-4">
-        <nav className="relative z-0 inline-flex shadow-sm -space-x-px" aria-label="Pagination">
+        <nav className="relative z-0 inline-flex -space-x-px shadow-sm" aria-label="Pagination">
           <button
             disabled={page === 1}
             onClick={() => {
               setPage(1);
             }}
-            className="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-xs font-medium text-gray-500 hover:bg-gray-50"
+            className="relative inline-flex items-center px-4 py-2 dark:text-dark-100"
           >
-            <CgChevronDoubleLeft />
+            <BsArrowLeft />
           </button>
           <button
             disabled={page === 1}
-            className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-xs font-medium text-gray-700 hover:bg-gray-50"
+            className="relative inline-flex items-center px-4 py-2 dark:text-dark-400"
             onClick={() => {
               setPage(page - 1);
             }}
           >
-            <CgChevronLeft />
+            geri
           </button>
-          <span className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-xs font-medium text-gray-700">
+          <span className="relative inline-flex items-center px-4 py-2 dark:text-dark-400">
             {page} / {totalPages}
           </span>
           <button
@@ -72,9 +85,9 @@ const SideTopics = () => {
             onClick={() => {
               setPage(page + 1);
             }}
-            className="hidden md:inline-flex relative items-center px-4 py-2 border border-gray-300 bg-white text-xs font-medium text-gray-700 hover:bg-gray-50"
+            className="relative inline-flex items-center px-4 py-2 dark:text-dark-400"
           >
-            <CgChevronRight />
+            ileri
           </button>
 
           <button
@@ -82,9 +95,9 @@ const SideTopics = () => {
             onClick={() => {
               setPage(totalPages);
             }}
-            className="hidden md:inline-flex relative items-center rounded-r-md px-4 py-2 border border-gray-300 bg-white text-xs font-medium text-gray-700 hover:bg-gray-50"
+            className="relative inline-flex items-center px-4 py-2 dark:text-dark-100"
           >
-            <CgChevronDoubleRight />
+            <BsArrowRight />
           </button>
         </nav>
       </div>
