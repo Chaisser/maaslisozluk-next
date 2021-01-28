@@ -1,6 +1,6 @@
 const Title = ({ title, count }) => {
   return (
-    <div className="text-xl text-brand-500 font-semibold mb-4">
+    <div className="mb-4 text-xl font-semibold text-default-100 dark:text-dark-500">
       {title} {count && `(${count})`}
     </div>
   );

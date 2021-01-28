@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser, getBudget } from "./../store/actions/user";
 import { getTopics } from "./../store/actions/category";
@@ -10,7 +10,7 @@ import Login from "./Login";
 
 const Header = () => {
   const dispatch = useDispatch();
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const recordsPerPage = settings.topicRecordsPerPage;
   const categories = useSelector((state) => state.categories.categories);
@@ -18,6 +18,14 @@ const Header = () => {
   const token = useSelector((state) => state.user.token);
   const user = useSelector((state) => state.user.user);
   const budget = useSelector((state) => state.user.budget);
+
+  useEffect(() => {
+    if (token) {
+      localStorage.setItem("token", token);
+      console.log(localStorage.getItem("token"));
+      console.log("token geldi");
+    }
+  }, [token]);
 
   if (categories.length === 0) {
     return <div>yükleniyor</div>;
@@ -55,9 +63,16 @@ const Header = () => {
       <div className="container mx-auto">
         <div className="grid grid-cols-12 py-3">
           <div className="flex flex-row items-center col-span-4">
-            <div>
+            <div className="hidden dark:block">
               <img
                 src="https://storage.googleapis.com/cdn.maaslisozluk.com/logo_dark.svg"
+                width="250"
+                alt="maaşlı sözlük logo"
+              />
+            </div>
+            <div className="dark:hidden">
+              <img
+                src="https://storage.googleapis.com/cdn.maaslisozluk.com/logo.svg"
                 width="250"
                 alt="maaşlı sözlük logo"
               />
@@ -65,7 +80,7 @@ const Header = () => {
             <div className="w-full mx-6">
               <input
                 type="search"
-                className="px-4 py-3 rounded-full dark:bg-dark-300"
+                className="px-4 py-2 border border-gray-200 rounded-full dark:bg-dark-300"
                 placeholder="başlık, #entry, @yazar"
               />
             </div>

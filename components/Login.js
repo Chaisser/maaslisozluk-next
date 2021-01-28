@@ -42,14 +42,8 @@ const Login = (props) => {
       setButtonDisabled(false);
     }
     setErrorMessage(data.errorMessage);
-    localStorage.setItem("token", data.token);
   }, [data]);
 
-  useEffect(() => {
-    if (token) {
-      props.closeModal();
-    }
-  }, [token]);
   const onSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage("");

@@ -7,7 +7,10 @@ import facebook from "react-useanimations/lib/facebook";
 import twitter from "react-useanimations/lib/twitter";
 import moment from "moment";
 import Title from "./../ui/Title";
-import { BiBitcoin } from "react-icons/bi";
+import { AiOutlineCalendar } from "react-icons/ai";
+import { IoLogoBitcoin } from "react-icons/io";
+import { RiUser3Line } from "react-icons/ri";
+
 import { FiEdit } from "react-icons/fi";
 import parser from "./../utils/bbParser";
 
@@ -51,20 +54,43 @@ const Post = ({
           {showTopic && <Title title={topic} />}
           {description && wordCount < 150 ? (
             <div className="grid grid-cols-12">
-              <div className="col-span-1">
-                <div className="flex items-center mb-2 rounded-r-full dark:bg-dark-300 dark:text-dark-100">
-                  <img src="https://storage.googleapis.com/cdn.maaslisozluk.com/happy.svg" width="50" />
-                  {token && <Like id={id} token={token} setLikesLength={setLikesLength} />}
+              <div className="col-span-1 border-r dark:border-dark-100">
+                <div className="flex items-center justify-center">
+                  {token && <Like id={id} token={token} setLikesLength={setLikesLength} likesLength={likesLength} />}
                 </div>
-                <div className="mb-2">
-                  <img src="https://storage.googleapis.com/cdn.maaslisozluk.com/angry.svg" width="50" />
+                <div className="flex items-center justify-center mt-2">
                   {token && <Favorite id={id} token={token} setFavLength={setFavLength} favLength={favLength} />}
                 </div>
-                <div className="mb-2">
-                  <img src="https://storage.googleapis.com/cdn.maaslisozluk.com/flag.svg" width="50" />
+              </div>
+              <div className="flex flex-col justify-between col-span-11 text-default-200 dark:text-dark-200">
+                <div className="pl-4">{parser.toReact(description)}</div>
+                <div className="flex items-center justify-end text-sm text-default-200 dark:text-dark-200">
+                  <span className="flex items-center mr-4">
+                    <IoLogoBitcoin className="mr-2" />
+                    <span className="text-brand-400">{(totalEarnings / 100000000).toFixed(8)}</span>
+                  </span>
+
+                  <span className="flex items-center mr-4">
+                    <AiOutlineCalendar className="mr-2" />
+                    {createdAt === updatedAt
+                      ? moment(createdAt).format("DD.MM.YYYY HH:mm")
+                      : `${moment(updatedAt).format("DD.MM.YYYY HH:mm")}*`}
+                  </span>
+                  <span className="flex items-center mr-4">
+                    <RiUser3Line className="mr-2" />
+                    <Link href={`/yazar/${author}`}>
+                      <a className="hover:text-brand-300 hover:underline">{author}</a>
+                    </Link>
+                  </span>
+                  {isEditable && isLoggedIn && (
+                    <Link href={`/duzenle/${id}`}>
+                      <a className="mr-4 cursor-pointer text-brand-500 hover:text-brand-400">
+                        <FiEdit />
+                      </a>
+                    </Link>
+                  )}
                 </div>
               </div>
-              <div className="col-span-11 dark:text-dark-200">{parser.toReact(description)}</div>
             </div>
           ) : (
             <div>
@@ -74,54 +100,6 @@ const Post = ({
               </div>
             </div>
           )}
-
-          <div className="flex justify-between mt-4 meta">
-            <div className="flex items-center">
-              <div className="flex mr-6 share">
-                <span className="mr-2">
-                  <a target="_blank" rel="noreferrer" href={facebookShareLink}>
-                    <UseAnimations size={25} strokeColor="#1877f2" animation={facebook} />
-                  </a>
-                </span>
-                <span>
-                  <a target="_blank" rel="noreferrer" href={twitterShareLink}>
-                    <UseAnimations size={25} strokeColor="#1DA1F2" animation={twitter} />
-                  </a>
-                </span>
-              </div>
-            </div>
-            <div className="flex items-center justify-end text-sm dark:text-dark-200">
-              <span className="flex items-center mr-4">
-                <span className="text-brand-400">{likesLength} beğeni </span>
-              </span>
-
-              <span className="flex items-center mr-4">
-                <span className="text-brand-400">{favLength} favori </span>
-              </span>
-
-              <span className="flex items-center mr-4">
-                <span className="text-brand-400">{(totalEarnings / 100000000).toFixed(8)}</span> <BiBitcoin />
-              </span>
-
-              <span className="mr-4">
-                {createdAt === updatedAt
-                  ? moment(createdAt).format("DD.MM.YYYY HH:mm")
-                  : `${moment(updatedAt).format("DD.MM.YYYY HH:mm")}*`}
-              </span>
-              <span className="mr-4">
-                <Link href={`/yazar/${author}`}>
-                  <a className="hover:text-brand-300 hover:underline">{author}</a>
-                </Link>
-              </span>
-              {isEditable && isLoggedIn && (
-                <Link href={`/duzenle/${id}`}>
-                  <a className="mr-4 cursor-pointer text-brand-500 hover:text-brand-400">
-                    <FiEdit />
-                  </a>
-                </Link>
-              )}
-            </div>
-          </div>
         </div>
       </div>
     </Fragment>

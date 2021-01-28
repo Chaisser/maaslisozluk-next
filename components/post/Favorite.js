@@ -4,6 +4,7 @@ import bookmark from "react-useanimations/lib/bookmark";
 import getClient from "./../../apollo/apollo";
 import { FAVORITEPOST } from "./../../gql/post/mutation";
 import { CHECKFAVORITE } from "./../../gql/post/query";
+import { RiBookmark3Line, RiBookmark3Fill } from "react-icons/ri";
 
 const Favorite = (props) => {
   const [isFavorited, setIsFavorited] = useState(false);
@@ -44,10 +45,11 @@ const Favorite = (props) => {
   }
 
   return (
-    <div className="like flex mr-6 items-center">
-      <button className="mr-2 text-3xl cursor-pointer" onClick={() => handleFavorite(props.id)}>
-        <UseAnimations reverse={isFavorited} size={25} strokeColor={`#56584A`} animation={bookmark} />
+    <div className="flex flex-col text-lg like">
+      <button className="cursor-pointer text-default-200 dark:text-dark-200" onClick={() => handleFavorite(props.id)}>
+        {isFavorited ? <RiBookmark3Fill /> : <RiBookmark3Line />}
       </button>
+      <span className="text-base text-center text-default-200 dark:text-dark-200">{props.favLength}</span>
     </div>
   );
 };

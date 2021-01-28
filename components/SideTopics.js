@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getTopics } from "./../store/actions/category";
 import { HiOutlinePlus } from "react-icons/hi";
 import { BiRefresh } from "react-icons/bi";
-import { BsArrowLeft, BsArrowRight, BsArrowsAngleContract } from "react-icons/bs";
+import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
+import Pagination from "./Pagination";
 
 import Link from "next/link";
 import Topic from "./Topic";
@@ -40,67 +41,25 @@ const SideTopics = () => {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <div className="my-2 dark:text-dark-200">{currentCategoryTitle}</div>
+        <div className="my-2 text-default-200 dark:text-dark-200">{currentCategoryTitle}</div>
         <div className="flex items-center">
           <button
             onClick={() => dispatch(getTopics(currentCategory, recordsPerPage, 0, "", true, currentCategoryTitle))}
-            className="dark:text-dark-200"
+            className="dark:text-dark-200 text-default-400"
           >
             <BiRefresh className="mr-2 text-xl" />
           </button>
 
           <Link href="/yeni">
-            <a className="dark:text-dark-200">
+            <a className="dark:text-dark-200 text-default-400">
               <HiOutlinePlus className="mr-2 text-xl" />
             </a>
           </Link>
         </div>
       </div>
       {topics.length > 0 && renderTopics(topics)}
-      <div className="flex justify-center mt-4">
-        <nav className="relative z-0 inline-flex -space-x-px shadow-sm" aria-label="Pagination">
-          <button
-            disabled={page === 1}
-            onClick={() => {
-              setPage(1);
-            }}
-            className="relative inline-flex items-center px-4 py-2 dark:text-dark-100"
-          >
-            <BsArrowLeft />
-          </button>
-          <button
-            disabled={page === 1}
-            className="relative inline-flex items-center px-4 py-2 dark:text-dark-400"
-            onClick={() => {
-              setPage(page - 1);
-            }}
-          >
-            geri
-          </button>
-          <span className="relative inline-flex items-center px-4 py-2 dark:text-dark-400">
-            {page} / {totalPages}
-          </span>
-          <button
-            disabled={page === totalPages}
-            onClick={() => {
-              setPage(page + 1);
-            }}
-            className="relative inline-flex items-center px-4 py-2 dark:text-dark-400"
-          >
-            ileri
-          </button>
 
-          <button
-            disabled={page === totalPages}
-            onClick={() => {
-              setPage(totalPages);
-            }}
-            className="relative inline-flex items-center px-4 py-2 dark:text-dark-100"
-          >
-            <BsArrowRight />
-          </button>
-        </nav>
-      </div>
+      <Pagination page={page} setPage={setPage} totalPages={totalPages} />
     </div>
   );
 };

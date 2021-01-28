@@ -11,7 +11,7 @@ export const getCurrency = () => {
       .query({
         query: gql`
           query {
-            currency {
+            currencies {
               id
               usDollar
               turkishLira
@@ -21,7 +21,7 @@ export const getCurrency = () => {
         `,
       })
       .then((res) => {
-        dispatch({ type: GET_CURRENCY, currency: res.data.currency });
+        dispatch({ type: GET_CURRENCY, currency: res.data.currencies });
       })
       .catch((err) => console.log(err, "ERROR FROM CURRENCY ACTION"));
   };

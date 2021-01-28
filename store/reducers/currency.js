@@ -1,7 +1,7 @@
 import { GET_CURRENCY } from "./../actions/currency";
 
 const initialState = {
-  currency: {},
+  currency: [],
 };
 
 const currencyReducer = (state = initialState, action) => {

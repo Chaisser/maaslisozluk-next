@@ -1,8 +1,5 @@
-import UseAnimations from "react-useanimations";
-import arrowUp from "react-useanimations/lib/arrowUpCircle";
-import arrowDown from "react-useanimations/lib/arrowDownCircle";
 import getClient from "./../../apollo/apollo";
-
+import { HiOutlineChevronUp, HiOutlineChevronDown } from "react-icons/hi";
 import { LIKEPOST } from "./../../gql/post/mutation";
 
 const Like = (props) => {
@@ -26,12 +23,19 @@ const Like = (props) => {
     return null;
   };
   return (
-    <div className="like flex mr-6">
-      <span className="mr-2 cursor-pointer" onClick={() => handleLikePost(props.id, "LIKE")}>
-        <UseAnimations size={25} strokeColor="#56584A" animation={arrowUp} />
+    <div className="flex flex-col text-lg like">
+      <span
+        className="cursor-pointer text-default-200 dark:text-dark-200"
+        onClick={() => handleLikePost(props.id, "LIKE")}
+      >
+        <HiOutlineChevronUp />
       </span>
-      <span className="cursor-pointer" onClick={() => handleLikePost(props.id, "DISLIKE")}>
-        <UseAnimations autoPlay={false} loop={false} size={25} strokeColor="#56584A" animation={arrowDown} />
+      <span className="text-base text-center text-default-200 dark:text-dark-200">{props.likesLength}</span>
+      <span
+        className="cursor-pointer text-default-200 dark:text-dark-200"
+        onClick={() => handleLikePost(props.id, "DISLIKE")}
+      >
+        <HiOutlineChevronDown />
       </span>
     </div>
   );

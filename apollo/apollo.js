@@ -15,7 +15,7 @@ const getClient = (token) => {
 
   const wsLink = process.browser
     ? new WebSocketLink({
-        uri: `wss://api.maaslisozluk.com`,
+        uri: process.env.WSS_URL,
         options: {
           reconnect: true,
         },
@@ -23,7 +23,7 @@ const getClient = (token) => {
     : null;
 
   const httplink = new HttpLink({
-    uri: "https://api.maaslisozluk.com",
+    uri: process.env.API_URL,
     headers,
   });
 
