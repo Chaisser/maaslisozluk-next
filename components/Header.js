@@ -7,11 +7,12 @@ import { IoPersonSharp, IoAddSharp, IoRefreshSharp } from "react-icons/io5";
 import settings from "./../utils/settings";
 import Link from "next/link";
 import Login from "./Login";
+import Register from "./Register";
 
 const Header = () => {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
-
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const recordsPerPage = settings.topicRecordsPerPage;
   const categories = useSelector((state) => state.categories.categories);
   const currentCategory = useSelector((state) => state.categories.currentCategory);
@@ -53,9 +54,16 @@ const Header = () => {
 
   const openModal = () => {
     setIsOpen(true);
+    setIsRegisterOpen(false);
   };
   const closeModal = () => {
     setIsOpen(false);
+    setIsRegisterOpen(false);
+  };
+
+  const openRegistrationModal = () => {
+    setIsOpen(false);
+    setIsRegisterOpen(true);
   };
 
   return (
@@ -63,20 +71,24 @@ const Header = () => {
       <div className="container mx-auto">
         <div className="grid grid-cols-12 py-3">
           <div className="flex flex-row items-center col-span-4">
-            <div className="hidden dark:block">
-              <img
-                src="https://storage.googleapis.com/cdn.maaslisozluk.com/logo_dark.svg"
-                width="250"
-                alt="maaşlı sözlük logo"
-              />
-            </div>
-            <div className="dark:hidden">
-              <img
-                src="https://storage.googleapis.com/cdn.maaslisozluk.com/logo.svg"
-                width="250"
-                alt="maaşlı sözlük logo"
-              />
-            </div>
+            <Link href="/">
+              <a>
+                <div className="hidden ">
+                  <img
+                    src="https://storage.googleapis.com/cdn.maaslisozluk.com/logo_dark.svg"
+                    width="250"
+                    alt="maaşlı sözlük logo"
+                  />
+                </div>
+                <div className="dark:hidden">
+                  <img
+                    src="https://storage.googleapis.com/cdn.maaslisozluk.com/logo.svg"
+                    width="250"
+                    alt="maaşlı sözlük logo"
+                  />
+                </div>
+              </a>
+            </Link>
             <div className="w-full mx-6">
               <input
                 type="search"
@@ -107,10 +119,13 @@ const Header = () => {
                 >
                   giriş yap
                 </button>
-                <button className="px-4 py-2 font-semibold rounded-r-full focus:outline-none dark:bg-dark-400 dark:text-dark-300">
+                <button
+                  onClick={openRegistrationModal}
+                  className="px-4 py-2 font-semibold rounded-r-full focus:outline-none dark:bg-dark-400 dark:text-dark-300"
+                >
                   kayıt ol
                 </button>
-
+                <Register closeModal={closeModal} isOpen={isRegisterOpen} />
                 <Login closeModal={closeModal} isOpen={isOpen} />
               </div>
             )}

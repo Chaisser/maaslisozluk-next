@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
 import getClient from "./../apollo/apollo";
 import Template from "./Template";
 import Title from "./../ui/Title";
@@ -13,9 +14,16 @@ import "moment/locale/tr";
 moment.locale("tr");
 
 const Bakiye = (props) => {
+  const router = useRouter();
   const [errorMessage, setErrorMessage] = useState("");
 
   const token = useSelector((state) => state.user.token);
+
+  useEffect(() => {
+    if (!token) {
+      router.push("/");
+    }
+  }, [token]);
 
   const renderTransactions = (transactions) => {
     if (transactions.length === 0) {
@@ -62,14 +70,13 @@ export async function getServerSideProps(context) {
   const token = getTokenFromCookie(context);
   if (!token) {
     context.res.statusCode = 302;
-    return context.res.setHeader("Location", `/login`);
+    return context.res.setHeader("Location", `/`);
   }
   try {
     const result = await getClient(token).query({
       query: GETUSERTRANSACTIONS,
     });
 
-    console.log(result, "RESULT FROM bakiye.js");
     return {
       props: {
         transactions: result.data.getTransactions,

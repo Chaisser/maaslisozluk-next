@@ -2,17 +2,15 @@ import { Fragment, useState } from "react";
 
 import { useSelector } from "react-redux";
 import Link from "next/link";
-import UseAnimations from "react-useanimations";
-import facebook from "react-useanimations/lib/facebook";
-import twitter from "react-useanimations/lib/twitter";
 import moment from "moment";
 import Title from "./../ui/Title";
 import { AiOutlineCalendar } from "react-icons/ai";
 import { IoLogoBitcoin } from "react-icons/io";
 import { RiUser3Line } from "react-icons/ri";
-
+import { AiOutlineShareAlt, AiOutlineFacebook, AiOutlineTwitter, AiOutlineWhatsApp } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 import parser from "./../utils/bbParser";
+import getSlug from "speakingurl";
 
 import Favorite from "./post/Favorite";
 import Like from "./post/Like";
@@ -35,15 +33,23 @@ const Post = ({
 
   const [favLength, setFavLength] = useState(favorites.length);
   const [likesLength, setLikesLength] = useState(likesCount);
+  const [showShareButtons, setShowShareButtons] = useState(false);
 
   const token = useSelector((state) => state.user.token);
 
   //[TO-DO: Harf sayısı kontrolü ve kelime bitişi kontrolü yap!]
   let wordCount = description.split(" ").length;
   const twitterShareLink = encodeURI(
-    `https://twitter.com/intent/tweet?text=${topic}+https://www.maaslisozluk.com/konu/${topic}&related=maaslisozluk,interaktifis`
+    `https://twitter.com/intent/tweet?text=${topic}+https://www.maaslisozluk.com/konu/${getSlug(topic, {
+      lang: "tr",
+    })}&related=maaslisozluk,interaktifis`
   );
-  const facebookShareLink = encodeURI(`https://facebook.com/sharer.php?u=https://www.maaslisozluk.com/konu/${topic}`);
+  const facebookShareLink = encodeURI(
+    `https://facebook.com/sharer.php?u=https://www.maaslisozluk.com/konu/${getSlug(topic, { lang: "tr" })}`
+  );
+  const whatsappShareLink = encodeURI(
+    `https://api.whatsapp.com/send?text=https://www.maaslisozluk.com/konu/${getSlug(topic, { lang: "tr" })} `
+  );
   return (
     <Fragment>
       <div className="p-2 border dark:border-dark-300">
@@ -81,6 +87,28 @@ const Post = ({
                     <Link href={`/yazar/${author}`}>
                       <a className="hover:text-brand-300 hover:underline">{author}</a>
                     </Link>
+                  </span>
+                  <span className="flex items-center">
+                    <span
+                      onClick={() => setShowShareButtons(!showShareButtons)}
+                      className={`${showShareButtons && "border-r dark:border-dark-400 pr-4 mr-4"}`}
+                    >
+                      <AiOutlineShareAlt />
+                    </span>
+                    {showShareButtons && (
+                      <div className="flex items-center">
+                        {" "}
+                        <a href={facebookShareLink} target="_blank" rel="noreferrer noopener" className="mr-4">
+                          <AiOutlineFacebook />
+                        </a>
+                        <a href={twitterShareLink} target="_blank" rel="noreferrer noopener" className="mr-4">
+                          <AiOutlineTwitter />
+                        </a>
+                        <a href={whatsappShareLink} target="_blank" rel="noreferrer noopener" className="mr-4">
+                          <AiOutlineWhatsApp />
+                        </a>
+                      </div>
+                    )}
                   </span>
                   {isEditable && isLoggedIn && (
                     <Link href={`/duzenle/${id}`}>

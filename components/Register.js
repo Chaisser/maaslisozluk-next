@@ -1,13 +1,32 @@
 import { useState } from "react";
 import validator from "validator";
-import Template from "./Template";
 import Alert from "./../ui/Alert";
-import PublicRoute from "./PublicRoute";
 import InputMask from "react-input-mask";
 import { useDispatch, useSelector } from "react-redux";
 import { createUser } from "./../store/actions/user";
+import { GrClose } from "react-icons/gr";
 
-const Register = () => {
+import Modal from "react-modal";
+
+const customStyles = {
+  overlay: {
+    background: "rgba(0,0,0,0.8)",
+    backdropFilter: "blur(2px)",
+  },
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    border: "none",
+    marginRight: "-50%",
+    padding: "0px",
+    minWidth: "600px",
+    transform: "translate(-50%, -50%)",
+  },
+};
+
+const Register = (props) => {
   const dispatch = useDispatch();
   const registerError = useSelector((state) => state.user.errorRegister);
   const [email, setEmail] = useState("");
@@ -44,16 +63,34 @@ const Register = () => {
 
     dispatch(createUser(username, email, city, phoneNumber, password));
   };
+
   return (
-    <Template sidebarVisible={false}>
-      <PublicRoute>
-        <form className="w-full text-center" onSubmit={onSubmit}>
-          <div className="mb-4 text-xl font-semibold text-brand-500">kayıt ol</div>
+    <Modal
+      isOpen={props.isOpen}
+      onAfterOpen={() => console.log("modal açıldı")}
+      onRequestClose={props.closeModal}
+      style={customStyles}
+      ariaHideApp={true}
+      contentLabel="Login"
+    >
+      <div className="">
+        <div className="relative dark:bg-dark-600">
+          <div className="absolute right-3 top-3">
+            <button className="text-xl dark:text-dark-200" onClick={props.closeModal}>
+              <GrClose />
+            </button>
+          </div>
+          <div className="absolute w-full text-center bottom-3">
+            <div className="mb-4 text-xl font-semibold dark:text-dark-400">kayıt ol</div>
+          </div>
+          <div className="flex justify-center py-32 text-2xl dark:text-white">Maaslisozluk</div>
+        </div>
+        <form className="w-full px-24 pt-12 pb-8 text-center dark:bg-dark-300" onSubmit={onSubmit}>
           {registerError && <Alert bg="red" title={registerError} />}
           {errorMessage && <Alert bg="red" title={errorMessage} />}
           <div className="mb-4">
             <div className="mb-4">
-              <label className="text-sm font-semibold text-gray-700">kullanıcı adı</label>
+              <label className="block mb-1 text-sm font-semibold dark:text-dark-400">kullanıcı adı</label>
               <input
                 className="w-full px-3 py-2 text-center text-gray-800 rounded-md outline-none dark:bg-dark-200"
                 type="text"
@@ -65,7 +102,7 @@ const Register = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="text-sm font-semibold text-gray-700">e-posta</label>
+              <label className="block mb-1 text-sm font-semibold dark:text-dark-400">e-posta</label>
               <input
                 className="w-full px-3 py-2 text-center text-gray-800 rounded-md outline-none dark:bg-dark-200"
                 type="email"
@@ -78,7 +115,7 @@ const Register = () => {
             </div>
           </div>
           <div className="mb-4">
-            <label className="text-sm font-semibold text-gray-700">telefon</label>
+            <label className="block mb-1 text-sm font-semibold dark:text-dark-400">telefon</label>
             <InputMask
               mask="0 (999) 999 99 99"
               className="w-full px-3 py-2 text-center text-gray-800 rounded-md outline-none dark:bg-dark-200"
@@ -90,6 +127,7 @@ const Register = () => {
             />
           </div>
           <div className="mb-4">
+            <label className="block mb-1 text-sm font-semibold dark:text-dark-400">şehir</label>
             <input
               className="w-full px-3 py-2 text-center text-gray-800 rounded-md outline-none dark:bg-dark-200"
               type="text"
@@ -101,6 +139,7 @@ const Register = () => {
           </div>
 
           <div className="mb-4">
+            <label className="block mb-1 text-sm font-semibold dark:text-dark-400">şifre</label>
             <input
               className="w-full px-3 py-2 text-center text-gray-800 rounded-md outline-none dark:bg-dark-200"
               type="password"
@@ -118,8 +157,8 @@ const Register = () => {
             </button>
           </div>
         </form>
-      </PublicRoute>
-    </Template>
+      </div>
+    </Modal>
   );
 };
 

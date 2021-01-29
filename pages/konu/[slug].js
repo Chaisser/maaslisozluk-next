@@ -133,7 +133,7 @@ const Konu = ({ topic }) => {
 
           <Pagination page={page} setPage={setPage} totalPages={totalPages} />
           {user ? (
-            <div>
+            <div className="mt-4">
               <Title title="eklemek istedikleriniz" />
               {errorMessage && <Alert title={errorMessage} bg="red" />}
               <NewEntry description={description} setDescription={setDescription} />
@@ -142,7 +142,7 @@ const Konu = ({ topic }) => {
                   <div className="mr-2">
                     <button
                       onClick={() => onSubmit("ACTIVE")}
-                      className="px-3 py-2 rounded-md bg-brand-500 text-brand-300"
+                      className="px-3 py-2 rounded-md bg-brand-500 text-brand-300 dark:bg-dark-100 dark:text-dark-400 dark:hover:bg-dark-300 "
                       type="button"
                     >
                       gönder
@@ -151,7 +151,7 @@ const Konu = ({ topic }) => {
                   <div>
                     <button
                       onClick={() => onSubmit("DRAFT")}
-                      className="px-3 py-2 rounded-md bg-brand-500 text-brand-300"
+                      className="px-3 py-2 rounded-md bg-brand-500 text-brand-300 dark:bg-dark-100 dark:text-dark-400 dark:hover:bg-dark-300 "
                       type="button"
                     >
                       sakla
