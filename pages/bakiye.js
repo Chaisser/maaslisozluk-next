@@ -35,7 +35,6 @@ const Bakiye = (props) => {
     }
 
     return transactions.map((transaction) => {
-      console.log(transaction, "TT");
       return (
         <tr className={transaction.amount > 0 ? "bg-green-200" : "bg-red-200"} key={transaction.id}>
           <Td>{moment(transaction.createdAt).format("DD MMM YYYY - HH:mm")}</Td>

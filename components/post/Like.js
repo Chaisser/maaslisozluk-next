@@ -4,6 +4,7 @@ import { LIKEPOST } from "./../../gql/post/mutation";
 
 const Like = (props) => {
   const handleLikePost = async (postId, likeType) => {
+    props.setPostError("");
     if (props.token) {
       try {
         const result = await getClient(props.token).mutate({
@@ -17,7 +18,7 @@ const Like = (props) => {
           props.setLikesLength(result.data.likePost.likesCount);
         }
       } catch (err) {
-        console.log(err, "ERR FROM LIKE");
+        props.setPostError(err.message);
       }
     }
     return null;

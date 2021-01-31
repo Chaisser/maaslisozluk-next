@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import validator from "validator";
 import Alert from "./../ui/Alert";
 import InputMask from "react-input-mask";
+import passwordStrength from "check-password-strength";
 import { useDispatch, useSelector } from "react-redux";
 import { createUser } from "./../store/actions/user";
 import { GrClose } from "react-icons/gr";
@@ -31,16 +32,26 @@ const Register = (props) => {
   const registerError = useSelector((state) => state.user.errorRegister);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordCondition, setPasswordCondition] = useState("Weak");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [username, setUsername] = useState("");
   const [city, setCity] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  useEffect(() => {
+    if (password) {
+      setPasswordCondition(passwordStrength(password).value);
+    } else {
+      setPasswordCondition("Weak");
+    }
+  }, [password]);
   const onSubmit = async (e) => {
     e.preventDefault();
-
     setErrorMessage("");
 
+    if (passwordCondition === "Weak") {
+      return setErrorMessage("zayıf şifre kullanılamaz");
+    }
     if (username.length < 4) {
       return setErrorMessage("kullanıcı adı 4 haneden küçük olamaz");
     }
@@ -63,11 +74,9 @@ const Register = (props) => {
 
     dispatch(createUser(username, email, city, phoneNumber, password));
   };
-
   return (
     <Modal
       isOpen={props.isOpen}
-      onAfterOpen={() => console.log("modal açıldı")}
       onRequestClose={props.closeModal}
       style={customStyles}
       ariaHideApp={true}
@@ -149,6 +158,19 @@ const Register = (props) => {
               onChange={(e) => setPassword(e.target.value)}
               value={password}
             />
+            <div className="flex justify-center -mt-2">
+              <span
+                className={`text-xs text-right px-4 py-1 rounded-lg dark:text-white ${
+                  passwordCondition === "Weak" && "bg-red-500"
+                }  ${passwordCondition === "Medium" && "bg-yellow-600"} ${
+                  passwordCondition === "Strong" && "bg-green-600"
+                }`}
+              >
+                {passwordCondition === "Weak" && "zayıf"}
+                {passwordCondition === "Medium" && "idare eder"}
+                {passwordCondition === "Strong" && "çok iyi"}
+              </span>
+            </div>
           </div>
 
           <div className="mb-4">

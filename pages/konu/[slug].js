@@ -23,7 +23,7 @@ moment.locale("tr");
 
 const recordsPerPage = 10;
 
-const Konu = ({ topic }) => {
+const Konu = ({ topic, postError }) => {
   const [page, setPage] = useState(1);
   const [description, setDescription] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -47,18 +47,20 @@ const Konu = ({ topic }) => {
   }, [topic]);
 
   useEffect(() => {
-    getClient(user)
-      .query({
-        query: GETTOPIC,
-        variables: {
-          slug: topic.slug,
-          first: recordsPerPage,
-          skip,
-        },
-      })
-      .then((res) => {
-        setPosts((oldPosts) => [...res.data.topic.posts]);
-      });
+    if (!postError) {
+      getClient(user)
+        .query({
+          query: GETTOPIC,
+          variables: {
+            slug: topic.slug,
+            first: recordsPerPage,
+            skip,
+          },
+        })
+        .then((res) => {
+          setPosts((oldPosts) => [...res.data.topic.posts]);
+        });
+    }
   }, [page]);
 
   const onSubmit = async (status) => {
@@ -111,7 +113,7 @@ const Konu = ({ topic }) => {
       </Head>
       <div className="col-span-7">
         <div className="mt-4">
-          <Pagination page={page} setPage={setPage} totalPages={totalPages} />
+          {totalPages > 1 && <Pagination page={page} setPage={setPage} totalPages={totalPages} />}
           <div className="flex justify-between">
             <Title title={topic.title} />
 
@@ -131,36 +133,38 @@ const Konu = ({ topic }) => {
 
           <div id="posts">{renderPosts(posts, user, topic.title, false)}</div>
 
-          <Pagination page={page} setPage={setPage} totalPages={totalPages} />
+          {totalPages > 1 && <Pagination page={page} setPage={setPage} totalPages={totalPages} />}
           {user ? (
-            <div className="mt-4">
-              <Title title="eklemek istedikleriniz" />
-              {errorMessage && <Alert title={errorMessage} bg="red" />}
-              <NewEntry description={description} setDescription={setDescription} />
-              <div className="flex justify-between mb-4">
-                <div className="flex ">
-                  <div className="mr-2">
-                    <button
-                      onClick={() => onSubmit("ACTIVE")}
-                      className="px-3 py-2 rounded-md bg-brand-500 text-brand-300 dark:bg-dark-100 dark:text-dark-400 dark:hover:bg-dark-300 "
-                      type="button"
-                    >
-                      gönder
-                    </button>
+            !postError && (
+              <div className="mt-4">
+                <Title title="eklemek istedikleriniz" />
+                {errorMessage && <Alert title={errorMessage} bg="red" />}
+                <NewEntry description={description} setDescription={setDescription} />
+                <div className="flex justify-between mb-4">
+                  <div className="flex ">
+                    <div className="mr-2">
+                      <button
+                        onClick={() => onSubmit("ACTIVE")}
+                        className="px-3 py-2 rounded-md bg-brand-500 text-brand-300 dark:bg-dark-100 dark:text-dark-400 dark:hover:bg-dark-300 "
+                        type="button"
+                      >
+                        gönder
+                      </button>
+                    </div>
+                    <div>
+                      <button
+                        onClick={() => onSubmit("DRAFT")}
+                        className="px-3 py-2 rounded-md bg-brand-500 text-brand-300 dark:bg-dark-100 dark:text-dark-400 dark:hover:bg-dark-300 "
+                        type="button"
+                      >
+                        sakla
+                      </button>
+                    </div>
                   </div>
-                  <div>
-                    <button
-                      onClick={() => onSubmit("DRAFT")}
-                      className="px-3 py-2 rounded-md bg-brand-500 text-brand-300 dark:bg-dark-100 dark:text-dark-400 dark:hover:bg-dark-300 "
-                      type="button"
-                    >
-                      sakla
-                    </button>
-                  </div>
+                  <div className="text-sm text-gray-500">{description.length} karakter</div>
                 </div>
-                <div className="text-sm text-gray-500">{description.length} karakter</div>
               </div>
-            </div>
+            )
           ) : (
             <div></div>
           )}
@@ -168,10 +172,14 @@ const Konu = ({ topic }) => {
       </div>
 
       <div className="col-span-2">
-        {adblockStatus && (
+        {adblockStatus ? (
           <div className="p-4 mb-4 text-center text-white bg-red-800">
-            Kazancımızı reklamlardan elde ediyoruz. Yazarlarımıza destek olmak için reklam engelleyicinizi lütfen
+            kazancımızı reklamlardan elde ediyoruz. yazarlarımıza destek olmak için reklam engelleyicinizi lütfen
             kapatın
+          </div>
+        ) : (
+          <div className="p-4 mb-4 text-center text-white bg-green-800">
+            yazarlarımıza destek olduğunuz için teşekkürler!
           </div>
         )}
         <Currency />
@@ -187,10 +195,11 @@ export async function getServerSideProps(context) {
     query: GETTOPIC,
     variables: {
       slug: context.params.slug,
-      first: recordsPerPage,
+      first: 10,
       skip: 0,
     },
   });
+
   if (result.data.topic) {
     return {
       props: {
@@ -206,6 +215,8 @@ export async function getServerSideProps(context) {
       topic: {
         title: context.params.slug,
         posts: [],
+        postsCount: 0,
+        slug: context.params.slug,
       },
     },
   };

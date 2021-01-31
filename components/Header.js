@@ -23,8 +23,6 @@ const Header = () => {
   useEffect(() => {
     if (token) {
       localStorage.setItem("token", token);
-      console.log(localStorage.getItem("token"));
-      console.log("token geldi");
     }
   }, [token]);
 

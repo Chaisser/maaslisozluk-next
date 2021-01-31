@@ -1,9 +1,11 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 
 import { useSelector } from "react-redux";
 import Link from "next/link";
 import moment from "moment";
 import Title from "./../ui/Title";
+import Alert from "./../ui/Alert";
+
 import { AiOutlineCalendar } from "react-icons/ai";
 import { IoLogoBitcoin } from "react-icons/io";
 import { RiUser3Line } from "react-icons/ri";
@@ -34,11 +36,23 @@ const Post = ({
   const [favLength, setFavLength] = useState(favorites.length);
   const [likesLength, setLikesLength] = useState(likesCount);
   const [showShareButtons, setShowShareButtons] = useState(false);
+  const [postError, setPostError] = useState("");
 
   const token = useSelector((state) => state.user.token);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setPostError("");
+    }, 1500);
+  }, [postError]);
+
   //[TO-DO: Harf sayısı kontrolü ve kelime bitişi kontrolü yap!]
   let wordCount = description.split(" ").length;
+
+  const newDescription = description.replace(/[^\s]+/g, function (match) {
+    return match.indexOf("http") === 0 ? match : match.toLowerCase();
+  });
+
   const twitterShareLink = encodeURI(
     `https://twitter.com/intent/tweet?text=${topic}+https://www.maaslisozluk.com/konu/${getSlug(topic, {
       lang: "tr",
@@ -62,14 +76,22 @@ const Post = ({
             <div className="grid grid-cols-12">
               <div className="col-span-1 border-r dark:border-dark-100">
                 <div className="flex items-center justify-center">
-                  {token && <Like id={id} token={token} setLikesLength={setLikesLength} likesLength={likesLength} />}
+                  {token && (
+                    <Like
+                      setPostError={setPostError}
+                      id={id}
+                      token={token}
+                      setLikesLength={setLikesLength}
+                      likesLength={likesLength}
+                    />
+                  )}
                 </div>
                 <div className="flex items-center justify-center mt-2">
                   {token && <Favorite id={id} token={token} setFavLength={setFavLength} favLength={favLength} />}
                 </div>
               </div>
               <div className="flex flex-col justify-between col-span-11 text-default-200 dark:text-dark-200">
-                <div className="pl-4">{parser.toReact(description)}</div>
+                <div className="pl-4">{parser.toReact(newDescription)}</div>
                 <div className="flex items-center justify-end text-sm text-default-200 dark:text-dark-200">
                   <span className="flex items-center mr-4">
                     <IoLogoBitcoin className="mr-2" />
@@ -112,7 +134,7 @@ const Post = ({
                   </span>
                   {isEditable && isLoggedIn && (
                     <Link href={`/duzenle/${id}`}>
-                      <a className="mr-4 cursor-pointer text-brand-500 hover:text-brand-400">
+                      <a className="ml-4 cursor-pointer text-brand-500 hover:text-brand-400">
                         <FiEdit />
                       </a>
                     </Link>
@@ -129,6 +151,7 @@ const Post = ({
             </div>
           )}
         </div>
+        {postError && <Alert bg="red" title={postError} />}
       </div>
     </Fragment>
   );

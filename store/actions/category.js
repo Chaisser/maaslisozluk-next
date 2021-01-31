@@ -38,7 +38,6 @@ export const getCategories = (first) => {
 };
 
 export const getTopics = (category, first, skip, orderBy, refetch, categoryTitle) => {
-  console.log(categoryTitle, "CATEGORY FROM ACTION");
   return async (dispatch, getState) => {
     if (getState().categories.categories.length !== 0 && !refetch) {
       return dispatch({ type: GET_TOPICS, topics: getState().categories.topics });
@@ -67,7 +66,6 @@ export const getTopics = (category, first, skip, orderBy, refetch, categoryTitle
 };
 
 export const getTopic = (slug, limit, skip, refetch) => {
-  console.log(getState().user.token);
   return async (dispatch, getState) => {
     getClient(getState().user.token)
       .query({
@@ -75,7 +73,6 @@ export const getTopic = (slug, limit, skip, refetch) => {
         variables: { slug },
       })
       .then((res) => {
-        console.log(res);
         if (res.data) {
           dispatch({ type: GET_TOPIC, topic: res.data.topic });
         }
@@ -95,7 +92,6 @@ export const createTopic = (title, description, category) => {
         },
       })
       .then((res) => {
-        console.log(res);
         dispatch({ type: CREATE_TOPIC, topic: res.data.createTopic.id });
       });
   };

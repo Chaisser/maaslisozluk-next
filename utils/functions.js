@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Post from "./../components/Post";
 import cookieParser from "cookie-parser";
 
@@ -6,23 +7,31 @@ export const renderPosts = (posts, user, topic, showTopic) => {
     return <div className="mb-4">konu hakkında yazılan bir yazı yok.</div>;
   }
 
-  return posts.map((post) => {
+  return posts.map((post, i) => {
     return (
-      <Post
-        id={post.id}
-        key={post.id}
-        totalEarnings={post.totalEarnings}
-        favorites={post.favorites}
-        likesCount={post.likesCount}
-        isLoggedIn={user}
-        description={post.description}
-        author={post.user ? post.user.username : null}
-        topic={topic ? topic : post.topic ? post.topic.title : null}
-        showTopic={showTopic}
-        isEditable={post.isEditable}
-        createdAt={post.createdAt}
-        updatedAt={post.updatedAt}
-      />
+      <Fragment key={post.id}>
+        {i === 3 && (
+          <div className="my-4">
+            <a target="_blank" className="text-center" href="https://freebitco.in/?r=4859108">
+              <img src="https://static1.freebitco.in/banners/728x90-3.png" alt="free bitcoin" className="mx-auto" />
+            </a>
+          </div>
+        )}
+        <Post
+          id={post.id}
+          totalEarnings={post.totalEarnings}
+          favorites={post.favorites}
+          likesCount={post.likesCount}
+          isLoggedIn={user}
+          description={post.description}
+          author={post.user ? post.user.username : null}
+          topic={topic ? topic : post.topic ? post.topic.title : null}
+          showTopic={showTopic}
+          isEditable={post.isEditable}
+          createdAt={post.createdAt}
+          updatedAt={post.updatedAt}
+        />
+      </Fragment>
     );
   });
 };

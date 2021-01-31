@@ -18,7 +18,6 @@ const Aktivasyon = (props) => {
 };
 
 export async function getServerSideProps(context) {
-  console.log(context.query, "CTX QUERY");
   try {
     const result = await getClient().mutate({
       mutation: CHECKEMAILACTIVATIONCODE,

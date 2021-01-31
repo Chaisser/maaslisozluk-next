@@ -3,6 +3,7 @@ import Spoiler from "./../components/Spoiler";
 import PostLink from "./../components/PostLink";
 import PostRefer from "./../components/PostRefer";
 import PostSecret from "./../components/PostSecret";
+import PlainText from "./../components/PlainText";
 
 class GizliTag extends Tag {
   toReact() {
@@ -30,7 +31,7 @@ class ReferTag extends Tag {
 
 class OtherTag extends Tag {
   toReact() {
-    return this.getContent(true);
+    return <PlainText text={this.getContent(true)} />;
   }
 }
 

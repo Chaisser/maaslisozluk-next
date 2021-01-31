@@ -7,7 +7,7 @@ import getClient from "./../apollo/apollo";
 
 const Home = () => {
   const [transactions, setTransactions] = useState([]);
-  const { loading, error, data } = useSubscription(TRANSACTIONSUBSCRIPTION);
+  // const { loading, error, data } = useSubscription(TRANSACTIONSUBSCRIPTION);
 
   return (
     <Template>

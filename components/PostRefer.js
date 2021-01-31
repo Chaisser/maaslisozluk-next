@@ -5,7 +5,7 @@ const PostRefer = ({ text }) => {
     <span className="outline-none">
       bkz:{" "}
       <Link href={`/konu/${slug(text.trim())}`}>
-        <a className="text-brand-300 hover:text-brand-400">{text.trim()}</a>
+        <a className="text-brand-300 hover:text-brand-400">{text.toLowerCase().trim()}</a>
       </Link>
     </span>
   );

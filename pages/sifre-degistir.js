@@ -1,19 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import getClient from "./../apollo/apollo";
 import Template from "./Template";
 import Title from "./../ui/Title";
 import Alert from "./../ui/Alert";
+import passwordStrength from "check-password-strength";
 import { RESETPASSWORD, CHECKPASSWORDACTIVATIONCODE } from "./../gql/user/mutation";
 
 const Aktivasyon = (props) => {
   const [errorMessage, setErrorMessage] = useState(props.result !== "success" && "geçersiz kod");
+  const [passwordCondition, setPasswordCondition] = useState("Weak");
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  const [passwordSuccessMessage, setPasswordSuccessMessage] = useState("");
+
+  useEffect(() => {
+    if (password) {
+      setPasswordCondition(passwordStrength(password).value);
+    } else {
+      setPasswordCondition("Weak");
+    }
+  }, [password]);
+
   const handleChangePassword = async (e) => {
     e.preventDefault();
 
     setPasswordErrorMessage("");
+
+    if (passwordCondition === "Weak") {
+      return setPasswordErrorMessage("zayıf şifre kullanılamaz");
+    }
 
     if (!password) {
       return setPasswordErrorMessage("şifre girilmesi gereklidir");
@@ -43,7 +59,7 @@ const Aktivasyon = (props) => {
       if (result.data.resetPassword.result) {
         setPassword("");
         setRePassword("");
-        setPasswordErrorMessage("değişti");
+        setPasswordSuccessMessage("şifreniz başarıyla değiştirilmiştir");
       }
     } catch (error) {
       setPasswordErrorMessage(error.message);
@@ -61,26 +77,40 @@ const Aktivasyon = (props) => {
           <div>
             <Title title="yeni şifre oluştur" />
 
-            {passwordErrorMessage && <Alert title={passwordErrorMessage} bg="red" />}
-            <form onSubmit={handleChangePassword}>
+            <form onSubmit={handleChangePassword} className="sm:w-1/2 md:w-2/4">
+              {passwordErrorMessage && <Alert title={passwordErrorMessage} bg="red" />}
+              {passwordSuccessMessage && <Alert title={passwordSuccessMessage} bg="green" />}
               <div className="mb-4">
                 <label className="text-sm font-semibold text-gray-700">yeni şifre</label>
                 <div className="mt-1">
                   <input
-                    className="w-full px-3 py-2 text-gray-800 bg-gray-200 rounded-md outline-none table-auto sm:w-1/2 md:w-2/4"
+                    className="w-full px-3 py-2 text-gray-800 bg-gray-200 rounded-md outline-none table-auto "
                     type="password"
                     required
                     placeholder="yeni şifre"
                     onChange={(e) => setPassword(e.target.value)}
                     value={password}
                   />
+                  <div className="flex justify-center -mt-2">
+                    <span
+                      className={`text-xs text-right px-4 py-1 rounded-lg dark:text-white ${
+                        passwordCondition === "Weak" && "bg-red-500"
+                      }  ${passwordCondition === "Medium" && "bg-yellow-600"} ${
+                        passwordCondition === "Strong" && "bg-green-600"
+                      }`}
+                    >
+                      {passwordCondition === "Weak" && "zayıf"}
+                      {passwordCondition === "Medium" && "idare eder"}
+                      {passwordCondition === "Strong" && "çok iyi"}
+                    </span>
+                  </div>
                 </div>
               </div>
               <div className="mb-4">
                 <label className="text-sm font-semibold text-gray-700">yeni şifre (tekrar)</label>
                 <div className="mt-1">
                   <input
-                    className="w-full px-3 py-2 text-gray-800 bg-gray-200 rounded-md outline-none table-auto sm:w-1/2 md:w-2/4"
+                    className="w-full px-3 py-2 text-gray-800 bg-gray-200 rounded-md outline-none table-auto"
                     type="password"
                     required
                     placeholder="yeni şifre (tekrar)"

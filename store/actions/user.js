@@ -27,9 +27,9 @@ export const createUser = (username, email, city, phoneNumber, password) => {
       .mutate({
         mutation: CREATEUSER,
         variables: {
-          username,
-          email,
-          phoneNumber,
+          username: username.trim(),
+          email: email.trim(),
+          phoneNumber: phoneNumber.trim(),
           city,
           password,
         },

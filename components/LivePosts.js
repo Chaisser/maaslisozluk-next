@@ -13,13 +13,11 @@ const GetLivePosts = (props) => {
     fetchPolicy: "no-cache",
   });
 
-  console.log(data);
   useEffect(() => {
     setLivePosts(() => []);
     return () => setLivePosts(() => []);
   }, []);
   useEffect(() => {
-    console.log(data);
     if (data) {
       const newData = [...livePosts, data.livePostSubscription.node].reverse();
       setLivePosts((oldPosts) => newData);

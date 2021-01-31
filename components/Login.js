@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import validator from "validator";
 import Alert from "./../ui/Alert";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "./../store/actions/user";
 import { GrClose } from "react-icons/gr";
-
+import { SENDFORGETPASSWORDCODE } from "./../gql/user/mutation";
 import Modal from "react-modal";
+import getClient from "./../apollo/apollo";
 
 const customStyles = {
   overlay: {
@@ -36,12 +36,19 @@ const Login = (props) => {
   const [twoFactorCode, setTwoFactorCode] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [showLogin, setShowLogin] = useState(true);
+
+  //Change Password
+  const [forgetEmail, setForgetEmail] = useState("");
+  const [forgetErrorMessage, setForgetErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [forgetButtonDisabled, setForgetButtonDisabled] = useState(false);
 
   useEffect(() => {
-    if (data.errorMessage) {
+    if (data.errorLogin) {
       setButtonDisabled(false);
     }
-    setErrorMessage(data.errorMessage);
+    setErrorMessage(data.errorLogin);
   }, [data]);
 
   const onSubmit = async (e) => {
@@ -63,10 +70,38 @@ const Login = (props) => {
     dispatch(loginUser(email, password));
   };
 
+  const onForgetSubmit = async (e) => {
+    e.preventDefault();
+    setForgetErrorMessage("");
+
+    if (validator.isEmpty(forgetEmail)) {
+      return setForgetErrorMessage("lütfen e-posta adresinizi girin");
+    }
+
+    if (!validator.isEmail(forgetEmail)) {
+      return setForgetErrorMessage("lütfen geçerli bir e-posta adresi girin");
+    }
+    setForgetButtonDisabled(true);
+
+    try {
+      const result = getClient().mutate({
+        mutation: SENDFORGETPASSWORDCODE,
+        variables: {
+          email: forgetEmail,
+        },
+      });
+      setForgetEmail("");
+      setSuccessMessage("böyle bir hesap varsa şifre sıfırlama talimatı e-posta adresinize gönderilmiştir");
+    } catch (error) {
+      setForgetErrorMessage(error.message);
+      setForgetEmail("");
+      setForgetButtonDisabled(true);
+    }
+  };
+
   return (
     <Modal
       isOpen={props.isOpen}
-      onAfterOpen={() => console.log("modal açıldı")}
       onRequestClose={props.closeModal}
       style={customStyles}
       ariaHideApp={true}
@@ -80,54 +115,93 @@ const Login = (props) => {
             </button>
           </div>
           <div className="absolute w-full text-center bottom-3">
-            <div className="mb-4 text-xl font-semibold dark:text-dark-400">üye girişi</div>
+            <div className="mb-4 text-xl font-semibold dark:text-dark-400">
+              {showLogin ? "üye girişi" : "şifremi unuttum"}
+            </div>
           </div>
           <div className="flex justify-center py-32 text-2xl dark:text-white">Maaslisozluk</div>
         </div>
-        <form className="w-full px-24 pt-12 pb-8 text-center dark:bg-dark-300" onSubmit={onSubmit}>
-          {loginError && <Alert bg="red" title={loginError} />}
-          {errorMessage && <Alert bg="red" title={errorMessage} />}
-          <div className="mb-4">
-            <input
-              className="w-full px-3 py-2 text-center text-gray-800 rounded-md outline-none dark:bg-dark-200"
-              type="email"
-              name="email"
-              required
-              placeholder="e-posta"
-              onChange={(e) => setEmail(e.target.value.toLowerCase().trim())}
-              value={email}
-            />
-          </div>
-          <div className="mb-4">
-            <input
-              className="w-full px-3 py-2 text-center text-gray-800 rounded-md outline-none dark:bg-dark-200"
-              type="password"
-              required
-              name="password"
-              placeholder="şifre"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-            />
-          </div>
+        {showLogin && (
+          <form className="w-full px-24 pt-12 pb-8 text-center dark:bg-dark-300" onSubmit={onSubmit}>
+            {loginError && <Alert bg="red" title={loginError} />}
+            <div className="mb-4">
+              <input
+                className="w-full px-3 py-2 text-center text-gray-800 rounded-md outline-none dark:bg-dark-200"
+                type="email"
+                name="email"
+                required
+                placeholder="e-posta"
+                onChange={(e) => setEmail(e.target.value.toLowerCase().trim())}
+                value={email}
+              />
+            </div>
+            <div className="mb-4">
+              <input
+                className="w-full px-3 py-2 text-center text-gray-800 rounded-md outline-none dark:bg-dark-200"
+                type="password"
+                required
+                name="password"
+                placeholder="şifre"
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+              />
+            </div>
 
-          <div className="w-full mx-auto">
-            <div className="flex items-center justify-between mb-4">
-              <button
-                disabled={buttonDisabled}
-                className="px-5 py-1 rounded-full dark:bg-dark-200 dark:text-dark-600"
-                type="submit"
-              >
-                giriş yap
-              </button>
+            <div className="w-full mx-auto">
+              <div className="flex items-center justify-between mb-4">
+                <button
+                  disabled={buttonDisabled}
+                  className="px-5 py-1 rounded-full dark:bg-dark-200 dark:text-dark-600"
+                  type="submit"
+                >
+                  giriş yap
+                </button>
 
-              <div className="text-center">
-                <Link href="/sifremi-unuttum">
-                  <a className="hover:text-gray-500 dark:text-dark-400">şifremi unuttum!</a>
-                </Link>
+                <div className="text-center">
+                  <button onClick={() => setShowLogin(false)}>
+                    <a className="hover:text-gray-500 dark:text-dark-400">şifremi unuttum!</a>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        </form>
+          </form>
+        )}
+        {!showLogin && (
+          <form className="w-full px-24 pt-12 pb-8 text-center dark:bg-dark-300" onSubmit={onForgetSubmit}>
+            {forgetErrorMessage && <Alert bg="red" title={forgetErrorMessage} />}
+
+            {successMessage && <Alert bg="green" title={successMessage} />}
+            <div className="mb-4">
+              <input
+                className="w-full px-3 py-2 text-center text-gray-800 bg-gray-200 rounded-md outline-none "
+                type="email"
+                name="email"
+                required
+                placeholder="e-posta"
+                onChange={(e) => setForgetEmail(e.target.value.toLowerCase().trim())}
+                value={forgetEmail}
+              />
+            </div>
+
+            <div className="w-full mx-auto">
+              <div className="flex items-center justify-between mb-4">
+                <button
+                  disabled={forgetButtonDisabled}
+                  className="px-5 py-1 rounded-full dark:bg-dark-200 dark:text-dark-600"
+                  type="submit"
+                >
+                  şifremi sıfırla
+                </button>
+
+                <div className="text-center">
+                  <button onClick={() => setShowLogin(true)}>
+                    <a className="hover:text-gray-500 dark:text-dark-400">giriş yap</a>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        )}
       </div>
     </Modal>
   );
