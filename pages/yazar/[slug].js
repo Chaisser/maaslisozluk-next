@@ -22,7 +22,7 @@ const Author = (props) => {
         <div className="text-brand-400 text-sm">
           {props.author.topicsCount} konu <span className="text-brand-300">|</span> yazı {props.author.postsCount} yazı
         </div>
-        {renderPosts(props.author.posts, user, null, true)}
+        {renderPosts(props.author.posts, user, null, true, true)}
       </div>
     </Template>
   );

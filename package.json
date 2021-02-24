@@ -54,5 +54,11 @@
     "time-ago": "^0.2.1",
     "validator": "^13.5.2",
     "ws": "^7.4.2"
+  },
+  "prettier": {
+    "arrowParens": "always",
+    "printWidth": 80,
+    "singleQuote": false,
+    "jsxSingleQuote": false
   }
 }
