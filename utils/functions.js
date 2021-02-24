@@ -1,8 +1,8 @@
 import { Fragment } from "react";
 import Post from "./../components/Post";
-import cookieParser from "cookie-parser";
+// import cookieParser from "cookie-parser";
 
-export const renderPosts = (posts, user, topic, showTopic) => {
+export const renderPosts = (posts, user, topic, showTopic, link) => {
   if (posts.length === 0) {
     return <div className="mb-4">konu hakkında yazılan bir yazı yok.</div>;
   }
@@ -12,8 +12,16 @@ export const renderPosts = (posts, user, topic, showTopic) => {
       <Fragment key={post.id}>
         {i === 3 && (
           <div className="my-4">
-            <a target="_blank" className="text-center" href="https://freebitco.in/?r=4859108">
-              <img src="https://static1.freebitco.in/banners/728x90-3.png" alt="free bitcoin" className="mx-auto" />
+            <a
+              target="_blank"
+              className="text-center"
+              href="https://freebitco.in/?r=4859108"
+            >
+              <img
+                src="https://static1.freebitco.in/banners/728x90-3.png"
+                alt="free bitcoin"
+                className="mx-auto"
+              />
             </a>
           </div>
         )}
@@ -30,6 +38,7 @@ export const renderPosts = (posts, user, topic, showTopic) => {
           isEditable={post.isEditable}
           createdAt={post.createdAt}
           updatedAt={post.updatedAt}
+          link={link}
         />
       </Fragment>
     );
@@ -37,7 +46,9 @@ export const renderPosts = (posts, user, topic, showTopic) => {
 };
 
 export const getTokenFromCookie = (context) => {
-  const getCookies = context.req ? { cookie: context.req.headers["cookie"] } : undefined;
+  const getCookies = context.req
+    ? { cookie: context.req.headers["cookie"] }
+    : undefined;
   const cookies = getCookies.cookie;
   let token = null;
 

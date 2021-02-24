@@ -30,6 +30,7 @@ const Post = ({
   totalEarnings,
   favorites,
   isEditable = false,
+  link = false
 }) => {
   const [readMore, setReadMore] = useState(false);
 
@@ -71,7 +72,7 @@ const Post = ({
           className="flex-grow pb-4 my-4 text-base text-gray-900 whitespace-pre-line "
           style={{ wordBreak: "break-word" }}
         >
-          {showTopic && <Title title={topic} />}
+          {showTopic && <Title title={topic} link={link} />}
           {description && wordCount < 150 ? (
             <div className="grid grid-cols-12">
               <div className="col-span-1 border-r dark:border-dark-100">
