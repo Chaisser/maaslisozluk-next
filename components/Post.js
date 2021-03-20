@@ -30,7 +30,7 @@ const Post = ({
   totalEarnings,
   favorites,
   isEditable = false,
-  link = false
+  link = false,
 }) => {
   const [readMore, setReadMore] = useState(false);
 
@@ -69,7 +69,7 @@ const Post = ({
     <Fragment>
       <div className="p-2 border dark:border-dark-300">
         <div
-          className="flex-grow pb-4 my-4 text-base text-gray-900 whitespace-pre-line "
+          className="flex-grow pb-4 my-4 text-base whitespace-pre-line dark:text-gray-100"
           style={{ wordBreak: "break-word" }}
         >
           {showTopic && <Title title={topic} link={link} />}
@@ -120,7 +120,6 @@ const Post = ({
                     </span>
                     {showShareButtons && (
                       <div className="flex items-center">
-                        {" "}
                         <a href={facebookShareLink} target="_blank" rel="noreferrer noopener" className="mr-4">
                           <AiOutlineFacebook />
                         </a>
@@ -145,9 +144,72 @@ const Post = ({
             </div>
           ) : (
             <div>
-              <div className={` ${!readMore && "h-36 overflow-hidden"}`}>{parser.toReact(description)}</div>
+              <div className={` ${!readMore && "h-36 overflow-hidden"}`}>
+                {parser.toReact(description)}
+                <div className="flex items-center justify-end mt-2 text-sm text-default-200 dark:text-dark-200">
+                  <span className="flex items-center mr-4">
+                    <IoLogoBitcoin className="mr-2" />
+                    <span className="text-brand-400">{(totalEarnings / 100000000).toFixed(8)}</span>
+                  </span>
+
+                  <span className="flex items-center mr-4">
+                    <AiOutlineCalendar className="mr-2" />
+                    {createdAt === updatedAt
+                      ? moment(createdAt).format("DD.MM.YYYY HH:mm")
+                      : `${moment(updatedAt).format("DD.MM.YYYY HH:mm")}*`}
+                  </span>
+                  <span className="flex items-center mr-4">
+                    <RiUser3Line className="mr-2" />
+                    <Link href={`/yazar/${author}`}>
+                      <a className="hover:text-brand-300 hover:underline">{author}</a>
+                    </Link>
+                  </span>
+                  <span className="flex items-center">
+                    <span
+                      onClick={() => setShowShareButtons(!showShareButtons)}
+                      className={`${showShareButtons && "border-r dark:border-dark-400 pr-4 mr-4"}`}
+                    >
+                      <AiOutlineShareAlt />
+                    </span>
+                    {showShareButtons && (
+                      <div className="flex items-center">
+                        <a href={facebookShareLink} target="_blank" rel="noreferrer noopener" className="mr-4">
+                          <AiOutlineFacebook />
+                        </a>
+                        <a href={twitterShareLink} target="_blank" rel="noreferrer noopener" className="mr-4">
+                          <AiOutlineTwitter />
+                        </a>
+                        <a href={whatsappShareLink} target="_blank" rel="noreferrer noopener" className="mr-4">
+                          <AiOutlineWhatsApp />
+                        </a>
+                      </div>
+                    )}
+                  </span>
+                  {isEditable && isLoggedIn && (
+                    <Link href={`/duzenle/${id}`}>
+                      <a className="ml-4 cursor-pointer text-brand-500 hover:text-brand-400">
+                        <FiEdit />
+                      </a>
+                    </Link>
+                  )}
+                </div>
+              </div>
               <div className="mt-2 underline cursor-pointer" onClick={() => setReadMore(!readMore)}>
-                {!readMore ? "devamını oku" : "kısalt"}
+                {!readMore ? (
+                  <div className="flex justify-between">
+                    <div>devamını oku</div>
+                    <div className='text-sm'>
+                      <span className="flex items-center mr-4">
+                        <RiUser3Line className="mr-2" />
+                        <Link href={`/yazar/${author}`}>
+                          <a className="hover:text-brand-300 hover:underline">{author}</a>
+                        </Link>
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  "kısalt"
+                )}
               </div>
             </div>
           )}

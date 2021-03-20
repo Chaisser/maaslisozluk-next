@@ -4,7 +4,7 @@ import Post from "./../components/Post";
 
 export const renderPosts = (posts, user, topic, showTopic, link) => {
   if (posts.length === 0) {
-    return <div className="mb-4">konu hakkında yazılan bir yazı yok.</div>;
+    return <div className="mb-4 dark:text-gray-100">konu hakkında yazılan bir yazı yok.</div>;
   }
 
   return posts.map((post, i) => {

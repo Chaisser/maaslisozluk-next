@@ -57,7 +57,7 @@
   },
   "prettier": {
     "arrowParens": "always",
-    "printWidth": 80,
+    "printWidth": 120,
     "singleQuote": false,
     "jsxSingleQuote": false
   }
