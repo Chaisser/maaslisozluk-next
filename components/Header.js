@@ -128,7 +128,7 @@ const Header = () => {
               </div>
             )}
             {token && (
-              <div className="flex items-center">
+              <div className="flex items-center dark:text-gray-100">
                 <div className="flex items-center mx-2 outline-none">
                   <span className="flex items-center outline-none">
                     <button onClick={() => dispatch(getBudget())} className="focus:outline-none">
