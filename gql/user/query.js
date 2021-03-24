@@ -58,6 +58,7 @@ const GETAUTHOR = gql`
         topic {
           id
           title
+          slug
         }
 
         favorites {

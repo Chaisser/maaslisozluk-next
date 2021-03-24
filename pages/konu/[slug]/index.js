@@ -1,22 +1,22 @@
 import { useEffect, useState } from "react";
-
+import { VscLoading } from "react-icons/vsc";
 import Head from "next/head";
 import { useSelector } from "react-redux";
 import moment from "moment";
-import Currency from "./../../components/Currency";
+import Currency from "./../../../components/Currency";
 
 import { CgMediaLive } from "react-icons/cg";
-import Template from "./../Template";
-import NewEntry from "./../../components/NewEntry";
-import Pagination from "./../../components/Pagination";
-import LivePosts from "./../../components/LivePosts";
+import Template from "./../../Template";
+import NewEntry from "./../../../components/NewEntry";
+import Pagination from "./../../../components/Pagination";
+import LivePosts from "./../../../components/LivePosts";
 
-import Title from "./../../ui/Title";
-import Alert from "./../../ui/Alert";
-import { renderPosts, getTokenFromCookie } from "./../../utils/functions";
-import getClient from "./../../apollo/apollo";
-import { GETTOPIC } from "../../gql/topic/query";
-import { CREATEPOST } from "../../gql/topic/mutation";
+import Title from "./../../../ui/Title";
+import Alert from "./../../../ui/Alert";
+import { renderPosts, getTokenFromCookie } from "./../../../utils/functions";
+import getClient from "./../../../apollo/apollo";
+import { GETTOPIC } from "../../../gql/topic/query";
+import { CREATEPOST } from "../../../gql/topic/mutation";
 import "moment/locale/tr";
 
 moment.locale("tr");
@@ -96,7 +96,15 @@ const Konu = ({ topic, postError }) => {
   };
 
   if (!topic.title) {
-    return <Template>yükleniyor</Template>;
+    return (
+      <Template>
+        <div className="flex items-center justify-center">
+          <span className="animate-spin">
+            <VscLoading />
+          </span>
+        </div>
+      </Template>
+    );
   }
 
   return (
@@ -131,7 +139,7 @@ const Konu = ({ topic, postError }) => {
             </div>
           )}
 
-          <div id="posts">{renderPosts(posts, user, topic.title, false)}</div>
+          <div id="posts">{renderPosts(posts, user, topic.title, false, "", topic.slug)}</div>
 
           {totalPages > 1 && <Pagination page={page} setPage={setPage} totalPages={totalPages} />}
           {user ? (

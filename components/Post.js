@@ -31,6 +31,7 @@ const Post = ({
   favorites,
   isEditable = false,
   link = false,
+  topicSlug,
 }) => {
   const [readMore, setReadMore] = useState(false);
 
@@ -114,12 +115,15 @@ const Post = ({
                   <span className="text-brand-400">{(totalEarnings / 100000000).toFixed(8)}</span>
                 </span>
 
-                <span className="flex items-center mr-4">
-                  <AiOutlineCalendar className="mr-2" />
-                  {createdAt === updatedAt
-                    ? moment(createdAt).format("DD.MM.YYYY HH:mm")
-                    : `${moment(updatedAt).format("DD.MM.YYYY HH:mm")}*`}
-                </span>
+                <Link href={`/konu/${topicSlug}/${id}`}>
+                  <a className="flex items-center mr-4 hover:underline">
+                    <AiOutlineCalendar className="mr-2" />
+
+                    {createdAt === updatedAt
+                      ? moment(createdAt).format("DD.MM.YYYY HH:mm")
+                      : `${moment(updatedAt).format("DD.MM.YYYY HH:mm")}*`}
+                  </a>
+                </Link>
                 <span className="flex items-center mr-4">
                   <RiUser3Line className="mr-2" />
                   <Link href={`/yazar/${author}`}>

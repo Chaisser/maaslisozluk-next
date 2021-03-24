@@ -5,10 +5,22 @@ const GETPOST = gql`
     post(id: $id) {
       id
       description
+      isEditable
+      createdAt
+      updatedAt
+      likesCount
+      totalEarnings
       topic {
         id
         title
         slug
+      }
+      user {
+        id
+        username
+      }
+      favorites {
+        id
       }
     }
   }
