@@ -8,6 +8,7 @@ import PrivateRoute from "./PrivateRoute";
 import NewEntry from "./../components/NewEntry";
 import Alert from "./../ui/Alert";
 import settings from "./../utils/settings";
+import Title from "./../ui/Title";
 import { getTopics } from "../store/actions/category";
 
 const Yeni = (props) => {
@@ -61,7 +62,7 @@ const Yeni = (props) => {
     <Template>
       <div className="col-span-9">
         <PrivateRoute>
-          <div className="text-xl text-brand-500 font-semibold mb-4">yeni başlık oluştur</div>
+          <Title title="yeni başlık oluştur" />
           <form onSubmit={onSubmit}>
             {errorMessage && <Alert title={errorMessage} bg="red" />}
             <div className="mb-4">
@@ -69,7 +70,9 @@ const Yeni = (props) => {
                 categories.map((c) => (
                   <span
                     key={c.id}
-                    className={`border cursor-pointer mr-2 px-2 py-1 ${c.id === category && "bg-green-300"}`}
+                    className={`border cursor-pointer mr-2 px-2 py-1 ${
+                      c.id === category ? "bg-green-300" : "bg-dark-400"
+                    }`}
                     onClick={() => setCategory(c.id)}
                   >
                     {c.title}
@@ -78,18 +81,21 @@ const Yeni = (props) => {
             </div>
             <div className="mb-4">
               <input
-                className="bg-gray-200 text-gray-800 py-2 px-3 rounded-md w-full outline-none"
+                className="w-full px-3 py-2 text-gray-800 bg-gray-200 rounded-md outline-none"
                 onChange={(e) => setTitle(e.target.value.toLowerCase().slice(0, settings.maxTopicChar))}
                 value={title}
                 placeholder="konu"
               />
-              <div className="text-xs mt-2">
+              <div className="mt-2 text-xs text-dark-400">
                 {title.length} / {settings.maxTopicChar} karakter
               </div>
             </div>
             <NewEntry description={description} setDescription={setDescription} />
             <div className="mb-4">
-              <button className="bg-brand-500 text-brand-300 rounded-md px-3 py-2" type="submit">
+              <button
+                className="px-3 py-2 rounded-md bg-brand-500 text-brand-300 dark:bg-dark-100 dark:text-dark-400 dark:hover:bg-dark-300 "
+                type="submit"
+              >
                 kaydet
               </button>
             </div>

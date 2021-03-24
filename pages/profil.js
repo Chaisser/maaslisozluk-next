@@ -189,7 +189,7 @@ const Profil = ({ userInformation }) => {
       <div className="col-span-9">
         <Title title="profil" />
         <div className="mb-4">
-          <label className="text-sm font-semibold text-gray-700">e-posta</label>
+          <label className="text-sm font-semibold text-gray-700 dark:text-dark-400">e-posta</label>
           <div className="flex w-full mt-1 rounded-md shadow-sm md:w-1/2">
             <span
               className={`inline-flex items-center px-3 py-2 text-sm text-gray-500 border border-r-0 border-gray-300 rounded-l-md  ${
@@ -227,7 +227,7 @@ const Profil = ({ userInformation }) => {
           </div>
         </div>
         <div className="mb-4">
-          <label className="text-sm font-semibold text-gray-700">telefon</label>
+          <label className="text-sm font-semibold text-gray-700 dark:text-dark-400">telefon</label>
           <div className="flex w-full mt-1 rounded-md shadow-sm md:w-1/2">
             <span
               className={`inline-flex items-center px-3 py-2 text-sm text-gray-500 border border-r-0 border-gray-300 rounded-l-md  ${
@@ -270,7 +270,7 @@ const Profil = ({ userInformation }) => {
         </div>
         <div className="mb-4">
           <div>
-            <label className="text-sm font-semibold text-gray-700">şehir</label>
+            <label className="text-sm font-semibold text-gray-700 dark:text-dark-400">şehir</label>
           </div>
           <div className="mt-1">
             <input
@@ -284,19 +284,26 @@ const Profil = ({ userInformation }) => {
           </div>
         </div>
         <div className="mb-4">
-          <button onClick={handleUpdateUser} className="px-3 py-2 rounded-md bg-brand-500 text-brand-300" type="submit">
+          <button
+            onClick={handleUpdateUser}
+            className="px-3 py-2 rounded-md bg-brand-500 text-brand-300 dark:bg-dark-100 dark:text-dark-400 dark:hover:bg-dark-300"
+            type="submit"
+          >
             güncelle
           </button>
         </div>
 
         <div className="mt-12">
           <Title title="şifre değiştir" />
+          <small className="block mb-2 -mt-2 text-xs dark:text-dark-400">
+            şifreniz en az 6 karakterden oluşmalı ve en az bir harf ve bir rakam bulunmalıdır.
+          </small>
         </div>
         <div className="sm:w-1/2 md:w-2/4">
           {passwordErrorMessage && <Alert title={passwordErrorMessage} bg="red" />}
           <form onSubmit={handleChangePassword}>
             <div className="mb-4">
-              <label className="text-sm font-semibold text-gray-700">mevcut şifre</label>
+              <label className="text-sm font-semibold text-gray-700 dark:text-dark-400">mevcut şifre</label>
               <div className="mt-1">
                 <input
                   className="w-full px-3 py-2 text-gray-800 bg-gray-200 rounded-md outline-none table-auto "
@@ -309,7 +316,7 @@ const Profil = ({ userInformation }) => {
               </div>
             </div>
             <div className="mb-4">
-              <label className="text-sm font-semibold text-gray-700">yeni şifre</label>
+              <label className="text-sm font-semibold text-gray-700 dark:text-dark-400">yeni şifre</label>
               <div className="mt-1">
                 <input
                   className="w-full px-3 py-2 text-gray-800 bg-gray-200 rounded-md outline-none table-auto "
@@ -320,22 +327,24 @@ const Profil = ({ userInformation }) => {
                   value={password}
                 />
               </div>
-              <div className="flex justify-center -mt-2">
-                <span
-                  className={`text-xs text-right px-4 py-1 rounded-lg dark:text-white ${
-                    passwordCondition === "Weak" && "bg-red-500"
-                  }  ${passwordCondition === "Medium" && "bg-yellow-600"} ${
-                    passwordCondition === "Strong" && "bg-green-600"
-                  }`}
-                >
-                  {passwordCondition === "Weak" && "zayıf"}
-                  {passwordCondition === "Medium" && "idare eder"}
-                  {passwordCondition === "Strong" && "çok iyi"}
-                </span>
-              </div>
+              {password && (
+                <div className="flex justify-center -mt-2">
+                  <span
+                    className={`text-xs text-right px-4 py-1 rounded-lg dark:text-white ${
+                      passwordCondition === "Weak" && "bg-red-500"
+                    }  ${passwordCondition === "Medium" && "bg-yellow-600"} ${
+                      passwordCondition === "Strong" && "bg-green-600"
+                    }`}
+                  >
+                    {passwordCondition === "Weak" && "zayıf"}
+                    {passwordCondition === "Medium" && "idare eder"}
+                    {passwordCondition === "Strong" && "çok iyi"}
+                  </span>
+                </div>
+              )}
             </div>
             <div className="mb-4">
-              <label className="text-sm font-semibold text-gray-700">yeni şifre (tekrar)</label>
+              <label className="text-sm font-semibold text-gray-700 dark:text-dark-400">yeni şifre (tekrar)</label>
               <div className="mt-1">
                 <input
                   className="w-full px-3 py-2 text-gray-800 bg-gray-200 rounded-md outline-none table-auto "
@@ -348,7 +357,10 @@ const Profil = ({ userInformation }) => {
               </div>
             </div>
             <div className="mb-4">
-              <button className="px-3 py-2 rounded-md bg-brand-500 text-brand-300" type="submit">
+              <button
+                className="px-3 py-2 rounded-md bg-brand-500 text-brand-300 dark:bg-dark-100 dark:text-dark-400 dark:hover:bg-dark-300"
+                type="submit"
+              >
                 şifre değiştir
               </button>
             </div>

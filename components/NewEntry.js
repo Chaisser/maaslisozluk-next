@@ -34,7 +34,7 @@ const NewEntry = ({ description, setDescription }) => {
       </div>
       <textarea
         style={{ minHeight: "120px" }}
-        className="w-full px-3 py-2 text-gray-800 bg-gray-200 rounded-md outline-none dark:placeholder-gray-500 dark:bg-dark-400 dark:text-dark-600"
+        className="w-full px-3 py-2 text-gray-800 rounded-md outline-none dark:placeholder-gray-500 dark:bg-dark-400 dark:text-dark-600"
         value={description}
         rows="5"
         onChange={(e) => setDescription(e.target.value)}

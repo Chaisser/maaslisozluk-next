@@ -29,16 +29,27 @@ const Bakiye = (props) => {
     if (transactions.length === 0) {
       return (
         <tr>
-          <td colSpan="4">Hesapta hareket bulunmamıştır.</td>
+          <Td colSpan="4">Hesapta hareket bulunmamıştır.</Td>
         </tr>
       );
     }
 
     return transactions.map((transaction) => {
       return (
-        <tr className={transaction.amount > 0 ? "bg-green-200" : "bg-red-200"} key={transaction.id}>
+        <tr
+          className={
+            transaction.amount > 0
+              ? "bg-green-200 dark:bg-green-900 dark:text-green-400"
+              : "bg-red-200 dark:bg-red-900 dark:text-red-600"
+          }
+          key={transaction.id}
+        >
           <Td>{moment(transaction.createdAt).format("DD MMM YYYY - HH:mm")}</Td>
-          <Td>{transaction.budgetType === "CUSTOM" ? transaction.description : transaction.topic.title}</Td>
+          <Td>
+            {transaction.budgetType === "CUSTOM"
+              ? transaction.description
+              : transaction.topic.title}
+          </Td>
           <Td>{transaction.budgetType}</Td>
           <Td>{(transaction.amount / 100000000).toFixed(8)}</Td>
         </tr>
@@ -51,7 +62,7 @@ const Bakiye = (props) => {
         <Title title="Bakiye" />
         <table className="min-w-full leading-normal">
           <thead>
-            <tr>
+            <tr className="bg-red-600 dark:bg-dark-600 dark:text-dark-400">
               <Th>tarih</Th>
               <Th>konu</Th>
               <Th>işlem</Th>

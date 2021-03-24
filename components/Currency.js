@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { Line } from "react-chartjs-2";
 import moment from "moment";
+import formatMoney from "./../utils/formatMoney";
 import "moment/locale/tr";
 
 const Currency = () => {
@@ -39,9 +40,9 @@ const Currency = () => {
       <div className="absolute bottom-0 left-0 w-full dark:text-dark-500">
         <div className="p-1 text-xs font-bold text-center">
           {currency.length === 5 > 0 && currency[3]["turkishLira"] > currency[4]["turkishLira"] ? (
-            <div className="dark:text-red-400">↓ {currency[4]["turkishLira"].toFixed(2)} ₺</div>
+            <div className="dark:text-red-400">↓ {formatMoney(currency[4]["turkishLira"], "TRY")} ₺</div>
           ) : (
-            <div className="dark:text-green-400">↑ {currency[4]["turkishLira"].toFixed(2)} ₺</div>
+            <div className="dark:text-green-400">↑ {formatMoney(currency[4]["turkishLira"], "TRY")} ₺</div>
           )}
         </div>
       </div>

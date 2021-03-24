@@ -55,7 +55,10 @@ const Duzenle = (props) => {
 
           <NewEntry description={description} setDescription={setDescription} />
           <div className="mb-4">
-            <button className="px-3 py-2 rounded-md bg-brand-500 text-brand-300" type="submit">
+            <button
+              className="px-3 py-2 rounded-md bg-brand-500 text-brand-300 dark:bg-dark-100 dark:text-dark-400 dark:hover:bg-dark-300 "
+              type="submit"
+            >
               kaydet
             </button>
           </div>

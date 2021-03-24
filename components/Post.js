@@ -73,146 +73,90 @@ const Post = ({
           style={{ wordBreak: "break-word" }}
         >
           {showTopic && <Title title={topic} link={link} />}
-          {description && wordCount < 150 ? (
-            <div className="grid grid-cols-12">
-              <div className="col-span-1 border-r dark:border-dark-100">
-                <div className="flex items-center justify-center">
-                  {token && (
-                    <Like
-                      setPostError={setPostError}
-                      id={id}
-                      token={token}
-                      setLikesLength={setLikesLength}
-                      likesLength={likesLength}
-                    />
-                  )}
-                </div>
-                <div className="flex items-center justify-center mt-2">
-                  {token && <Favorite id={id} token={token} setFavLength={setFavLength} favLength={favLength} />}
-                </div>
-              </div>
-              <div className="flex flex-col justify-between col-span-11 text-default-200 dark:text-dark-200">
-                <div className="pl-4">{parser.toReact(newDescription)}</div>
-                <div className="flex items-center justify-end text-sm text-default-200 dark:text-dark-200">
-                  <span className="flex items-center mr-4">
-                    <IoLogoBitcoin className="mr-2" />
-                    <span className="text-brand-400">{(totalEarnings / 100000000).toFixed(8)}</span>
-                  </span>
 
-                  <span className="flex items-center mr-4">
-                    <AiOutlineCalendar className="mr-2" />
-                    {createdAt === updatedAt
-                      ? moment(createdAt).format("DD.MM.YYYY HH:mm")
-                      : `${moment(updatedAt).format("DD.MM.YYYY HH:mm")}*`}
-                  </span>
-                  <span className="flex items-center mr-4">
-                    <RiUser3Line className="mr-2" />
-                    <Link href={`/yazar/${author}`}>
-                      <a className="hover:text-brand-300 hover:underline">{author}</a>
-                    </Link>
-                  </span>
-                  <span className="flex items-center">
-                    <span
-                      onClick={() => setShowShareButtons(!showShareButtons)}
-                      className={`${showShareButtons && "border-r dark:border-dark-400 pr-4 mr-4"}`}
-                    >
-                      <AiOutlineShareAlt />
-                    </span>
-                    {showShareButtons && (
-                      <div className="flex items-center">
-                        <a href={facebookShareLink} target="_blank" rel="noreferrer noopener" className="mr-4">
-                          <AiOutlineFacebook />
-                        </a>
-                        <a href={twitterShareLink} target="_blank" rel="noreferrer noopener" className="mr-4">
-                          <AiOutlineTwitter />
-                        </a>
-                        <a href={whatsappShareLink} target="_blank" rel="noreferrer noopener" className="mr-4">
-                          <AiOutlineWhatsApp />
-                        </a>
-                      </div>
-                    )}
-                  </span>
-                  {isEditable && isLoggedIn && (
-                    <Link href={`/duzenle/${id}`}>
-                      <a className="ml-4 cursor-pointer text-brand-500 hover:text-brand-400">
-                        <FiEdit />
-                      </a>
-                    </Link>
-                  )}
-                </div>
+          <div className="grid grid-cols-12">
+            <div className="col-span-1 border-r dark:border-dark-100">
+              <div className="flex items-center justify-center">
+                <Like
+                  setPostError={setPostError}
+                  id={id}
+                  token={token}
+                  setLikesLength={setLikesLength}
+                  likesLength={likesLength}
+                />
+              </div>
+              <div className="flex items-center justify-center mt-2">
+                {token && <Favorite id={id} token={token} setFavLength={setFavLength} favLength={favLength} />}
               </div>
             </div>
-          ) : (
-            <div>
-              <div className={` ${!readMore && "h-36 overflow-hidden"}`}>
-                {parser.toReact(description)}
-                <div className="flex items-center justify-end mt-2 text-sm text-default-200 dark:text-dark-200">
-                  <span className="flex items-center mr-4">
-                    <IoLogoBitcoin className="mr-2" />
-                    <span className="text-brand-400">{(totalEarnings / 100000000).toFixed(8)}</span>
-                  </span>
-
-                  <span className="flex items-center mr-4">
-                    <AiOutlineCalendar className="mr-2" />
-                    {createdAt === updatedAt
-                      ? moment(createdAt).format("DD.MM.YYYY HH:mm")
-                      : `${moment(updatedAt).format("DD.MM.YYYY HH:mm")}*`}
-                  </span>
-                  <span className="flex items-center mr-4">
-                    <RiUser3Line className="mr-2" />
-                    <Link href={`/yazar/${author}`}>
-                      <a className="hover:text-brand-300 hover:underline">{author}</a>
-                    </Link>
-                  </span>
-                  <span className="flex items-center">
-                    <span
-                      onClick={() => setShowShareButtons(!showShareButtons)}
-                      className={`${showShareButtons && "border-r dark:border-dark-400 pr-4 mr-4"}`}
-                    >
-                      <AiOutlineShareAlt />
-                    </span>
-                    {showShareButtons && (
-                      <div className="flex items-center">
-                        <a href={facebookShareLink} target="_blank" rel="noreferrer noopener" className="mr-4">
-                          <AiOutlineFacebook />
-                        </a>
-                        <a href={twitterShareLink} target="_blank" rel="noreferrer noopener" className="mr-4">
-                          <AiOutlineTwitter />
-                        </a>
-                        <a href={whatsappShareLink} target="_blank" rel="noreferrer noopener" className="mr-4">
-                          <AiOutlineWhatsApp />
-                        </a>
-                      </div>
-                    )}
-                  </span>
-                  {isEditable && isLoggedIn && (
-                    <Link href={`/duzenle/${id}`}>
-                      <a className="ml-4 cursor-pointer text-brand-500 hover:text-brand-400">
-                        <FiEdit />
-                      </a>
-                    </Link>
-                  )}
-                </div>
-              </div>
-              <div className="mt-2 underline cursor-pointer" onClick={() => setReadMore(!readMore)}>
-                {!readMore ? (
-                  <div className="flex justify-between">
-                    <div>devamını oku</div>
-                    <div className='text-sm'>
-                      <span className="flex items-center mr-4">
-                        <RiUser3Line className="mr-2" />
-                        <Link href={`/yazar/${author}`}>
-                          <a className="hover:text-brand-300 hover:underline">{author}</a>
-                        </Link>
-                      </span>
+            <div className="flex flex-col justify-between col-span-11 text-default-200 dark:text-dark-200">
+              <div className="pl-4">
+                {description && wordCount < 150 ? (
+                  parser.toReact(newDescription)
+                ) : (
+                  <div>
+                    <div className={` ${!readMore && "h-36 overflow-hidden"}`}>{parser.toReact(newDescription)}</div>
+                    <div className="mt-2 underline cursor-pointer" onClick={() => setReadMore(!readMore)}>
+                      {!readMore ? (
+                        <div className="flex justify-between">
+                          <div>devamını oku</div>
+                        </div>
+                      ) : (
+                        "kısalt"
+                      )}
                     </div>
                   </div>
-                ) : (
-                  "kısalt"
+                )}{" "}
+              </div>
+              <div className="flex items-center justify-end text-sm text-default-200 dark:text-dark-200">
+                <span className="flex items-center mr-4">
+                  <IoLogoBitcoin className="mr-2" />
+                  <span className="text-brand-400">{(totalEarnings / 100000000).toFixed(8)}</span>
+                </span>
+
+                <span className="flex items-center mr-4">
+                  <AiOutlineCalendar className="mr-2" />
+                  {createdAt === updatedAt
+                    ? moment(createdAt).format("DD.MM.YYYY HH:mm")
+                    : `${moment(updatedAt).format("DD.MM.YYYY HH:mm")}*`}
+                </span>
+                <span className="flex items-center mr-4">
+                  <RiUser3Line className="mr-2" />
+                  <Link href={`/yazar/${author}`}>
+                    <a className="hover:text-brand-300 hover:underline">{author}</a>
+                  </Link>
+                </span>
+                <span className="flex items-center">
+                  <span
+                    onClick={() => setShowShareButtons(!showShareButtons)}
+                    className={`${showShareButtons && "border-r dark:border-dark-400 pr-4 mr-4"}`}
+                  >
+                    <AiOutlineShareAlt />
+                  </span>
+                  {showShareButtons && (
+                    <div className="flex items-center">
+                      <a href={facebookShareLink} target="_blank" rel="noreferrer noopener" className="mr-4">
+                        <AiOutlineFacebook />
+                      </a>
+                      <a href={twitterShareLink} target="_blank" rel="noreferrer noopener" className="mr-4">
+                        <AiOutlineTwitter />
+                      </a>
+                      <a href={whatsappShareLink} target="_blank" rel="noreferrer noopener" className="mr-4">
+                        <AiOutlineWhatsApp />
+                      </a>
+                    </div>
+                  )}
+                </span>
+                {isEditable && isLoggedIn && (
+                  <Link href={`/duzenle/${id}`}>
+                    <a className="ml-4 cursor-pointer text-brand-500 hover:text-brand-400">
+                      <FiEdit />
+                    </a>
+                  </Link>
                 )}
               </div>
             </div>
-          )}
+          </div>
         </div>
         {postError && <Alert bg="red" title={postError} />}
       </div>

@@ -8,14 +8,17 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html className="light">
+      <Html className="dark">
         <Head>
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link
             href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap"
             rel="stylesheet"
           />
-          <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`} />
+          <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+          />
           <script
             dangerouslySetInnerHTML={{
               __html: `
