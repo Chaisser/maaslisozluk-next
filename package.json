@@ -24,6 +24,7 @@
     "chart.js": "^2.9.4",
     "check-password-strength": "^1.0.15",
     "cookie-parser": "^1.4.5",
+    "dayjs": "^1.10.5",
     "express": "^4.17.1",
     "graphql": "^15.4.0",
     "html-react-parser": "^1.0.0",

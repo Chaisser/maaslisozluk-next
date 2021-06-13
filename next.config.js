@@ -1,7 +1,7 @@
 module.exports = {
   env: {
-    // API_URL: "http://localhost:4000",
-    // WSS_URL: "ws://localhost:4000",
+    // API_URL: "https://4000.interaktifis.fun",
+    // WSS_URL: "wss://4000.interaktifis.fun",
     API_URL: "https://api.maaslisozluk.com",
     WSS_URL: "wss://api.maaslisozluk.com",
   },

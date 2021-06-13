@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { VscLoading } from "react-icons/vsc";
 import Head from "next/head";
 import { useSelector } from "react-redux";
-import moment from "moment";
 import Currency from "./../../../components/Currency";
 
 import { CgMediaLive } from "react-icons/cg";
@@ -17,9 +16,6 @@ import { renderPosts, getTokenFromCookie } from "./../../../utils/functions";
 import getClient from "./../../../apollo/apollo";
 import { GETTOPIC } from "../../../gql/topic/query";
 import { CREATEPOST } from "../../../gql/topic/mutation";
-import "moment/locale/tr";
-
-moment.locale("tr");
 
 const recordsPerPage = 10;
 
@@ -65,7 +61,7 @@ const Konu = ({ topic, postError }) => {
 
   const onSubmit = async (status) => {
     setErrorMessage("");
-    if (!description) {
+    if (!description.trim()) {
       return setErrorMessage("yazı yazılması gereklidir.");
     }
 

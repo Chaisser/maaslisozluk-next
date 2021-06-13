@@ -12,7 +12,7 @@ export const renderPosts = (posts, user, topic, showTopic, link, topicSlug) => {
       <Fragment key={post.id}>
         {i === 3 && (
           <div className="my-4">
-            <a target="_blank" className="text-center" href="https://freebitco.in/?r=4859108">
+            <a target="_blank" rel="noopener noreferrer" className="text-center" href="https://freebitco.in/?r=4859108">
               <img src="https://static1.freebitco.in/banners/728x90-3.png" alt="free bitcoin" className="mx-auto" />
             </a>
           </div>

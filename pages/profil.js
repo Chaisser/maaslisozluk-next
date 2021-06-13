@@ -40,6 +40,10 @@ const Profil = ({ userInformation }) => {
   const [smsError, setSmsError] = useState("");
   const [smsCode, setSmsCode] = useState("");
   const [passwordCondition, setPasswordCondition] = useState("Weak");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [showPhoneNumberActivationButton, setShowPhoneNumberActivationButton] = useState(
+    userInformation.phoneNumber ? true : false
+  );
   const token = useSelector((state) => state.user.token);
   useEffect(() => {
     if (!token) {
@@ -93,7 +97,12 @@ const Profil = ({ userInformation }) => {
 
   const handleUpdateUser = async () => {
     setUpdateErrorMessage("");
-
+    setSuccessMessage("");
+    if (!phoneNumber) {
+      setShowPhoneNumberActivationButton(false);
+    } else {
+      setShowPhoneNumberActivationButton(true);
+    }
     if (!email) {
       return setUpdateErrorMessage("e-posta alanı zorunludur");
     }
@@ -101,6 +110,7 @@ const Profil = ({ userInformation }) => {
     try {
       const result = await getClient(token).mutate({
         mutation: UPDATEUSER,
+
         variables: {
           email,
           phoneNumber,
@@ -109,9 +119,11 @@ const Profil = ({ userInformation }) => {
       });
       if (result.data.updateUser.id) {
         console.log("ok");
+        setSuccessMessage("profil bilgileriniz başarıyla güncellendi!");
       }
     } catch (error) {
       setUpdateErrorMessage(error.message);
+      console.log(error.message);
     }
   };
   const sendPhoneActivationCode = async () => {
@@ -140,7 +152,6 @@ const Profil = ({ userInformation }) => {
   };
   const handleChangePassword = async (e) => {
     e.preventDefault();
-
     setPasswordErrorMessage("");
     if (passwordCondition === "Weak") {
       return setPasswordErrorMessage("zayıf şifre kullanılamaz");
@@ -188,6 +199,11 @@ const Profil = ({ userInformation }) => {
     <Template>
       <div className="col-span-9">
         <Title title="profil" />
+        {successMessage && (
+          <div className="w-full my-2 md:w-1/2">
+            <Alert bg="green" title={successMessage} />
+          </div>
+        )}
         <div className="mb-4">
           <label className="text-sm font-semibold text-gray-700 dark:text-dark-400">e-posta</label>
           <div className="flex w-full mt-1 rounded-md shadow-sm md:w-1/2">
@@ -258,12 +274,14 @@ const Profil = ({ userInformation }) => {
                 onChange={(e) => setSmsCode(e.target.value.replace(/_/g, "").replace(/-/g, ""))}
               />
             ) : (
-              <button
-                onClick={sendPhoneActivationCode}
-                className={`inline-flex items-center px-3 py-2 text-sm text-gray-500 border border-l-0 border-gray-300 underline rounded-r-md bg-gray-50`}
-              >
-                kod gönder
-              </button>
+              showPhoneNumberActivationButton && (
+                <button
+                  onClick={sendPhoneActivationCode}
+                  className={`inline-flex items-center px-3 py-2 text-sm text-gray-500 border border-l-0 border-gray-300 underline rounded-r-md bg-gray-50`}
+                >
+                  kod gönder
+                </button>
+              )
             )}
           </div>
           {smsError && <Alert title={smsError} bg="red" />}

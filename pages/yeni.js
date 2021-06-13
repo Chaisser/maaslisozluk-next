@@ -28,15 +28,15 @@ const Yeni = (props) => {
       return setErrorMessage("konuya uygun kategori seçimi yapılmalıdır.");
     }
 
-    if (!title) {
+    if (!title.trim()) {
       return setErrorMessage("başlık en az 1 harften oluşmalıdır.");
     }
 
-    if (!description) {
+    if (!description.trim()) {
       return setErrorMessage("konunun ilk yazısının girilmesi gereklidir.");
     }
 
-    if (description.length < 10) {
+    if (description.trim().length < 10) {
       return setErrorMessage("yazı minimum 10 karakterden oluşmalıdır");
     }
 

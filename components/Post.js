@@ -1,8 +1,7 @@
 import { Fragment, useState, useEffect } from "react";
-
 import { useSelector } from "react-redux";
+import dayjs from "dayjs";
 import Link from "next/link";
-import moment from "moment";
 import Title from "./../ui/Title";
 import Alert from "./../ui/Alert";
 
@@ -120,8 +119,8 @@ const Post = ({
                     <AiOutlineCalendar className="mr-2" />
 
                     {createdAt === updatedAt
-                      ? moment(createdAt).format("DD.MM.YYYY HH:mm")
-                      : `${moment(updatedAt).format("DD.MM.YYYY HH:mm")}*`}
+                      ? dayjs(createdAt).format("DD.MM.YYYY HH:mm")
+                      : `${dayjs(updatedAt).format("DD.MM.YYYY HH:mm")}*`}
                   </a>
                 </Link>
                 <span className="flex items-center mr-4">

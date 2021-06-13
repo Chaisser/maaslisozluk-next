@@ -12,6 +12,7 @@ export const getBudget = () => {
     getClient(getState().user.token)
       .query({
         query: GETUSERBUDGET,
+        fetchPolicy: "network-only",
       })
       .then((res) => {
         const result = res.data.getBudget.result;

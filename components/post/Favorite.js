@@ -1,6 +1,4 @@
 import { useState } from "react";
-import UseAnimations from "react-useanimations";
-import bookmark from "react-useanimations/lib/bookmark";
 import getClient from "./../../apollo/apollo";
 import { FAVORITEPOST } from "./../../gql/post/mutation";
 import { CHECKFAVORITE } from "./../../gql/post/query";
